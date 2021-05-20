@@ -1,0 +1,22 @@
+name: BuildFFA
+version: 1.0
+main: main.Main
+commands:
+  setspawn:
+    description: Dieser Kommand setzt den Spawn einer Map und speichert desses Namen.
+  setstartmap:
+    description: Dieser Kommand setzt die erste Map auf welcher gespielt wird.
+  setdeathheight:
+    description: Dieser Kommand setzt die Todeshoehe.
+  setarenaheight:
+    description: Dieser Kommand setzt die Arenahoehe.
+  kit:
+    description: Dieser Kommand enthaelt das Kit-Setup.
+  build:
+    description: Dieser Kommand setzt Spieler in den Buildmode.
+  stats:
+    description: Dieser Kommand enthaelt das Stats-Setup.
+  teaming:
+    description: Dieser setzt Teaming auf erlaubt oder verboten.
+  item:
+    description: Dieser Kommand enthaelt das Item-Setup.
