@@ -57,7 +57,7 @@ public class ScoreboardManager implements Listener {
     if (obj == null)
       obj = sb.registerNewObjective("aaa", "bbb"); 
     obj.setDisplaySlot(DisplaySlot.SIDEBAR);
-    obj.setDisplayName(Main.getPrefix().replaceAll("§6\\[", "").replaceAll("§6]", "").trim());
+    obj.setDisplayName(Main.getPrefix().replaceAll("§a\\[", "").replaceAll("§a]", "").trim());
     Team kills = sb.registerNewTeam("kills");
     kills.setSuffix(killsSuffix);
     kills.setPrefix(killsPrefix);
@@ -70,23 +70,12 @@ public class ScoreboardManager implements Listener {
     map.setPrefix(mapPrefix);
     map.setSuffix(mapSuffix);
     map.addEntry(String.valueOf(ChatColor.BLUE.toString()) + mapEntry);
-//    Team mapchange = sb.registerNewTeam("mapchange");
-//    mapchange.setPrefix(mapchangePrefix);
-//    mapchange.setSuffix(mapchangeSuffix);
-//    mapchange.addEntry(String.valueOf(ChatColor.DARK_GREEN.toString()) + mapchangeEntry);
     Team teaming = sb.registerNewTeam("teaming");
     teaming.setPrefix(teamingPrefix);
     teaming.setSuffix(teamingSuffix);
     teaming.addEntry(String.valueOf(ChatColor.DARK_GRAY.toString()) + teamingEntry);
-    obj.getScore(mapScore).setScore(11);
-    obj.getScore(String.valueOf(ChatColor.BLUE.toString()) + mapEntry).setScore(10);
-//    obj.getScore(ChatColor.DARK_RED.toString()).setScore(10);
-//    obj.getScore(mapchangeScore).setScore(11);
-//    obj.getScore(String.valueOf(ChatColor.DARK_GREEN.toString()) + mapchangeEntry).setScore(10);
-//    obj.getScore(ChatColor.DARK_PURPLE.toString()).setScore(9);
-    obj.getScore(onlineScore).setScore(8);
-    obj.getScore(String.valueOf(ChatColor.BLACK.toString()) + onlineEntry).setScore(7);
-    obj.getScore(ChatColor.DARK_BLUE.toString()).setScore(6);
+    obj.getScore(mapScore).setScore(7);
+    obj.getScore(String.valueOf(ChatColor.BLUE.toString()) + mapEntry).setScore(6);
     obj.getScore(killsScore).setScore(5);
     obj.getScore(String.valueOf(ChatColor.AQUA.toString()) + killsEntry).setScore(4);
     obj.getScore(ChatColor.DARK_AQUA.toString()).setScore(3);

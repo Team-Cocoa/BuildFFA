@@ -24,7 +24,7 @@ public class BlockPlaceListener implements Listener {
       if (!Build.buildmode.contains(p.getName())) {
         Block b = e.getBlock();
         Main.worldData.addBlock(b);
-        new RemoveBlockAnimation(p, b).runTaskTimer(Main.inst(), 0L, 10L);
+        new RemoveBlockAnimation(b).runTaskTimer(Main.inst(), 0L, 10L);
 
       } 
     } else if (!Build.buildmode.contains(p.getName())) {

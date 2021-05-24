@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="58d3d634-9719-411b-83b5-014a3e754570" name="Default Changelist" comment="" />
+    <list default="true" id="58d3d634-9719-411b-83b5-014a3e754570" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/listener/BlockPlaceListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/listener/BlockPlaceListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/listener/InteractListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/listener/InteractListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/RemoveBlockAnimation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/RemoveBlockAnimation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/utils/ScoreboardManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/ScoreboardManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/BuildFFA-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/BuildFFA-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/listener/BlockPlaceListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/listener/BlockPlaceListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/listener/InteractListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/listener/InteractListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/RemoveBlockAnimation.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/RemoveBlockAnimation.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/ScoreboardManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/ScoreboardManager$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/utils/ScoreboardManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/utils/ScoreboardManager.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,7 +51,8 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Clutch-master/Clutch-master" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -54,6 +67,18 @@
       <option name="presentableId" value="Default" />
       <updated>1620891386317</updated>
     </task>
+    <task id="LOCAL-00001" summary="2021/05/20/11:39">
+      <created>1621478425412</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1621478425412</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="2021/05/20/11:39" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021/05/20/11:39" />
   </component>
 </project>

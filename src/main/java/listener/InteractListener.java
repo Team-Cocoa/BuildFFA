@@ -75,8 +75,8 @@ public class InteractListener implements Listener {
         } else {
           p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.deactivated").replaceAll("&", "§"));
         } 
-      } else if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cBack to the Lobby")) {
-        p.performCommand(Config.config.getString("lobbyitemcommand"));
+      } else if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cBack to the lobby")) {
+        p.kickPlayer("");
       } else if (p.getItemInHand().getItemMeta().spigot().isUnbreakable() && p.getItemInHand().getItemMeta().getDisplayName().equals("§cJump") && p.getItemInHand().getType() == Material.FEATHER) {
         Vector vector = e.getPlayer().getVelocity();
         vector.setY(2.1D);
