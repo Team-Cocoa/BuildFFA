@@ -25,10 +25,6 @@ public class Config {
   
   public static FileConfiguration locations;
   
-  public static File kitsFile = new File(Main.inst().getDataFolder() + "/kits.yml");
-  
-  public static FileConfiguration kits;
-  
   public static File playerFile = new File(Main.inst().getDataFolder() + "/player.yml");
   
   public static FileConfiguration player;
@@ -249,11 +245,7 @@ public class Config {
       yamlConfiguration.set("maps", "keine vorhanden");
       yamlConfiguration.save(file);
       yamlConfiguration = YamlConfiguration.loadConfiguration(locationsFile);
-    } 
-    if (file.getName().equalsIgnoreCase("kits.yml")) {
-      yamlConfiguration.save(file);
-      yamlConfiguration = YamlConfiguration.loadConfiguration(kitsFile);
-    } 
+    }
     if (file.getName().equalsIgnoreCase("player.yml")) {
       yamlConfiguration.save(file);
       yamlConfiguration = YamlConfiguration.loadConfiguration(playerFile);
@@ -275,7 +267,6 @@ public class Config {
     messages = (FileConfiguration)YamlConfiguration.loadConfiguration(messagesFile);
     permissions = (FileConfiguration)YamlConfiguration.loadConfiguration(permissionsFile);
     locations = (FileConfiguration)YamlConfiguration.loadConfiguration(locationsFile);
-    kits = (FileConfiguration)YamlConfiguration.loadConfiguration(kitsFile);
     player = (FileConfiguration)YamlConfiguration.loadConfiguration(playerFile);
     stats = (FileConfiguration)YamlConfiguration.loadConfiguration(statsFile);
   }

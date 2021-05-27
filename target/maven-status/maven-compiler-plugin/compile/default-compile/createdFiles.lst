@@ -1,5 +1,6 @@
 listener\JoinListener$1.class
 listener\PlayerMoveListener$1.class
+commands\Stats$1.class
 utils\Ranking$1.class
 commands\Stats.class
 data\WorldData.class
@@ -8,6 +9,7 @@ listener\PlayerDeathListener.class
 main\Main.class
 commands\SetSpawn.class
 listener\PlayerMoveListener.class
+commands\Stats$3.class
 listener\WeatherChangeListener.class
 listener\CloseInventoryListener.class
 listener\BlockPlaceListener.class
@@ -24,6 +26,7 @@ utils\Inventory.class
 listener\QuitListener.class
 utils\Config.class
 utils\Stats.class
+commands\Stats$2.class
 listener\BlockBreakListener.class
 listener\JoinListener.class
 commands\Build.class

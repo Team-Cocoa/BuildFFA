@@ -23,9 +23,9 @@ public class MYSQL {
     if (!isConnected())
       try {
         con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
-        System.out.println("| [BuildFFA] MYSQL Verbindung hergestellt                     |");
+        System.out.println("| [BuildFFA] Successfully connected to MYSQL!                 |");
       } catch (SQLException e) {
-        System.out.println("| [BuildFFA] MYSQL Verbindung konnte nicht hergestellt werden.|");
+        System.out.println("| [BuildFFA] Failed to connect to MYSQL server.               |");
       }  
   }
   
@@ -33,7 +33,7 @@ public class MYSQL {
     if (isConnected())
       try {
         con.close();
-        System.out.println("| [BuildFFA] MYSQL Verbindung wurde getrennt.                 |");
+        System.out.println("| [BuildFFA] MYSQL               Disconnected.                |");
       } catch (SQLException e) {
         e.printStackTrace();
       }  

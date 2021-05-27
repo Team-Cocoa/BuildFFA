@@ -9,6 +9,7 @@ public class PlayerData {
     public HashMap<Player, Long> throwPeralTime = new HashMap<>();
     public HashMap<Player, Long> latestDeadTime = new HashMap<>();
     public HashMap<Player, Boolean> playerBuild = new HashMap<>();
+    public HashMap<Player, Integer> playerKit = new HashMap<>();
 
     public boolean isPlayerBuild(Player player){
         try{

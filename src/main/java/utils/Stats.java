@@ -1,5 +1,7 @@
 package utils;
 
+import main.Main;
+import org.bukkit.Bukkit;
 import utils.MYSQL;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -21,7 +23,9 @@ public class Stats {
   public static void createPlayer(String uuid) {
     if (Config.config.getBoolean("mysql.support")) {
       if (!playerExists(uuid))
-        MYSQL.update("INSERT INTO Stats(UUID, KILLS, DEATHS) VALUES ('" + uuid + "', '0', '0');"); 
+        Bukkit.getScheduler().runTaskAsynchronously(Main.inst(), () -> {
+          MYSQL.update("INSERT INTO Stats(UUID, KILLS, DEATHS) VALUES ('" + uuid + "', '0', '0');");
+        });
     } else {
       if (Config.stats.get(String.valueOf(uuid) + "kills") == null) {
         Config.stats.set(String.valueOf(uuid) + "kills", Integer.valueOf(0));
@@ -29,17 +33,17 @@ public class Stats {
           Config.stats.save(Config.statsFile);
         } catch (IOException e2) {
           e2.printStackTrace();
-        } 
-      } 
+        }
+      }
       if (Config.stats.get(String.valueOf(uuid) + "deaths") == null) {
         Config.stats.set(String.valueOf(uuid) + "deaths", Integer.valueOf(0));
         try {
           Config.stats.save(Config.statsFile);
         } catch (IOException e2) {
           e2.printStackTrace();
-        } 
-      } 
-    } 
+        }
+      }
+    }
   }
   
   public static Integer getKills(String uuid) {

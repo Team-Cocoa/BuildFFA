@@ -47,17 +47,13 @@ public class InteractListener implements Listener {
             if (Config.player.getString("players." + p.getUniqueId().toString() + ".kitselected") != null) {
               String Kitname = Config.player.getString("players." + p.getUniqueId().toString() + ".kitselected");
               if (Config.player.getString("players." + p.getUniqueId().toString() + "." + Kitname + ".items") != null) {
-//                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 2147483647, 2));
-//                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 2147483647, 1));
                 ItemStack[] inv = Inventory.getSortInventoryHotbar(p, Kitname);
-                org.bukkit.inventory.Inventory inventar = Bukkit.createInventory(null, 9, "§cInventorySorting");
+                org.bukkit.inventory.Inventory inventar = Bukkit.createInventory(null, 18, "§cInventorySorting");
                 inventar.setContents(inv);
                 p.openInventory(inventar);
               } else {
-//                p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 2147483647, 2));
-//                p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 2147483647, 1));
                 ItemStack[] inv = Inventory.getInventoryHotbar(Kitname);
-                org.bukkit.inventory.Inventory inventar = Bukkit.createInventory(null, 9, "§cInventorySorting");
+                org.bukkit.inventory.Inventory inventar = Bukkit.createInventory(null, 18, "§cInventorySorting");
                 inventar.setContents(inv);
                 p.openInventory(inventar);
               } 
@@ -69,8 +65,6 @@ public class InteractListener implements Listener {
           }  
       } else if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cStats")) {
         if (Config.config.getBoolean("stats")) {
-//          p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 2147483647, 2));
-//          p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 2147483647, 1));
           Inventory.setStatsInventory(p);
         } else {
           p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.deactivated").replaceAll("&", "§"));

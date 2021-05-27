@@ -36,8 +36,9 @@ public class JoinListener implements Listener {
       } 
     } 
     String uuid = String.valueOf(p.getUniqueId());
-    if (Config.config.getBoolean("stats"))
-      Stats.createPlayer(uuid); 
+    if (Config.config.getBoolean("stats")) {
+      Stats.createPlayer(uuid);
+    }
     Bukkit.getScheduler().runTaskLater((Plugin)Main.inst(), new Runnable() {
           public void run() {
             if (Build.buildmode.contains(p.getName())) {

@@ -1,7 +1,12 @@
 package listener;
 
 import main.Main;
+import org.bukkit.Material;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import utils.Config;
+import utils.Inventory;
 import utils.Locations;
 import utils.Stats;
 import java.io.IOException;
@@ -64,6 +69,22 @@ public class PlayerDeathListener implements Listener {
       p.getKiller().setHealth(20.0D);
       level = p.getKiller().getLevel();
       p.getKiller().setLevel(level + 1);
+      if(p.getKiller().getLevel() % 3 == 0){
+        ItemStack[] inventorySorting = Inventory.getSortInventoryHotbar(p.getKiller(), Config.player.getString("players." + p.getKiller().getUniqueId().toString() + ".kitselected"));
+        int i = 0;
+        Player killer = p.getKiller();
+        for(ItemStack item : inventorySorting){
+          if(item.isSimilar(new ItemStack(Material.ENDER_PEARL))){
+            int enderPearlAmount = killer.getInventory().getItem(i).getAmount();
+            if(enderPearlAmount < 2){
+              killer.getInventory().setItem(enderPearlAmount + 1, new ItemStack(Material.ENDER_PEARL));
+            }
+            else{
+              break;
+            }
+          }
+        }
+      }
       level = p.getKiller().getLevel();
       killstreakKiller = String.valueOf(level);
       Bukkit.getScheduler().runTaskLater((Plugin)Main.inst(), new Runnable() {

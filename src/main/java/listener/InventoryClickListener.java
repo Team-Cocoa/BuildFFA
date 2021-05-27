@@ -1,6 +1,10 @@
 package listener;
 
 import commands.Build;
+import data.KitData;
+import main.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import utils.Config;
 import utils.Inventory;
 import java.io.IOException;
@@ -11,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import utils.MYSQL;
 
 public class InventoryClickListener implements Listener {
   @EventHandler
@@ -22,83 +27,73 @@ public class InventoryClickListener implements Listener {
       return; 
     if (e.getView().getTitle() == "§cKit Selection") {
       if (Config.config.getBoolean("kits")) {
-        String Kit1name = Config.kits.getString("kits.view.selection.1");
-        String Kit2name = Config.kits.getString("kits.view.selection.2");
-        String Kit3name = Config.kits.getString("kits.view.selection.3");
-        String Kit4name = Config.kits.getString("kits.view.selection.4");
-        String Kit1prefix = Config.kits.getString(String.valueOf(Kit1name) + ".prefix");
-        String Kit2prefix = Config.kits.getString(String.valueOf(Kit2name) + ".prefix");
-        String Kit3prefix = Config.kits.getString(String.valueOf(Kit3name) + ".prefix");
-        String Kit4prefix = Config.kits.getString(String.valueOf(Kit4name) + ".prefix");
-        ItemStack Kit1symbol = Config.kits.getItemStack(String.valueOf(Kit1name) + ".symbol");
-        ItemStack Kit2symbol = Config.kits.getItemStack(String.valueOf(Kit2name) + ".symbol");
-        ItemStack Kit3symbol = Config.kits.getItemStack(String.valueOf(Kit3name) + ".symbol");
-        ItemStack Kit4symbol = Config.kits.getItemStack(String.valueOf(Kit4name) + ".symbol");
+        String Kit1name = KitData.getKitByInt(0);
+        String Kit2name = KitData.getKitByInt(1);
+        String Kit3name = KitData.getKitByInt(2);
+        ItemStack Kit1symbol = KitData.getSymbol(0);
+        ItemStack Kit2symbol = KitData.getSymbol(1);
+        ItemStack Kit3symbol = KitData.getSymbol(2);
         Material Kit1symbolMaterial = null;
         Material Kit2symbolMaterial = null;
         Material Kit3symbolMaterial = null;
-        Material Kit4symbolMaterial = null;
         if (Kit1symbol != null)
           Kit1symbolMaterial = Kit1symbol.getType(); 
         if (Kit2symbol != null)
           Kit2symbolMaterial = Kit2symbol.getType(); 
         if (Kit3symbol != null)
-          Kit3symbolMaterial = Kit3symbol.getType(); 
-        if (Kit4symbol != null)
-          Kit4symbolMaterial = Kit4symbol.getType(); 
+          Kit3symbolMaterial = Kit3symbol.getType();
         ItemStack clickedItem = e.getCurrentItem();
-        if (clickedItem.getItemMeta().getDisplayName().equals(Kit1prefix) && Kit1symbolMaterial != null && clickedItem.getType() != Material.BARRIER) {
-          Config.player.set("players." + p.getUniqueId().toString() + ".kitselected", Kit1name);
+        if (clickedItem.getItemMeta().getDisplayName().equals(Kit1name) && Kit1symbolMaterial != null && clickedItem.getType() != Material.BARRIER) {
+//          Config.player.set("players." + p.getUniqueId().toString() + ".kitselected", Kit1name);
           p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
           try {
-            Config.player.save(Config.playerFile);
-          } catch (IOException e2) {
+            Bukkit.getScheduler().runTaskAsynchronously(Main.inst(), ()-> {
+              KitData.setKit(p, 0);
+              p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &aYour settings has been saved."));
+            });
+          } catch (Exception e2) {
             e2.printStackTrace();
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &cAn error has occurred."));
           } 
           p.closeInventory();
-          p.getInventory().setItem(0, Inventory.createItem(Kit1symbolMaterial, 1, Kit1prefix));
+          p.getInventory().setItem(0, Inventory.createItem(Kit1symbolMaterial, 1, Kit1name));
         } else {
           e.setCancelled(true);
         } 
-        if (clickedItem.getItemMeta().getDisplayName().equals(Kit2prefix) && Kit1symbolMaterial != null && clickedItem.getType() != Material.BARRIER) {
-          Config.player.set("players." + p.getUniqueId().toString() + ".kitselected", Kit2name);
+        if (clickedItem.getItemMeta().getDisplayName().equals(Kit2name) && Kit1symbolMaterial != null && clickedItem.getType() != Material.BARRIER) {
+//          Config.player.set("players." + p.getUniqueId().toString() + ".kitselected", Kit2name);
           p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
           try {
-            Config.player.save(Config.playerFile);
-          } catch (IOException e2) {
+            Bukkit.getScheduler().runTaskAsynchronously(Main.inst(), ()-> {
+              KitData.setKit(p, 1);
+              p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &aYour settings has been saved."));
+            });
+          } catch (Exception e2) {
             e2.printStackTrace();
-          } 
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &cAn error has occurred."));
+          }
           p.closeInventory();
-          p.getInventory().setItem(0, Inventory.createItem(Kit2symbolMaterial, 1, Kit2prefix));
+          p.getInventory().setItem(0, Inventory.createItem(Kit2symbolMaterial, 1, Kit2name));
         } else {
           e.setCancelled(true);
         } 
-        if (clickedItem.getItemMeta().getDisplayName().equals(Kit3prefix) && Kit1symbolMaterial != null && clickedItem.getType() != Material.BARRIER) {
-          Config.player.set("players." + p.getUniqueId().toString() + ".kitselected", Kit3name);
+        if (clickedItem.getItemMeta().getDisplayName().equals(Kit3name) && Kit1symbolMaterial != null && clickedItem.getType() != Material.BARRIER) {
+//          Config.player.set("players." + p.getUniqueId().toString() + ".kitselected", Kit3name);
           p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
           try {
-            Config.player.save(Config.playerFile);
-          } catch (IOException e2) {
+            Bukkit.getScheduler().runTaskAsynchronously(Main.inst(), ()-> {
+              KitData.setKit(p, 2);
+              p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &aYour settings has been saved."));
+            });
+          } catch (Exception e2) {
             e2.printStackTrace();
-          } 
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &cAn error has occurred."));
+          }
           p.closeInventory();
-          p.getInventory().setItem(0, Inventory.createItem(Kit3symbolMaterial, 1, Kit3prefix));
+          p.getInventory().setItem(0, Inventory.createItem(Kit3symbolMaterial, 1, Kit3name));
         } else {
           e.setCancelled(true);
-        } 
-        if (clickedItem.getItemMeta().getDisplayName().equals(Kit4prefix) && Kit1symbolMaterial != null && clickedItem.getType() != Material.BARRIER) {
-          Config.player.set("players." + p.getUniqueId().toString() + ".kitselected", Kit4name);
-          p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
-          try {
-            Config.player.save(Config.playerFile);
-          } catch (IOException e2) {
-            e2.printStackTrace();
-          } 
-          p.closeInventory();
-          p.getInventory().setItem(0, Inventory.createItem(Kit4symbolMaterial, 1, Kit4prefix));
-        } else {
-          e.setCancelled(true);
-        } 
+        }
         if (clickedItem.getItemMeta().getDisplayName().equals("§cReset§7-§6Sorting§7-§c" + Config.player.getString("players." + p.getUniqueId().toString() + ".kitselected")) && clickedItem.getType() == Material.BLAZE_ROD)
           if (Config.player.getString("players." + p.getUniqueId().toString() + "." + Config.player.getString("players." + p.getUniqueId().toString() + ".kitselected")) != null) {
             Config.player.set("players." + p.getUniqueId().toString() + "." + Config.player.getString("players." + p.getUniqueId().toString() + ".kitselected"), null);

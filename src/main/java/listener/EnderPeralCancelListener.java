@@ -2,6 +2,7 @@ package listener;
 
 import main.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import utils.Locations;
 
 public class EnderPeralCancelListener implements Listener {
 
@@ -41,7 +43,10 @@ public class EnderPeralCancelListener implements Listener {
         long latestDeadTime = Main.playerData.latestDeadTime.get(player);
         long now = System.currentTimeMillis();
         if(latestDeadTime < throwedTime && throwedTime < now){
-
+            Location spawnLocation = Locations.getSpawnLocation(Locations.getCurrentMap());
+            if(e.getTo().getY() >= spawnLocation.getY() - 5){
+                e.setCancelled(true);
+            }
         }
         else{
             e.setCancelled(true);
