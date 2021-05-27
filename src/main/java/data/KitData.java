@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import utils.MYSQL;
@@ -13,6 +14,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class KitData {
+
+    public static Inventory getKitSelection(){
+        Inventory kitSelection = new In
+    }
+
     public static void setKit(Player player, int kit){
         try{
             MYSQL.update("UPDATE `stats` SET `kit` = \"" + kit + "\" WHERE `UUID` = \"" + player.getUniqueId() + "\";");
@@ -23,14 +29,17 @@ public class KitData {
     }
 
     public static int getKit(Player player){
+        int i = -1;
         try{
             ResultSet rs = MYSQL.getResult("SELECT `kit` FROM `stats` WHERE `UUID` = \""+player.getUniqueId()+"\";");
             if(rs.next()){
-                return rs.getInt("kit");
+                i = rs.getInt("kit");
             }
+            return i;
         }
         catch(SQLException e){
             e.printStackTrace();
+            return -1;
         }
     }
     public static String getKitByInt(int input){

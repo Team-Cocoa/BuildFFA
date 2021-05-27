@@ -2,11 +2,8 @@ package listener;
 
 import main.Main;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import utils.Config;
-import utils.Inventory;
 import utils.Locations;
 import utils.Stats;
 import java.io.IOException;

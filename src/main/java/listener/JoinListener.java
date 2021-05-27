@@ -3,7 +3,6 @@ package listener;
 import commands.Build;
 import main.Main;
 import utils.Config;
-import utils.Inventory;
 import utils.Locations;
 import utils.ScoreboardManager;
 import utils.Stats;

@@ -2,7 +2,7 @@ package commands;
 
 import main.Main;
 import utils.Config;
-import utils.Inventory;
+
 import java.io.IOException;
 import org.bukkit.Material;
 import org.bukkit.command.Command;

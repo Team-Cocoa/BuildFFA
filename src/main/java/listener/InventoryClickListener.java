@@ -6,7 +6,7 @@ import main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import utils.Config;
-import utils.Inventory;
+
 import java.io.IOException;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -15,7 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import utils.MYSQL;
 
 public class InventoryClickListener implements Listener {
   @EventHandler

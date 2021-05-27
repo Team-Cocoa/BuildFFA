@@ -3,7 +3,7 @@ package commands;
 import listener.PlayerMoveListener;
 import main.Main;
 import utils.Config;
-import utils.Inventory;
+
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;

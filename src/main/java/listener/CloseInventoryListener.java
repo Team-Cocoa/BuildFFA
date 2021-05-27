@@ -1,7 +1,6 @@
 package listener;
 
 import utils.Config;
-import utils.Inventory;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
