@@ -1,22 +1,47 @@
 package data;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import utils.MYSQL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class KitData {
 
+    private static ItemStack createItemStack(Material material, String name, int amount, ArrayList lore, byte data) {
+        ItemStack itemStack = new ItemStack(material, amount, (short)data);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(name);
+        itemMeta.setLore(lore);
+        itemMeta.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ATTRIBUTES });
+        itemMeta.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_UNBREAKABLE });
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
     public static Inventory getKitSelection(){
-        Inventory kitSelection = new In
+        Inventory kitSelection = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&cKit Selection"));
+        for(int i = 0; i < 11; i++){
+            kitSelection.setItem(i, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
+        }
+        for(int i = 11; i < 17; i += 2){
+            kitSelection.setItem(i, getSymbol(i - 11));
+            kitSelection.setItem(i + 1, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
+        }
+        for(int i = 17; i < 27; i++){
+            kitSelection.setItem(i, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
+        }
+        return kitSelection;
     }
 
     public static void setKit(Player player, int kit){

@@ -30,6 +30,7 @@ public class InteractListener implements Listener {
     if (p.getItemInHand().hasItemMeta() && 
       p.getItemInHand().getItemMeta().getDisplayName() != null)
       if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cKits")) {
+
         if (Config.config.getBoolean("kits"))
           if (Config.kits.getString("kits.view") != null) {
             Inventory.setKitAuswahlInventory(p);
@@ -60,27 +61,11 @@ public class InteractListener implements Listener {
           } else {
             p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nokitselected").replaceAll("&", "§"));
           }  
-      } else if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cStats")) {
-        if (Config.config.getBoolean("stats")) {
-          Inventory.setStatsInventory(p);
-        } else {
-          p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.deactivated").replaceAll("&", "§"));
-        } 
-      } else if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cBack to the lobby")) {
+      }
+      else if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cBack to the lobby")) {
         p.kickPlayer("");
-      } else if (p.getItemInHand().getItemMeta().spigot().isUnbreakable() && p.getItemInHand().getItemMeta().getDisplayName().equals("§cJump") && p.getItemInHand().getType() == Material.FEATHER) {
-        Vector vector = e.getPlayer().getVelocity();
-        vector.setY(2.1D);
-        p.setVelocity(vector);
-        p.playSound(p.getLocation(), Sound.ENDERDRAGON_WINGS, 3.0F, 1.0F);
-        p.playEffect(p.getLocation(), Effect.FLAME, 3);
-        int amount = p.getItemInHand().getAmount();
-        if (amount == 1) {
-          p.getInventory().removeItem(new ItemStack[] { p.getItemInHand() });
-        } else {
-          p.getItemInHand().setAmount(amount - 1);
-        } 
-      } else if (p.getLocation().getY() >= Config.locations.getDouble(String.valueOf(Locations.getCurrentMap()) + ".arenaheight")) {
+      }
+      else if (p.getLocation().getY() >= Config.locations.getDouble(String.valueOf(Locations.getCurrentMap()) + ".arenaheight")) {
         e.setCancelled(true);
       }  
   }
