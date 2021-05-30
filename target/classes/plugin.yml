@@ -1,6 +1,6 @@
 name: BuildFFA
 version: 1.0
-main: main.Main
+main: kr.teamcocoa.buildffa.main.Main
 commands:
   setspawn:
     description: Dieser Kommand setzt den Spawn einer Map und speichert desses Namen.
@@ -10,8 +10,6 @@ commands:
     description: Dieser Kommand setzt die Todeshoehe.
   setarenaheight:
     description: Dieser Kommand setzt die Arenahoehe.
-  kit:
-    description: Dieser Kommand enthaelt das Kit-Setup.
   build:
     description: Dieser Kommand setzt Spieler in den Buildmode.
   stats:

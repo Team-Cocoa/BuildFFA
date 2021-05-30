@@ -1,0 +1,38 @@
+package kr.teamcocoa.buildffa.listener;
+
+import kr.teamcocoa.buildffa.kit.KitData;
+import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.utils.Config;
+import kr.teamcocoa.buildffa.utils.Locations;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+public class InteractListener implements Listener {
+  @EventHandler
+  public static void onInteract(PlayerInteractEvent e) {
+    Player p = e.getPlayer();
+    try {
+      if (e.getClickedBlock().getType() == Material.STONE_PLATE) {
+        return;
+      }
+    }
+    catch(Exception e2){
+
+    }
+
+    if (p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().getDisplayName() != null) {
+      if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cKits")) {
+        p.openInventory(KitData.getKitSelection());
+      } else if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cInventorySorting")) {
+        p.openInventory(KitData.getInventorySorting(p, Main.playerData.get(p).getKit()));
+      } else if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cBack to the lobby")) {
+        p.kickPlayer("");
+      } else if (p.getLocation().getY() >= Config.locations.getDouble(String.valueOf(Locations.getCurrentMap()) + ".arenaheight")) {
+        e.setCancelled(true);
+      }
+    }
+  }
+}
