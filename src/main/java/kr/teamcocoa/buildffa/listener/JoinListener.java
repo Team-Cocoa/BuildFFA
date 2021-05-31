@@ -17,12 +17,12 @@ public class JoinListener implements Listener {
   public static void onJoin(PlayerJoinEvent e) {
     final Player p = e.getPlayer();
     p.setLevel(0);
-    Main.playerData.put(p, new BffaPlayer(p));
     ScoreboardManager.setScoreboard(p);
     String uuid = String.valueOf(p.getUniqueId());
     if (Config.config.getBoolean("stats")) {
       Stats.createPlayer(uuid);
     }
+    Main.playerData.put(p, new BffaPlayer(p));
     if (Config.config.getBoolean("join-quit-message")) {
       if (Config.config.getBoolean("displayname.joinmessage")) {
         e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));

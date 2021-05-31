@@ -65,7 +65,7 @@ public class InventoryClickListener implements Listener {
     }
 
 
-    if(e.getView().getTitle() == "§cInventorySorting"){
+    if(e.getView().getTitle().equals("§cInventorySorting")){
         ItemStack saveItem = KitData.createDye("§aSave", Material.INK_SACK, (short)10);
         ItemStack resetItem = KitData.createDye("§cReset", Material.INK_SACK, (short)1);
         ItemStack clickedItem = e.getCurrentItem();
@@ -81,6 +81,7 @@ public class InventoryClickListener implements Listener {
                 Main.playerData.get(p).setInventory(inventory);
                 KitData.setInventorySetting(p, inventory, KitData.getKitByInt(kit));
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &cYour settings has been reset."));
+                p.closeInventory();
             }
             catch(Exception e1){
                 e1.printStackTrace();
@@ -93,6 +94,7 @@ public class InventoryClickListener implements Listener {
                 ItemStack item = e.getInventory().getItem(i);
             }
         }
+        return;
     }
   }
 }

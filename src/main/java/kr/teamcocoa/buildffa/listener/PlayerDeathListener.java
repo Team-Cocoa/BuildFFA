@@ -37,6 +37,7 @@ public class PlayerDeathListener implements Listener {
       Bukkit.getScheduler().runTaskLater((Plugin)Main.inst(), new Runnable() {
             public void run() {
               Main.playerData.get(p).setInGame(false);
+              Main.playerData.get(p).setLatestDeadTime(System.currentTimeMillis());
               p.spigot().respawn();
               p.teleport(spawnloc);
               p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);

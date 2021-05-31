@@ -359,7 +359,7 @@ public class KitData {
     private static ItemStack getRod(){
         ItemStack rod = new ItemStack(Material.FISHING_ROD);
 //        ItemMeta rodMeta = rod.getItemMeta();
-        rod.setDurability((short)32);
+        rod.setDurability((short)40);
 //        ((Damageable) rodMeta).damage(32);
 //        rod.setItemMeta(rodMeta);
         return rod;
