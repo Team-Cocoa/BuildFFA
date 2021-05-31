@@ -1,5 +1,6 @@
 package kr.teamcocoa.buildffa.kit;
 
+import kr.teamcocoa.buildffa.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -172,6 +173,7 @@ public class KitData {
             armorMetaList[i] = armorList[i].getItemMeta();
             armorMetaList[i].addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2, true);
             armorMetaList[i].addEnchant(Enchantment.DURABILITY, 2, true);
+            armorList[i].setItemMeta(armorMetaList[i]);
         }
         return armorList;
     }
@@ -276,7 +278,6 @@ public class KitData {
                 ItemStack item = new ItemStack(Material.STICK);
                 ItemMeta itemMeta = item.getItemMeta();
                 itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&bDefault"));
-                itemMeta.addEnchant(Enchantment.KNOCKBACK, 1, true);
                 item.setItemMeta(itemMeta);
                 return item;
             case 1:
@@ -357,9 +358,10 @@ public class KitData {
 
     private static ItemStack getRod(){
         ItemStack rod = new ItemStack(Material.FISHING_ROD);
-        ItemMeta rodMeta = rod.getItemMeta();
-        ((Damageable) rodMeta).damage(32);
-        rod.setItemMeta(rodMeta);
+//        ItemMeta rodMeta = rod.getItemMeta();
+        rod.setDurability((short)32);
+//        ((Damageable) rodMeta).damage(32);
+//        rod.setItemMeta(rodMeta);
         return rod;
     }
 
@@ -398,7 +400,7 @@ public class KitData {
         return air;
     }
 
-    private static ItemStack createItemStack(Material material, String name, int amount, ArrayList lore, byte data) {
+    public static ItemStack createItemStack(Material material, String name, int amount, ArrayList lore, byte data) {
         ItemStack itemStack = new ItemStack(material, amount, (short)data);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(name);
@@ -409,7 +411,7 @@ public class KitData {
         return itemStack;
     }
 
-    private static ItemStack createDye(String name, Material material, short s) {
+    public static ItemStack createDye(String name, Material material, short s) {
         ItemStack itemStack = material.equals(Material.INK_SACK) ? new ItemStack(material, 1, s) : new ItemStack(material);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(name);

@@ -53,7 +53,7 @@ public class RemoveBlockAnimation extends BukkitRunnable {
                     int index = Arrays.asList(Main.playerData.get(event.getPlayer()).getInventory()).indexOf(new ItemStack(Material.SANDSTONE, 64));
                     int amount = event.getPlayer().getInventory().getItem(index).getAmount();
                     ItemStack blockItem = new ItemStack(Material.SANDSTONE, amount + 1);
-                    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.CLICK, 100.0F, 0.0F);
+                    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
                     event.getPlayer().getInventory().setItem(index, blockItem);
                 }
                 catch(NullPointerException e){

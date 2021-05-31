@@ -61,6 +61,7 @@ public class Main extends JavaPlugin {
     getServer().getPluginManager().registerEvents(new PlayerRespawnListener(), this);
     getServer().getPluginManager().registerEvents(new QuitListener(), this);
     getServer().getPluginManager().registerEvents(new WeatherChangeListener(), this);
+    getServer().getPluginManager().registerEvents(new InventoryDragListener(), this);
   }
 
   public void loadCommands(){

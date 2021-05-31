@@ -26,6 +26,8 @@ kr\teamcocoa\buildffa\commands\Stats$1.class
 kr\teamcocoa\buildffa\listener\EnderPeralCancelListener.class
 kr\teamcocoa\buildffa\listener\EntityDamageListener.class
 kr\teamcocoa\buildffa\listener\InventoryClickListener.class
+kr\teamcocoa\buildffa\listener\InventoryDragListener.class
+kr\teamcocoa\buildffa\listener\InventoryClickListener$1.class
 kr\teamcocoa\buildffa\utils\Locations.class
 kr\teamcocoa\buildffa\utils\Ranking$1.class
 kr\teamcocoa\buildffa\commands\SetSpawn.class
