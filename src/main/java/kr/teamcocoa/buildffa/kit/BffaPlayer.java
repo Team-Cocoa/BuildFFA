@@ -95,7 +95,14 @@ public class BffaPlayer {
         this.player.getInventory().clear();
         this.player.getInventory().setArmorContents(null);
         this.player.getInventory().setItem(0, ItemManager.createItem(Material.BLAZE_ROD, 1, "§cInventorySorting"));
-        this.player.getInventory().setItem(4, ItemManager.createItem(Material.CHEST, 1, "§cKits"));
-        this.player.getInventory().setItem(8, ItemManager.createItem(Material.SLIME_BALL, 1, "§cBack to the lobby"));
+
+        this.player.getInventory().setItem(8, ItemManager.createItem(Material.SLIME_BALL, 1, "§cReturn to lobby"));
+        if(this.player.hasPermission("killeffect.killeffect") || this.player.hasPermission("*")){
+            this.player.getInventory().setItem(3, ItemManager.createItem(Material.CHEST, 1, "§cKits"));
+            this.player.getInventory().setItem(5, ItemManager.createItem(Material.GOLD_SWORD, 1, "§cKillEffects"));
+        }
+        else{
+            this.player.getInventory().setItem(4, ItemManager.createItem(Material.CHEST, 1, "§cKits"));
+        }
     }
 }

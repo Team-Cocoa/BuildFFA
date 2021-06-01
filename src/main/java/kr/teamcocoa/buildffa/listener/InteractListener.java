@@ -26,11 +26,17 @@ public class InteractListener implements Listener {
     if (p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().getDisplayName() != null) {
       if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cKits")) {
         p.openInventory(KitData.getKitSelection());
-      } else if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cInventorySorting")) {
+      }
+      if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cInventorySorting")) {
         p.openInventory(KitData.getInventorySorting(p, Main.playerData.get(p).getKit()));
-      } else if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cBack to the lobby")) {
+      }
+      if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cReturn to lobby")) {
         p.kickPlayer("");
-      } else if (p.getLocation().getY() >= Config.locations.getDouble(String.valueOf(Locations.getCurrentMap()) + ".arenaheight")) {
+      }
+      if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cKillEffects")){
+        p.performCommand("killeffect");
+      }
+      if (p.getLocation().getY() >= Config.locations.getDouble(String.valueOf(Locations.getCurrentMap()) + ".arenaheight")) {
         e.setCancelled(true);
       }
     }
