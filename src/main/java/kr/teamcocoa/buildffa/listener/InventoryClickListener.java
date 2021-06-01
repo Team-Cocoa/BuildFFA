@@ -2,6 +2,7 @@ package kr.teamcocoa.buildffa.listener;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.main.Main;
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,16 +14,17 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class InventoryClickListener implements Listener {
   @EventHandler
   public static void onInventoryClick(InventoryClickEvent e) {
     Player p = (Player)e.getWhoClicked();
-    if (e.getCurrentItem() == null) {
+    if (e.getCurrentItem() == null && !e.getView().getTitle().equals("§cInventorySorting")) {
       e.setCancelled(true);
       return;
     }
-    if (e.getCurrentItem().getItemMeta() == null) {
+    if (e.getCurrentItem().getItemMeta() == null && !e.getView().getTitle().equals("§cInventorySorting")) {
       e.setCancelled(true);
       return;
     }
@@ -43,12 +45,8 @@ public class InventoryClickListener implements Listener {
                 kit = 2;
                 break;
             default:
-                kit = 3;
-                break;
-        }
-        if(kit == 3){
-            e.setCancelled(true);
-            return;
+                e.setCancelled(true);
+                return;
         }
         p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
         try {
@@ -90,11 +88,28 @@ public class InventoryClickListener implements Listener {
         }
         if(clickedItem.equals(saveItem)){
             ItemStack[] inventory = new ItemStack[9];
+            ItemStack[] defaultInventory = KitData.getDefaultKit(KitData.getKitByInt(kit));
             for(int i = 9; i < 18; i++){
                 ItemStack item = e.getInventory().getItem(i);
+                int defaultIndex = Arrays.asList(defaultInventory).indexOf(item);
+                if(defaultIndex != -1 && !item.equals(new ItemStack(Material.AIR))){
+                    inventory[i - 9] = item;
+                }
+                else{
+                    inventory[i - 9] = new ItemStack(Material.AIR);
+                }
+            }
+            try{
+                KitData.setInventorySetting(p, inventory, KitData.getKitByInt(kit));
+                Main.playerData.get(p).setInventory(inventory);
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &aYour settings has been saved."));
+                p.closeInventory();
+            }
+            catch(Exception e1){
+                e1.printStackTrace();
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &cAn error has occurred."));
             }
         }
-        return;
     }
   }
 }

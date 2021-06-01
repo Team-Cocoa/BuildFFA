@@ -52,7 +52,7 @@ public class PlayerDeathListener implements Listener {
         Stats.addKills(uuidKiller, Integer.valueOf(1)); 
       if (Config.config.getBoolean("message.playerkill")) {
         if (Config.config.getBoolean("displayname.deaths")) {
-          Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killall").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("%KILLER%", p.getKiller().getDisplayName()).replaceAll("&", "§"));
+          Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killall").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("&", "§"));
         } else {
           Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killall").replaceAll("%PLAYER%", p.getName()).replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("&", "§"));
         } 
@@ -61,7 +61,7 @@ public class PlayerDeathListener implements Listener {
       } 
       String KillerHealth = (new DecimalFormat("#0.0")).format(p.getKiller().getHealth() / 2.0D);
       if (Config.config.getBoolean("displayname.deaths")) {
-        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.kill").replaceAll("&", "§").replaceAll("%KILLER%", p.getKiller().getDisplayName()).replaceAll("%KILLERHEALTH%", KillerHealth));
+        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.kill").replaceAll("&", "§").replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
       } else {
         p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.kill").replaceAll("&", "§").replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
       } 
@@ -73,47 +73,45 @@ public class PlayerDeathListener implements Listener {
       }
       level = p.getKiller().getLevel();
       killstreakKiller = String.valueOf(level);
-      Bukkit.getScheduler().runTaskLater((Plugin)Main.inst(), new Runnable() {
-            public void run() {
-              PlayerDeathListener.killstreakKiller = String.valueOf(PlayerDeathListener.level);
-              int killstreakPlayer = p.getLevel();
-              Config.player.set("players." + uuidKiller + ".killstreak", Integer.valueOf(PlayerDeathListener.level));
-              try {
-                Config.player.save(Config.playerFile);
-              } catch (IOException e) {
-                e.printStackTrace();
-              } 
-              if (Config.player.getString("players." + p.getUniqueId() + ".killstreak") != null)
-                killstreakPlayer = Config.player.getInt("players." + p.getUniqueId() + ".killstreak"); 
-              if (Config.config.getBoolean("message.killstreak")) {
-                if (killstreakPlayer >= 5) {
-                  String killstreakPlayerString = String.valueOf(killstreakPlayer);
-                  if (Config.config.getBoolean("displayname.killstreak")) {
-                    Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreakbroken").replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", displaynameKiller).replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
-                  } else {
-                    Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreakbroken").replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", nameKiller).replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
-                  } 
-                } 
-                if ((((PlayerDeathListener.level == 5) ? 1 : 0) | ((PlayerDeathListener.level == 10) ? 1 : 0) | ((PlayerDeathListener.level >= 15) ? 1 : 0)) != 0)
-                  if (Config.config.getBoolean("displayname.killstreak")) {
-                    Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreak").replaceAll("%KILLSTREAK%", PlayerDeathListener.killstreakKiller).replaceAll("%PLAYER%", displaynameKiller).replaceAll("&", "§"));
-                  } else {
-                    Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreak").replaceAll("%KILLSTREAK%", PlayerDeathListener.killstreakKiller).replaceAll("%PLAYER%", nameKiller).replaceAll("&", "§"));
-                  }  
-              } 
-              if (Config.player.getString("players." + p.getUniqueId() + ".killstreak") != null) {
-                Config.player.set("players." + p.getUniqueId() + ".killstreak", null);
-                try {
-                  Config.player.save(Config.playerFile);
-                } catch (IOException e2) {
-                  e2.printStackTrace();
-                } 
-              } 
+      Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+        PlayerDeathListener.killstreakKiller = String.valueOf(PlayerDeathListener.level);
+        int killstreakPlayer = p.getLevel();
+        Config.player.set("players." + uuidKiller + ".killstreak", Integer.valueOf(PlayerDeathListener.level));
+        try {
+          Config.player.save(Config.playerFile);
+        } catch (IOException e1) {
+          e1.printStackTrace();
+        }
+        if (Config.player.getString("players." + p.getUniqueId() + ".killstreak") != null)
+          killstreakPlayer = Config.player.getInt("players." + p.getUniqueId() + ".killstreak");
+        if (Config.config.getBoolean("message.killstreak")) {
+          if (killstreakPlayer >= 5) {
+            String killstreakPlayerString = String.valueOf(killstreakPlayer);
+            if (Config.config.getBoolean("displayname.killstreak")) {
+              Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreakbroken").replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", displaynameKiller).replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
+            } else {
+              Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreakbroken").replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", nameKiller).replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
             }
-          }, 3L);
+          }
+          if ((((PlayerDeathListener.level == 5) ? 1 : 0) | ((PlayerDeathListener.level == 10) ? 1 : 0) | ((PlayerDeathListener.level >= 15) ? 1 : 0)) != 0)
+            if (Config.config.getBoolean("displayname.killstreak")) {
+              Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreak").replaceAll("%KILLSTREAK%", PlayerDeathListener.killstreakKiller).replaceAll("%PLAYER%", displaynameKiller).replaceAll("&", "§"));
+            } else {
+              Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreak").replaceAll("%KILLSTREAK%", PlayerDeathListener.killstreakKiller).replaceAll("%PLAYER%", nameKiller).replaceAll("&", "§"));
+            }
+        }
+        if (Config.player.getString("players." + p.getUniqueId() + ".killstreak") != null) {
+          Config.player.set("players." + p.getUniqueId() + ".killstreak", null);
+          try {
+            Config.player.save(Config.playerFile);
+          } catch (IOException e2) {
+            e2.printStackTrace();
+          }
+        }
+      }, 3L);
     } else if (Config.config.getBoolean("message.playerdeath")) {
       if (Config.config.getBoolean("displayname.deaths")) {
-        Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.death").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
+        Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.death").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
       } else {
         Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.death").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
       } 

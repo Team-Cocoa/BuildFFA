@@ -30,7 +30,7 @@ public class KitData {
         switch(kitName){
             case "default":
                 kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
-                sql = "UPDATE `kit_default` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%5%\", `pearl` = \"%6%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
+                sql = "UPDATE `kit_default` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%6%\", `pearl` = \"%5%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
                 for(int i = 0; i < 6; i++){
                     inventory[i] = inventorySortingList.indexOf(getItemByString(kitString[i], "default"));
                     sql = sql.replace("%" + (i + 1) + "%", String.valueOf(inventory[i]));
@@ -38,7 +38,7 @@ public class KitData {
                 break;
             case "fisher":
                 kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder", "rod"};
-                sql = "UPDATE `kit_fisher` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%5%\", `pearl` = \"%6%\", `rod` = \"%7%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
+                sql = "UPDATE `kit_fisher` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%6%\", `pearl` = \"%5%\", `rod` = \"%7%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
                 for(int i = 0; i < 7; i++){
                     inventory[i] = inventorySortingList.indexOf(getItemByString(kitString[i], "fisher"));
                     sql = sql.replace("%" + (i + 1) + "%", String.valueOf(inventory[i]));
@@ -46,7 +46,7 @@ public class KitData {
                 break;
             case "archer":
                 kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder", "arrow", "bow"};
-                sql = "UPDATE `kit_fisher` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%5%\", `pearl` = \"%6%\", `arrow` = \"%7%\", `bow` = \"%8%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
+                sql = "UPDATE `kit_fisher` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%6%\", `pearl` = \"%5%\", `arrow` = \"%7%\", `bow` = \"%8%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
                 for(int i = 0; i < 8; i++){
                     inventory[i] = inventorySortingList.indexOf(getItemByString(kitString[i], "archer"));
                     sql = sql.replace("%" + (i + 1) + "%", String.valueOf(inventory[i]));
