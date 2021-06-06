@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="58d3d634-9719-411b-83b5-014a3e754570" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/BffaPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/BffaPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InteractListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InteractListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/BuildFFA-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/BuildFFA-1.0-SNAPSHOT.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +56,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../CloudNetLoadBalancer" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -76,20 +78,12 @@
       <option name="project" value="LOCAL" />
       <updated>1621478425412</updated>
     </task>
-    <task id="LOCAL-00002" summary="2021/06/02/04:04">
-      <created>1622574281100</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1622574281100</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="2021/05/20/11:39" />
-    <MESSAGE value="2021/06/02/04:04" />
-    <option name="LAST_COMMIT_MESSAGE" value="2021/06/02/04:04" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021/05/20/11:39" />
   </component>
 </project>

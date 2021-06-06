@@ -10,7 +10,9 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -70,6 +72,16 @@ public class InventoryClickListener implements Listener {
         ItemStack glassItem = KitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7);
         int kit = Main.playerData.get(p).getKit();
         if(clickedItem.equals(glassItem)){
+            e.setCancelled(true);
+            return;
+        }
+        if(e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || e
+                .getAction().equals(InventoryAction.DROP_ALL_SLOT) || e
+                .getAction().equals(InventoryAction.DROP_ALL_CURSOR) || e
+                .getAction().equals(InventoryAction.DROP_ONE_SLOT) || e
+                .getAction().equals(InventoryAction.DROP_ONE_CURSOR) || e
+                .getClickedInventory().equals(p.getInventory()) || e
+                .getClickedInventory().getType().equals(InventoryType.PLAYER)){
             e.setCancelled(true);
             return;
         }
