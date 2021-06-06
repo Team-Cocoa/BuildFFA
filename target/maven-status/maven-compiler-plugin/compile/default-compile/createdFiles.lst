@@ -32,7 +32,6 @@ kr\teamcocoa\buildffa\utils\Locations.class
 kr\teamcocoa\buildffa\utils\Ranking$1.class
 kr\teamcocoa\buildffa\commands\SetSpawn.class
 kr\teamcocoa\buildffa\commands\Stats$3.class
-kr\teamcocoa\buildffa\listener\PlayerDeathListener$2.class
 kr\teamcocoa\buildffa\utils\ScoreboardManager$1.class
 kr\teamcocoa\buildffa\listener\PlayerRespawnListener.class
 kr\teamcocoa\buildffa\listener\JoinListener.class
