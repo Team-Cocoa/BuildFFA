@@ -15,6 +15,7 @@ public class BffaPlayer {
     private ItemStack[] inventory;
     private int kit;
     private boolean inGame;
+    private boolean died;
 
     public BffaPlayer(Player player){
         this.threwPearlTime = 0L;
@@ -25,6 +26,7 @@ public class BffaPlayer {
         this.kit = KitData.getKit(player);
         this.inventory = KitData.getPlayerKit(player, KitData.getKit(player));
         this.inGame = false;
+        this.died = false;
     }
 
     public ItemStack[] getInventory() {
@@ -53,6 +55,14 @@ public class BffaPlayer {
 
     public int getKit() {
         return kit;
+    }
+
+    public void setDied(boolean died) {
+        this.died = died;
+    }
+
+    public boolean isDied() {
+        return died;
     }
 
     public boolean isInGame() {
