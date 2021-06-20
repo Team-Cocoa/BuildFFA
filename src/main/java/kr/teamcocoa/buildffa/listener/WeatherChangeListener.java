@@ -7,7 +7,7 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class WeatherChangeListener implements Listener {
   @EventHandler
-  public static void onWeatherChange(WeatherChangeEvent e) {
+  public void onWeatherChange(WeatherChangeEvent e) {
     if (!Config.config.getBoolean("weather"))
       e.setCancelled(true); 
   }

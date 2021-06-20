@@ -22,7 +22,7 @@ public class PlayerDeathListener implements Listener {
   public static int level = 0;
   
   @EventHandler
-  public static void onPlayerDeath(PlayerDeathEvent e) {
+  public void onPlayerDeath(PlayerDeathEvent e) {
     final Player p = e.getEntity();
     String uuid = String.valueOf(p.getUniqueId());
     if (Config.config.getBoolean("stats")) {

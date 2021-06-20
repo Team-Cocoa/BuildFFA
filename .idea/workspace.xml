@@ -5,10 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58d3d634-9719-411b-83b5-014a3e754570" name="Default Changelist" comment="2021/05/20/11:39">
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/block/DespawnBlock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerPickupItemListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/BffaPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/BffaPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/KitData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/KitData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/BlockPlaceListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/BlockPlaceListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/EntityDamageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/EntityDamageListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InteractListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InteractListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InventoryClickListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/JoinListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/JoinListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerDeathListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerDeathListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerMoveListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerMoveListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerRespawnListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerRespawnListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/QuitListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/QuitListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/WeatherChangeListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/WeatherChangeListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/RemoveBlockAnimation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/block/RemoveBlockAnimation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/BuildFFA-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/BuildFFA-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +71,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../TeamCocoaMLGRush" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />

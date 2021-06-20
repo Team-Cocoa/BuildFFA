@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerRespawnListener implements Listener {
   @EventHandler
-  public static void onPlayerRespawn(PlayerRespawnEvent e) {
+  public void onPlayerRespawn(PlayerRespawnEvent e) {
     Player p = e.getPlayer();
     Main.playerData.get(p).setJoinInventory();
   }

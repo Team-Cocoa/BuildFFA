@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
   @EventHandler
-  public static void onJoin(PlayerJoinEvent e) {
+  public void onJoin(PlayerJoinEvent e) {
     final Player p = e.getPlayer();
     p.setLevel(0);
     ScoreboardManager.setScoreboard(p);

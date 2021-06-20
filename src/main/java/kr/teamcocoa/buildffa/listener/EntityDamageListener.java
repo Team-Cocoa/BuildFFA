@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class EntityDamageListener implements Listener {
   @EventHandler
-  public static void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+  public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
     if (e.getEntity() instanceof Player) {
       Player damagedPlayer = (Player)e.getEntity();
       if (!Main.playerData.get(damagedPlayer).isInGame()) {
@@ -19,7 +19,7 @@ public class EntityDamageListener implements Listener {
   }
   
   @EventHandler
-  public static void onEntityDamage(EntityDamageEvent e) {
+  public void onEntityDamage(EntityDamageEvent e) {
     if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL))
       e.setCancelled(true); 
   }

@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class InteractListener implements Listener {
   @EventHandler
-  public static void onInteract(PlayerInteractEvent e) {
+  public void onInteract(PlayerInteractEvent e) {
     Player p = e.getPlayer();
     try {
       if (e.getClickedBlock().getType() == Material.STONE_PLATE) {

@@ -46,7 +46,7 @@ public class KitData {
                 break;
             case "archer":
                 kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder", "arrow", "bow"};
-                sql = "UPDATE `kit_fisher` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%6%\", `pearl` = \"%5%\", `arrow` = \"%7%\", `bow` = \"%8%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
+                sql = "UPDATE `kit_archer` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%6%\", `pearl` = \"%5%\", `arrow` = \"%7%\", `bow` = \"%8%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
                 for(int i = 0; i < 8; i++){
                     inventory[i] = inventorySortingList.indexOf(getItemByString(kitString[i], "archer"));
                     sql = sql.replace("%" + (i + 1) + "%", String.valueOf(inventory[i]));
@@ -386,7 +386,7 @@ public class KitData {
     }
 
     private static ItemStack getArrow(){
-        ItemStack arrow = new ItemStack(Material.ARROW, 7);
+        ItemStack arrow = new ItemStack(Material.ARROW, 16);
         return arrow;
     }
 

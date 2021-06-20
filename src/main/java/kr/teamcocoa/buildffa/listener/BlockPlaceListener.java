@@ -1,10 +1,11 @@
 package kr.teamcocoa.buildffa.listener;
 
+import kr.teamcocoa.buildffa.block.DespawnBlock;
 import kr.teamcocoa.buildffa.main.Main;
 
 import kr.teamcocoa.buildffa.utils.Config;
 import kr.teamcocoa.buildffa.utils.Locations;
-import kr.teamcocoa.buildffa.utils.RemoveBlockAnimation;
+import kr.teamcocoa.buildffa.block.RemoveBlockAnimation;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -22,11 +23,13 @@ public class BlockPlaceListener implements Listener {
     if (p.getLocation().getY() <= height) {
       if (!Main.playerData.get(p).isBuild()) {
         Block b = e.getBlock();
+        DespawnBlock despawnBlock = new DespawnBlock(e, b);
         Main.worldData.addBlock(b);
-        new RemoveBlockAnimation(e, b).runTaskTimer(Main.inst(), 0L, 10L);
-      } 
+        RemoveBlockAnimation.blocks.add(despawnBlock);
+//        new RemoveBlockAnimation(e, b).runTaskTimer(Main.inst(), 0L, 10L);
+      }
     } else if (!Main.playerData.get(p).isBuild()) {
       e.setCancelled(true);
-    } 
+    }
   }
 }

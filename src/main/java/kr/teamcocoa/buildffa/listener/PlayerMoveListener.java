@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerMoveListener implements Listener {
   
   @EventHandler
-  public static void onPlayerMove(PlayerMoveEvent e) {
+  public void onPlayerMove(PlayerMoveEvent e) {
     final Player p = e.getPlayer();
     Location loc = p.getLocation();
     if (Locations.getCurrentMap() != null && Config.locations.getString(String.valueOf(Locations.getCurrentMap()) + ".deathheight") != null && Config.locations.getString(String.valueOf(Locations.getCurrentMap()) + ".arenaheight") != null) {

@@ -20,7 +20,7 @@ import java.util.Arrays;
 
 public class InventoryClickListener implements Listener {
   @EventHandler
-  public static void onInventoryClick(InventoryClickEvent e) {
+  public void onInventoryClick(InventoryClickEvent e) {
     Player p = (Player)e.getWhoClicked();
     if (e.getCurrentItem() == null && !e.getView().getTitle().equals("§cInventorySorting")) {
       e.setCancelled(true);

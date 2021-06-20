@@ -11,11 +11,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class QuitListener implements Listener {
   @EventHandler
-  public static void onQuit(PlayerQuitEvent e) {
+  public void onQuit(PlayerQuitEvent e) {
     Player p = e.getPlayer();
     if (Main.playerData.get(p).isBuild()) {
       Stats.addDeaths(p.getUniqueId().toString(), Integer.valueOf(1));
     }
+    Main.playerData.remove(p);
     if (Config.player.getString("players." + p.getUniqueId() + ".killstreak") != null) {
       Config.player.set("players." + p.getUniqueId() + ".killstreak", null);
       try {

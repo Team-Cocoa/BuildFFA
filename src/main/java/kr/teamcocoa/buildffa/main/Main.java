@@ -1,6 +1,10 @@
 package kr.teamcocoa.buildffa.main;
 
+import kr.teamcocoa.buildffa.block.RemoveBlockAnimation;
 import kr.teamcocoa.buildffa.commands.*;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.world.WorldData;
@@ -15,6 +19,8 @@ import java.util.HashMap;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class Main extends JavaPlugin {
   private static Main mainInstance;
@@ -32,6 +38,9 @@ public class Main extends JavaPlugin {
     System.out.println("|_____________________________________________________________|");
     loadListeners();
     loadCommands();
+
+    new RemoveBlockAnimation().runTaskTimer(this, 0L, 10L);
+
     if (MYSQL.isConnected()) {
       MYSQL.update("CREATE TABLE IF NOT EXISTS Stats(UUID varchar(64), KILLS int, DEATHS int);");
     }
@@ -62,6 +71,7 @@ public class Main extends JavaPlugin {
     getServer().getPluginManager().registerEvents(new QuitListener(), this);
     getServer().getPluginManager().registerEvents(new WeatherChangeListener(), this);
     getServer().getPluginManager().registerEvents(new InventoryDragListener(), this);
+    getServer().getPluginManager().registerEvents(new PlayerPickupItemListener(), this);
   }
 
   public void loadCommands(){
@@ -83,7 +93,13 @@ public class Main extends JavaPlugin {
     System.out.println("|_____________________________________________________________|");
     Main.worldData.removeBlocks();
   }
-  
+
+  public static void printMemory() {
+    Runtime r = Runtime.getRuntime();
+//    long memUsed = (r.totalMemory() - r.freeMemory()) / 1048576; //Converting
+    Bukkit.getLogger().info(String.valueOf(r.totalMemory() - r.freeMemory()));
+  }
+
   public static Main inst() {
     return mainInstance;
   }
