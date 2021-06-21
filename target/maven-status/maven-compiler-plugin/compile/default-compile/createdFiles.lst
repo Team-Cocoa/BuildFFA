@@ -13,9 +13,11 @@ kr\teamcocoa\buildffa\world\WorldData.class
 kr\teamcocoa\buildffa\kit\KitData.class
 kr\teamcocoa\buildffa\listener\BlockPlaceListener.class
 kr\teamcocoa\buildffa\commands\Stats$2.class
+kr\teamcocoa\buildffa\utils\Title.class
 kr\teamcocoa\buildffa\listener\InteractListener.class
 kr\teamcocoa\buildffa\listener\BlockBreakListener.class
 kr\teamcocoa\buildffa\commands\Item.class
+kr\teamcocoa\buildffa\commands\Kits.class
 kr\teamcocoa\buildffa\listener\PlayerDeathListener.class
 kr\teamcocoa\buildffa\listener\PlayerDeathListener$1.class
 kr\teamcocoa\buildffa\listener\ItemDropListener.class

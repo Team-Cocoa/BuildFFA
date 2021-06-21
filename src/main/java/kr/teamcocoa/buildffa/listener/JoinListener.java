@@ -2,10 +2,8 @@ package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.utils.Config;
-import kr.teamcocoa.buildffa.utils.Locations;
-import kr.teamcocoa.buildffa.utils.ScoreboardManager;
-import kr.teamcocoa.buildffa.utils.Stats;
+import kr.teamcocoa.buildffa.utils.*;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +26,13 @@ public class JoinListener implements Listener {
         e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
       } else {
         e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
-      } 
+      }
+
+      Title.sendTitle(p,
+              ChatColor.translateAlternateColorCodes('&', "&4/Kits"),
+              ChatColor.translateAlternateColorCodes('&', "&eUse this command to change your kits."),
+              10, 80, 10);
+
     } else {
       e.setJoinMessage(null);
     } 

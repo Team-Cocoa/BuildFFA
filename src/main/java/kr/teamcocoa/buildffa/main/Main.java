@@ -82,6 +82,7 @@ public class Main extends JavaPlugin {
     getCommand("build").setExecutor((CommandExecutor)new Build());
     getCommand("stats").setExecutor((CommandExecutor)new Stats());
     getCommand("teaming").setExecutor((CommandExecutor)new Teaming());
+    getCommand("kits").setExecutor(new Kits());
     //getCommand("item").setExecutor((CommandExecutor)new Item());
   }
 

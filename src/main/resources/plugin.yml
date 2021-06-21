@@ -18,3 +18,5 @@ commands:
     description: Dieser setzt Teaming auf erlaubt oder verboten.
   item:
     description: Dieser Kommand enthaelt das Item-Setup.
+  kits:
+    description: Open the kit inventory
