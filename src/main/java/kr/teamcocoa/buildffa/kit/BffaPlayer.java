@@ -1,6 +1,7 @@
 package kr.teamcocoa.buildffa.kit;
 
 import kr.teamcocoa.buildffa.kit.KitData;
+import kr.teamcocoa.buildffa.main.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,8 +24,8 @@ public class BffaPlayer {
         this.latestDeadTime = 0L;
         this.build = false;
         this.player = player;
-        this.kit = KitData.getKit(player);
-        this.inventory = KitData.getPlayerKit(player, KitData.getKit(player));
+        this.kit = Main.inst().kitData.getKit(player);
+        this.inventory = Main.inst().kitData.getPlayerKit(player, Main.inst().kitData.getKit(player));
         this.inGame = false;
         this.died = false;
     }

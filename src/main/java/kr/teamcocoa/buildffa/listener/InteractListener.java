@@ -25,10 +25,10 @@ public class InteractListener implements Listener {
 
     if (p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().getDisplayName() != null) {
       if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cKits")) {
-        p.openInventory(KitData.getKitSelection());
+        p.openInventory(Main.inst().kitData.getKitSelection());
       }
       if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cInventorySorting")) {
-        p.openInventory(KitData.getInventorySorting(p, Main.playerData.get(p).getKit()));
+        p.openInventory(Main.inst().kitData.getInventorySorting(p, Main.playerData.get(p).getKit()));
       }
       if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cReturn to lobby")) {
         p.kickPlayer("");

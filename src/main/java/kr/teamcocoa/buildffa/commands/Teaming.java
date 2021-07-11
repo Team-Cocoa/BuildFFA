@@ -4,6 +4,7 @@ import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Config;
 import java.io.IOException;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +15,6 @@ public class Teaming implements CommandExecutor {
     if (sender instanceof Player) {
       Player p = (Player)sender;
       if (p.hasPermission(Config.permissions.getString("teaming"))) {
-        if (args.length == 0) {
           if (Config.config.getBoolean("teaming")) {
             Config.config.set("teaming", Boolean.valueOf(false));
             try {
@@ -31,12 +31,10 @@ public class Teaming implements CommandExecutor {
               e2.printStackTrace();
             } 
             Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("teaming.02").replaceAll("&", "§"));
-          } 
-        } else {
+          }
           Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("teaming.03").replaceAll("&", "§"));
-        } 
       } else {
-        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nopermission").replaceAll("&", "§"));
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &7This command does not exist or is deactivated."));
       } 
     } 
     return false;

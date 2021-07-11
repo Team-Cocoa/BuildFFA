@@ -24,17 +24,17 @@ public class Stats implements CommandExecutor {
                 @Override
                 public void run () {
                 String uuid = String.valueOf(target.getUniqueId());
-                String KD = String.valueOf(kr.teamcocoa.buildffa.utils.Stats.getKills(uuid));
+                String KD = String.valueOf(Main.inst().stats.getKills(uuid));
                 String KDString = String.valueOf(KD);
-                if (kr.teamcocoa.buildffa.utils.Stats.getKills(uuid).intValue() != 0 && kr.teamcocoa.buildffa.utils.Stats.getDeaths(uuid).intValue() != 0) {
-                  double kills = kr.teamcocoa.buildffa.utils.Stats.getKills(uuid).intValue();
-                  double deaths = kr.teamcocoa.buildffa.utils.Stats.getDeaths(uuid).intValue();
+                if (Main.inst().stats.getKills(uuid).intValue() != 0 && Main.inst().stats.getDeaths(uuid).intValue() != 0) {
+                  double kills = Main.inst().stats.getKills(uuid).intValue();
+                  double deaths = Main.inst().stats.getDeaths(uuid).intValue();
                   double killsdeaths = kills / deaths;
                   KD = (new DecimalFormat("#0.00")).format(killsdeaths);
                   KDString = KD;
                 }
-                String KillsString = String.valueOf(kr.teamcocoa.buildffa.utils.Stats.getKills(uuid));
-                String DeathsString = String.valueOf(kr.teamcocoa.buildffa.utils.Stats.getDeaths(uuid));
+                String KillsString = String.valueOf(Main.inst().stats.getKills(uuid));
+                String DeathsString = String.valueOf(Main.inst().stats.getDeaths(uuid));
                 p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.01").replaceAll("&", "§"));
                 p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.02").replaceAll("&", "§").replaceAll("%PLAYER%", target.getName()));
                 p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.03").replaceAll("&", "§").replaceAll("%KILLS%", KillsString));
@@ -51,17 +51,17 @@ public class Stats implements CommandExecutor {
                     @Override
                     public void run(){
                       String uuid = String.valueOf(offtarget.getUniqueId());
-                      String KD = String.valueOf(kr.teamcocoa.buildffa.utils.Stats.getKills(uuid));
+                      String KD = String.valueOf(Main.inst().stats.getKills(uuid));
                       String KDString = String.valueOf(KD);
-                      if (kr.teamcocoa.buildffa.utils.Stats.getKills(uuid).intValue() != 0 && kr.teamcocoa.buildffa.utils.Stats.getDeaths(uuid).intValue() != 0) {
-                        double kills = kr.teamcocoa.buildffa.utils.Stats.getKills(uuid).intValue();
-                        double deaths = kr.teamcocoa.buildffa.utils.Stats.getDeaths(uuid).intValue();
+                      if (Main.inst().stats.getKills(uuid).intValue() != 0 && Main.inst().stats.getDeaths(uuid).intValue() != 0) {
+                        double kills = Main.inst().stats.getKills(uuid).intValue();
+                        double deaths = Main.inst().stats.getDeaths(uuid).intValue();
                         double killsdeaths = kills / deaths;
                         KD = (new DecimalFormat("#0.00")).format(killsdeaths);
                         KDString = KD;
                       }
-                      String KillsString = String.valueOf(kr.teamcocoa.buildffa.utils.Stats.getKills(uuid));
-                      String DeathsString = String.valueOf(kr.teamcocoa.buildffa.utils.Stats.getDeaths(uuid));
+                      String KillsString = String.valueOf(Main.inst().stats.getKills(uuid));
+                      String DeathsString = String.valueOf(Main.inst().stats.getDeaths(uuid));
                       p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.01").replaceAll("&", "§"));
                       p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.02").replaceAll("&", "§").replaceAll("%PLAYER%", offtarget.getName()));
                       p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.03").replaceAll("&", "§").replaceAll("%KILLS%", KillsString));
@@ -86,17 +86,17 @@ public class Stats implements CommandExecutor {
             @Override
             public void run(){
               String uuid = String.valueOf(p.getUniqueId());
-              String KD = String.valueOf(kr.teamcocoa.buildffa.utils.Stats.getKills(uuid));
+              String KD = String.valueOf(Main.inst().stats.getKills(uuid));
               String KDString = String.valueOf(KD);
-              if (kr.teamcocoa.buildffa.utils.Stats.getKills(uuid).intValue() != 0 && kr.teamcocoa.buildffa.utils.Stats.getDeaths(uuid).intValue() != 0) {
-                double kills = kr.teamcocoa.buildffa.utils.Stats.getKills(uuid).intValue();
-                double deaths = kr.teamcocoa.buildffa.utils.Stats.getDeaths(uuid).intValue();
+              if (Main.inst().stats.getKills(uuid).intValue() != 0 && Main.inst().stats.getDeaths(uuid).intValue() != 0) {
+                double kills = Main.inst().stats.getKills(uuid).intValue();
+                double deaths = Main.inst().stats.getDeaths(uuid).intValue();
                 double killsdeaths = kills / deaths;
                 KD = (new DecimalFormat("#0.00")).format(killsdeaths);
                 KDString = KD;
               }
-              String KillsString = String.valueOf(kr.teamcocoa.buildffa.utils.Stats.getKills(uuid));
-              String DeathsString = String.valueOf(kr.teamcocoa.buildffa.utils.Stats.getDeaths(uuid));
+              String KillsString = String.valueOf(Main.inst().stats.getKills(uuid));
+              String DeathsString = String.valueOf(Main.inst().stats.getDeaths(uuid));
               p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.01").replaceAll("&", "§"));
               p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.02").replaceAll("&", "§").replaceAll("%PLAYER%", p.getName()));
               p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.03").replaceAll("&", "§").replaceAll("%KILLS%", KillsString));

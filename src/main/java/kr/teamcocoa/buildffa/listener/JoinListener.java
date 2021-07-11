@@ -15,11 +15,9 @@ public class JoinListener implements Listener {
   public void onJoin(PlayerJoinEvent e) {
     final Player p = e.getPlayer();
     p.setLevel(0);
-    ScoreboardManager.setScoreboard(p);
+    new ScoreboardManager().setScoreboard(p);
     String uuid = String.valueOf(p.getUniqueId());
-    if (Config.config.getBoolean("stats")) {
-      Stats.createPlayer(uuid);
-    }
+    Main.inst().stats.createPlayer(uuid);
     Main.playerData.put(p, new BffaPlayer(p));
     if (Config.config.getBoolean("join-quit-message")) {
       if (Config.config.getBoolean("displayname.joinmessage")) {
@@ -36,15 +34,15 @@ public class JoinListener implements Listener {
     } else {
       e.setJoinMessage(null);
     } 
-    if (!Config.config.getString("startmap").equals("none")) {
-      if (Locations.getCurrentMap().equals("Keine Map"))
-        Locations.setCurrentMap(Config.config.getString("startmap").replaceAll("&", "§")); 
-    } else {
-      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.01").replaceAll("&", "§"));
-      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.02").replaceAll("&", "§"));
-      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.03").replaceAll("&", "§"));
-      return;
-    } 
+//    if (!Config.config.getString("startmap").equals("none")) {
+//      if (Locations.getCurrentMap().equals("Keine Map"))
+//        Locations.setCurrentMap(Config.config.getString("startmap").replaceAll("&", "§"));
+//    } else {
+//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.01").replaceAll("&", "§"));
+//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.02").replaceAll("&", "§"));
+//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.03").replaceAll("&", "§"));
+//      return;
+//    }
     if (Config.locations.getString(String.valueOf(Locations.getCurrentMap()) + ".deathheight") != null) {
       if (Config.locations.getString(String.valueOf(Locations.getCurrentMap()) + ".arenaheight") != null) {
         Location mapspawn = Locations.getSpawnLocation(Locations.getCurrentMap());
@@ -54,13 +52,15 @@ public class JoinListener implements Listener {
           p.setHealth(1.0D);
           p.setFoodLevel(20);
         } 
-      } else {
-        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("noarenaheight.01").replaceAll("&", "§"));
-        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("noarenaheight.02").replaceAll("&", "§"));
-      } 
-    } else {
-      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nodeathheight.01").replaceAll("&", "§"));
-      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nodeathheight.02").replaceAll("&", "§"));
-    } 
+      }
+//      else {
+//        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("noarenaheight.01").replaceAll("&", "§"));
+//        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("noarenaheight.02").replaceAll("&", "§"));
+//      }
+    }
+//    else {
+//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nodeathheight.01").replaceAll("&", "§"));
+//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nodeathheight.02").replaceAll("&", "§"));
+//    }
   }
 }

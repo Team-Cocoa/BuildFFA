@@ -19,4 +19,4 @@ commands:
   item:
     description: Dieser Kommand enthaelt das Item-Setup.
   kits:
-    description: Open the kit inventory
+    description: get kits inventory

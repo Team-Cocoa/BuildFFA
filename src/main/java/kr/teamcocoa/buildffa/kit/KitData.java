@@ -22,7 +22,7 @@ import java.util.List;
 
 public class KitData {
 
-    public static void setInventorySetting(Player player, ItemStack[] inventorySorting, String kitName){
+    public void setInventorySetting(Player player, ItemStack[] inventorySorting, String kitName){
         int[] inventory = new int[9];
         String sql;
         String[] kitString;
@@ -55,13 +55,13 @@ public class KitData {
             default:
                 return;
         }
-        MYSQL.update(sql);
+        Main.inst().mysql.update(sql);
     }
 
-    public static ItemStack[] getPlayerKit(Player player, int kit){
+    public ItemStack[] getPlayerKit(Player player, int kit){
         ItemStack[] inventory = new ItemStack[9];
         String sql = "SELECT * FROM `kit_%kit%` WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
-        ResultSet rs;
+        ResultSet rs = null;
         String[] kitString;
         String kitName;
         switch(kit){
@@ -110,7 +110,7 @@ public class KitData {
 
         }
         try{
-            rs = MYSQL.getResult(sql);
+            rs = Main.inst().mysql.getResult(sql);
             if (rs.next()) {
                 for (int i = 0; i < kitString.length; i++) {
                     inventory[rs.getInt(kitString[i])] = getItemByString(kitString[i], kitName);
@@ -126,10 +126,20 @@ public class KitData {
             e.printStackTrace();
             inventory = getDefaultKit("default");
         }
+        finally {
+            try {
+                if(rs != null) {
+                    rs.close();
+                }
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         return inventory;
     }
 
-    public static ItemStack[] getDefaultKit(String kit){
+    public ItemStack[] getDefaultKit(String kit){
         ItemStack[] kitList = new ItemStack[9];
         kitList[1] = getKbStick();
         kitList[2] = getBlock();
@@ -162,7 +172,7 @@ public class KitData {
         return kitList;
     }
 
-    public static ItemStack[] getArmor(){
+    public ItemStack[] getArmor(){
         ItemStack[] armorList = new ItemStack[4];
         ItemMeta[] armorMetaList = new ItemMeta[4];
         armorList[0] = new ItemStack(Material.LEATHER_BOOTS);
@@ -178,7 +188,7 @@ public class KitData {
         return armorList;
     }
 
-    public static Inventory getKitSelection(){
+    public Inventory getKitSelection(){
         Inventory kitSelection = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&cKit Selection"));
         for(int i = 0; i < 11; i++){
             kitSelection.setItem(i, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
@@ -193,7 +203,7 @@ public class KitData {
         return kitSelection;
     }
 
-    public static Inventory getInventorySorting(Player player, int kit){
+    public Inventory getInventorySorting(Player player, int kit){
         ItemStack[] kitSorting = getPlayerKit(player, kit);
         Inventory inventorySorting = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&cInventorySorting"));
         for(int i = 0; i < 9; i++){
@@ -211,19 +221,20 @@ public class KitData {
         return inventorySorting;
     }
 
-    public static void setKit(Player player, int kit){
+    public void setKit(Player player, int kit){
         try{
-            MYSQL.update("UPDATE `stats` SET `kit` = \"" + kit + "\" WHERE `UUID` = \"" + player.getUniqueId() + "\";");
+            Main.inst().mysql.update("UPDATE `stats` SET `kit` = \"" + kit + "\" WHERE `UUID` = \"" + player.getUniqueId() + "\";");
         }
         catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    public static int getKit(Player player){
+    public int getKit(Player player){
         int i = -1;
+        ResultSet rs = null;
         try{
-            ResultSet rs = MYSQL.getResult("SELECT `kit` FROM `stats` WHERE `UUID` = \""+player.getUniqueId()+"\";");
+            rs = Main.inst().mysql.getResult("SELECT `kit` FROM `stats` WHERE `UUID` = \""+player.getUniqueId()+"\";");
             if(rs.next()){
                 i = rs.getInt("kit");
             }
@@ -233,8 +244,18 @@ public class KitData {
             e.printStackTrace();
             return -1;
         }
+        finally {
+            try {
+                if(rs != null) {
+                    rs.close();
+                }
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
-    public static String getKitByInt(int input){
+    public String getKitByInt(int input){
         String output;
         switch(input){
             case 0:
@@ -253,7 +274,7 @@ public class KitData {
         return output;
     }
 
-    public static int getKitByString(String input){
+    public int getKitByString(String input){
         int output;
         switch(input){
             case "default":
@@ -272,7 +293,7 @@ public class KitData {
         return output;
     }
 
-    public static ItemStack getSymbol(int input){
+    public ItemStack getSymbol(int input){
         switch(input){
             case 0:
                 ItemStack item = new ItemStack(Material.STICK);
@@ -298,7 +319,7 @@ public class KitData {
         }
     }
 
-    private static ItemStack getItemByString(String string, String kit){
+    private ItemStack getItemByString(String string, String kit){
         ItemStack item;
         switch(string){
             case "sword":
@@ -335,7 +356,7 @@ public class KitData {
         return item;
     }
 
-    private static ItemStack getGoldenSword(String kit){
+    private ItemStack getGoldenSword(String kit){
         ItemStack goldenSword = new ItemStack(Material.GOLD_SWORD);
         ItemMeta goldenSwordMeta = goldenSword.getItemMeta();
         ItemManager goldenSwordManager = new ItemManager(goldenSword);
@@ -348,7 +369,7 @@ public class KitData {
         return goldenSword;
     }
 
-    private static ItemStack getKbStick(){
+    private ItemStack getKbStick(){
         ItemStack kbStick = new ItemStack(Material.STICK);
         ItemMeta kbStickMeta = kbStick.getItemMeta();
         kbStickMeta.addEnchant(Enchantment.KNOCKBACK, 1, true);
@@ -356,7 +377,7 @@ public class KitData {
         return kbStick;
     }
 
-    private static ItemStack getRod(){
+    private ItemStack getRod(){
         ItemStack rod = new ItemStack(Material.FISHING_ROD);
 //        ItemMeta rodMeta = rod.getItemMeta();
         rod.setDurability((short)40);
@@ -365,42 +386,42 @@ public class KitData {
         return rod;
     }
 
-    private static ItemStack getLadder(){
+    private ItemStack getLadder(){
         ItemStack ladder = new ItemStack(Material.LADDER, 5);
         return ladder;
     }
 
-    private static ItemStack getPearl(){
+    private ItemStack getPearl(){
         ItemStack pearl = new ItemStack(Material.ENDER_PEARL, 2);
         return pearl;
     }
 
-    private static ItemStack getWeb(){
+    private ItemStack getWeb(){
         ItemStack web = new ItemStack(Material.WEB, 3);
         return web;
     }
 
-    private static ItemStack getBlock(){
+    private ItemStack getBlock(){
         ItemStack block = new ItemStack(Material.SANDSTONE, 64);
         return block;
     }
 
-    private static ItemStack getArrow(){
+    private ItemStack getArrow(){
         ItemStack arrow = new ItemStack(Material.ARROW, 16);
         return arrow;
     }
 
-    private static ItemStack getBow(){
+    private ItemStack getBow(){
         ItemStack bow = new ItemStack(Material.BOW);
         return bow;
     }
 
-    private static ItemStack getNull(){
+    private ItemStack getNull(){
         ItemStack air = new ItemStack(Material.AIR);
         return air;
     }
 
-    public static ItemStack createItemStack(Material material, String name, int amount, ArrayList lore, byte data) {
+    public ItemStack createItemStack(Material material, String name, int amount, ArrayList lore, byte data) {
         ItemStack itemStack = new ItemStack(material, amount, (short)data);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(name);
@@ -411,7 +432,7 @@ public class KitData {
         return itemStack;
     }
 
-    public static ItemStack createDye(String name, Material material, short s) {
+    public ItemStack createDye(String name, Material material, short s) {
         ItemStack itemStack = material.equals(Material.INK_SACK) ? new ItemStack(material, 1, s) : new ItemStack(material);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(name);

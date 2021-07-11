@@ -36,7 +36,7 @@ public class PlayerMoveListener implements Listener {
           p.setHealth(20.0D);
           p.setLevel(0);
           ItemStack[] inventory  = bffaPlayer.getInventory();
-          ItemStack[] armor = KitData.getArmor();
+          ItemStack[] armor = Main.inst().kitData.getArmor();
           p.getInventory().setContents(inventory);
           p.getInventory().setArmorContents(armor);
           p.playSound(p.getLocation(), Sound.ORB_PICKUP, 100.0F, 0.0F);

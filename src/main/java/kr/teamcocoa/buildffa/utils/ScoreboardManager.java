@@ -14,25 +14,21 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 public class ScoreboardManager implements Listener {
-  public static Scoreboard sb;
+  public Scoreboard sb;
   
-  private static String timeSek = "00";
+  private String timeSek = "00";
   
-  private static String timeMinutes = "0";
+  private String timeMinutes = "0";
   
-  private static double i = Config.config.getInt("mapchangedelaysek");
+  private double i = Config.config.getInt("mapchangedelaysek");
   
-  public static HashMap<Scoreboard, Player> boards = new HashMap<>();
+  public HashMap<Scoreboard, Player> boards = new HashMap<>();
   
-  public static Boolean Mapchangeupdater = Boolean.valueOf(false);
+  public Boolean Mapchangeupdater = Boolean.valueOf(false);
   
-  public ScoreboardManager() {
-    Bukkit.getPluginManager().registerEvents(this, (Plugin)Main.inst());
-  }
-  
-  public static void setScoreboard(Player p) {
+  public void setScoreboard(Player p) {
     String uuid = String.valueOf(p.getUniqueId());
-    String killsSuffix = Config.messages.getString("scoreboard.kills.suffix").replaceAll("&", "§").replaceAll("%KILLS%", String.valueOf(Stats.getKills(uuid)));
+    String killsSuffix = Config.messages.getString("scoreboard.kills.suffix").replaceAll("&", "§").replaceAll("%KILLS%", String.valueOf(Main.inst().stats.getKills(uuid)));
     String killsPrefix = Config.messages.getString("scoreboard.kills.prefix").replaceAll("&", "§");
     String killsScore = Config.messages.getString("scoreboard.kills.score").replaceAll("&", "§");
     String killsEntry = Config.messages.getString("scoreboard.kills.entry").replaceAll("&", "§");
@@ -44,10 +40,6 @@ public class ScoreboardManager implements Listener {
     String mapPrefix = Config.messages.getString("scoreboard.map.prefix").replaceAll("&", "§");
     String mapScore = Config.messages.getString("scoreboard.map.score").replaceAll("&", "§");
     String mapEntry = Config.messages.getString("scoreboard.map.entry").replaceAll("&", "§");
-//    String mapchangeSuffix = Config.messages.getString("scoreboard.mapchange.suffix").replaceAll("&", "§").replaceAll("%MINUTES%", timeMinutes).replaceAll("%SECONDS%", timeSek);
-//    String mapchangePrefix = Config.messages.getString("scoreboard.mapchange.prefix").replaceAll("&", "§");
-//    String mapchangeScore = Config.messages.getString("scoreboard.mapchange.score").replaceAll("&", "§");
-//    String mapchangeEntry = Config.messages.getString("scoreboard.mapchange.entry").replaceAll("&", "§");
     String teamingSuffix = Config.messages.getString("scoreboard.teaming.suffix").replaceAll("&", "§").replaceAll("%STATE%", Config.getTeaming());
     String teamingPrefix = Config.messages.getString("scoreboard.teaming.prefix").replaceAll("&", "§");
     String teamingScore = Config.messages.getString("scoreboard.teaming.score").replaceAll("&", "§");
@@ -117,13 +109,13 @@ public class ScoreboardManager implements Listener {
 //      }).runTaskTimer((Plugin)Main.inst(), 0L, 20L);
 //  }
   
-  public static void ScoreboardUpdater() {
+  public void ScoreboardUpdater() {
     (new BukkitRunnable() {
         public void run() {
-          for (Scoreboard board : ScoreboardManager.boards.keySet()) {
-            Player p = ScoreboardManager.boards.get(board);
+          for (Scoreboard board : boards.keySet()) {
+            Player p = boards.get(board);
             String uuid = String.valueOf(p.getUniqueId());
-            String killsSuffix = Config.messages.getString("scoreboard.kills.suffix").replaceAll("&", "§").replaceAll("%KILLS%", String.valueOf(Stats.getKills(uuid)));
+            String killsSuffix = Config.messages.getString("scoreboard.kills.suffix").replaceAll("&", "§").replaceAll("%KILLS%", String.valueOf(Main.inst().stats.getKills(uuid)));
             String onlineSuffix = Config.messages.getString("scoreboard.online.suffix").replaceAll("&", "§").replaceAll("%ONLINEPLAYERS%", String.valueOf(Bukkit.getOnlinePlayers().size())).replaceAll("%MAXPLAYERS%", String.valueOf(Bukkit.getMaxPlayers()));
 //            String mapSuffix = Config.messages.getString("scoreboard.map.suffix").replaceAll("&", "§").replaceAll("%MAP%", Locations.getCurrentMap());
             String teamingSuffix = Config.messages.getString("scoreboard.teaming.suffix").replaceAll("&", "§").replaceAll("%STATE%", Config.getTeaming());

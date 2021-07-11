@@ -52,9 +52,9 @@ public class InventoryClickListener implements Listener {
         }
         p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
         try {
-            KitData.setKit(p, kit);
+            Main.inst().kitData.setKit(p, kit);
             Main.playerData.get(p).setKit(kit);
-            Main.playerData.get(p).setInventory(KitData.getPlayerKit(p, kit));
+            Main.playerData.get(p).setInventory(Main.inst().kitData.getPlayerKit(p, kit));
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &aYour settings has been saved."));
         } catch (Exception e1) {
             e1.printStackTrace();
@@ -66,10 +66,10 @@ public class InventoryClickListener implements Listener {
 
 
     if(e.getView().getTitle().equals("§cInventorySorting")){
-        ItemStack saveItem = KitData.createDye("§aSave", Material.INK_SACK, (short)10);
-        ItemStack resetItem = KitData.createDye("§cReset", Material.INK_SACK, (short)1);
+        ItemStack saveItem = Main.inst().kitData.createDye("§aSave", Material.INK_SACK, (short)10);
+        ItemStack resetItem = Main.inst().kitData.createDye("§cReset", Material.INK_SACK, (short)1);
         ItemStack clickedItem = e.getCurrentItem();
-        ItemStack glassItem = KitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7);
+        ItemStack glassItem = Main.inst().kitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7);
         int kit = Main.playerData.get(p).getKit();
         if(clickedItem.equals(glassItem)){
             e.setCancelled(true);
@@ -86,10 +86,10 @@ public class InventoryClickListener implements Listener {
             return;
         }
         if(clickedItem.equals(resetItem)){
-            ItemStack[] inventory = KitData.getDefaultKit(KitData.getKitByInt(kit));
+            ItemStack[] inventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
             try{
                 Main.playerData.get(p).setInventory(inventory);
-                KitData.setInventorySetting(p, inventory, KitData.getKitByInt(kit));
+                Main.inst().kitData.setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &cYour settings has been reset."));
                 p.closeInventory();
             }
@@ -100,7 +100,7 @@ public class InventoryClickListener implements Listener {
         }
         if(clickedItem.equals(saveItem)){
             ItemStack[] inventory = new ItemStack[9];
-            ItemStack[] defaultInventory = KitData.getDefaultKit(KitData.getKitByInt(kit));
+            ItemStack[] defaultInventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
             for(int i = 9; i < 18; i++){
                 ItemStack item = e.getInventory().getItem(i);
                 int defaultIndex = Arrays.asList(defaultInventory).indexOf(item);
@@ -112,7 +112,7 @@ public class InventoryClickListener implements Listener {
                 }
             }
             try{
-                KitData.setInventorySetting(p, inventory, KitData.getKitByInt(kit));
+                Main.inst().kitData.setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
                 Main.playerData.get(p).setInventory(inventory);
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &aYour settings has been saved."));
                 p.closeInventory();

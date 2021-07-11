@@ -17,9 +17,9 @@ public class MYSQL {
   
   public static String password = Config.config.getString("mysql.password");
   
-  public static Connection con;
+  public Connection con;
   
-  public static void connect() {
+  public void connect() {
     if (!isConnected())
       try {
         con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
@@ -29,7 +29,7 @@ public class MYSQL {
       }  
   }
   
-  public static void disconnect() {
+  public void disconnect() {
     if (isConnected())
       try {
         con.close();
@@ -39,28 +39,42 @@ public class MYSQL {
       }  
   }
   
-  public static boolean isConnected() {
+  public boolean isConnected() {
     if (con == null)
       return false; 
     return true;
   }
   
-  public static void update(String qry) {
+  public void update(String qry) {
+
+    PreparedStatement ps = null;
     try {
-      PreparedStatement ps = con.prepareStatement(qry);
+      ps = con.prepareStatement(qry);
       ps.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
-    } 
+    }
+    finally {
+      try {
+        if(ps != null) {
+          ps.close();
+        }
+      }
+      catch(SQLException e) {
+        e.printStackTrace();
+      }
+    }
   }
   
-  public static ResultSet getResult(String qry) {
+  public ResultSet getResult(String qry) {
+    PreparedStatement ps = null;
     try {
-      PreparedStatement ps = con.prepareStatement(qry);
+      ps = con.prepareStatement(qry);
       return ps.executeQuery();
-    } catch (SQLException e) {
+    }
+    catch (SQLException e) {
       e.printStackTrace();
       return null;
-    } 
+    }
   }
 }

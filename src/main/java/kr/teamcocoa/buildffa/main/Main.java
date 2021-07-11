@@ -2,6 +2,9 @@ package kr.teamcocoa.buildffa.main;
 
 import kr.teamcocoa.buildffa.block.RemoveBlockAnimation;
 import kr.teamcocoa.buildffa.commands.*;
+import kr.teamcocoa.buildffa.kit.KitData;
+import kr.teamcocoa.buildffa.utils.*;
+import kr.teamcocoa.buildffa.utils.Stats;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -9,11 +12,7 @@ import org.bukkit.entity.Player;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.world.WorldData;
 import kr.teamcocoa.buildffa.listener.*;
-import kr.teamcocoa.buildffa.utils.Config;
-import kr.teamcocoa.buildffa.utils.Locations;
-import kr.teamcocoa.buildffa.utils.MYSQL;
-import kr.teamcocoa.buildffa.utils.Ranking;
-import kr.teamcocoa.buildffa.utils.ScoreboardManager;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -26,6 +25,9 @@ public class Main extends JavaPlugin {
   private static Main mainInstance;
   public static HashMap<Player, BffaPlayer> playerData = new HashMap<>();
   public static WorldData worldData = new WorldData();
+  public MYSQL mysql;
+  public Stats stats;
+  public KitData kitData;
   
   public void onEnable() {
     System.out.println(" _____________________________________________________________");
@@ -34,24 +36,24 @@ public class Main extends JavaPlugin {
     mainInstance = this;
     Config.loadFiles();
     createConfigs();
-    MYSQL.connect();
+    mysql = new MYSQL();
+    stats = new Stats();
+    kitData = new KitData();
+    mysql.connect();
     System.out.println("|_____________________________________________________________|");
     loadListeners();
     loadCommands();
 
     new RemoveBlockAnimation().runTaskTimer(this, 0L, 10L);
 
-    if (MYSQL.isConnected()) {
-      MYSQL.update("CREATE TABLE IF NOT EXISTS Stats(UUID varchar(64), KILLS int, DEATHS int);");
+    if (mysql.isConnected()) {
+      mysql.update("CREATE TABLE IF NOT EXISTS Stats(UUID varchar(64), KILLS int, DEATHS int);");
     }
     if (!Config.config.getString("startmap").equals("none")) {
       Locations.setCurrentMap(Config.config.getString("startmap").replaceAll("&", "§"));
     }
     if (Config.config.getBoolean("scoreboard")) {
-      ScoreboardManager.ScoreboardUpdater();
-    }
-    if (Config.config.getBoolean("stats") && Config.config.getBoolean("mysql.support") && MYSQL.isConnected()) {
-      Ranking.update();
+      new ScoreboardManager().ScoreboardUpdater();
     }
   }
 
@@ -75,12 +77,12 @@ public class Main extends JavaPlugin {
   }
 
   public void loadCommands(){
-    getCommand("setspawn").setExecutor((CommandExecutor)new SetSpawn());
-    getCommand("setstartmap").setExecutor((CommandExecutor)new SetStartmap());
-    getCommand("setdeathheight").setExecutor((CommandExecutor)new SetDeathheight());
-    getCommand("setarenaheight").setExecutor((CommandExecutor)new SetArenaheight());
+//    getCommand("setspawn").setExecutor((CommandExecutor)new SetSpawn());
+//    getCommand("setstartmap").setExecutor((CommandExecutor)new SetStartmap());
+//    getCommand("setdeathheight").setExecutor((CommandExecutor)new SetDeathheight());
+//    getCommand("setarenaheight").setExecutor((CommandExecutor)new SetArenaheight());
     getCommand("build").setExecutor((CommandExecutor)new Build());
-    getCommand("stats").setExecutor((CommandExecutor)new Stats());
+    getCommand("stats").setExecutor((CommandExecutor)new kr.teamcocoa.buildffa.commands.Stats());
     getCommand("teaming").setExecutor((CommandExecutor)new Teaming());
     getCommand("kits").setExecutor(new Kits());
     //getCommand("item").setExecutor((CommandExecutor)new Item());
@@ -90,7 +92,7 @@ public class Main extends JavaPlugin {
     System.out.println(" _____________________________________________________________");
     System.out.println("|                                                             |");
     System.out.println("| [BuildFFA] Plugin is stopping...                            |");
-    MYSQL.disconnect();
+    mysql.disconnect();
     System.out.println("|_____________________________________________________________|");
     Main.worldData.removeBlocks();
   }
