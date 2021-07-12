@@ -4,16 +4,23 @@ import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.Config;
 import kr.teamcocoa.buildffa.utils.Locations;
+import kr.teamcocoa.buildffa.utils.MYSQL;
 import kr.teamcocoa.buildffa.utils.Stats;
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.Arrays;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 public class PlayerDeathListener implements Listener {
@@ -28,6 +35,7 @@ public class PlayerDeathListener implements Listener {
       Main.inst().stats.addDeaths(uuid, Integer.valueOf(1));
       BffaPlayer bffaPlayer = Main.playerData.get(p);
       bffaPlayer.setThrewPearlTime(System.currentTimeMillis());
+      bffaPlayer.setPlayerKillStreak(0);
       Main.playerData.put(p, bffaPlayer);
     if (Locations.getCurrentMap() != null) {
       String Mapname = Locations.getCurrentMap();
@@ -67,8 +75,36 @@ public class PlayerDeathListener implements Listener {
       level = Main.playerData.get(p.getKiller()).getPlayerKillStreak();
       p.getKiller().setLevel(level + 1);
       Main.playerData.get(p.getKiller()).setPlayerKillStreak(level + 1);
-      if(p.getKiller().getLevel() % 3 == 0){
-
+      if(Main.playerData.get(p.getKiller()).getPlayerKillStreak() % 3 == 0){
+          try {
+            String kit = Main.inst().kitData.getKitByInt(Main.inst().kitData.getKit(p.getKiller()));
+            int index = Arrays.asList(Main.playerData.get(p.getKiller()).getInventory()).indexOf(new ItemStack(Material.ENDER_PEARL, 2));
+            if(p.getKiller().getInventory().getItem(index) == null) {
+              ItemStack blockItem = new ItemStack(Material.ENDER_PEARL,  1);
+              p.getKiller().getInventory().setItem(index, blockItem);
+            }
+            else if(p.getKiller().getInventory().getItem(index).getAmount() < 2) {
+              int amount = p.getKiller().getInventory().getItem(index).getAmount();
+              ItemStack blockItem = new ItemStack(Material.ENDER_PEARL, amount + 1);
+              p.getKiller().getInventory().setItem(index, blockItem);
+            }
+            if(kit.toLowerCase() == "archer") {
+              int index1 = Arrays.asList(Main.playerData.get(p.getKiller()).getInventory()).indexOf(new ItemStack(Material.ARROW, 16));
+              if(p.getKiller().getInventory().getItem(index) == null) {
+                ItemStack blockItem = new ItemStack(Material.ARROW,  5);
+                p.getKiller().getInventory().setItem(index1, blockItem);
+              }
+              else if(p.getKiller().getInventory().getItem(index1).getAmount() < 16) {
+                int amount1 = p.getKiller().getInventory().getItem(index1).getAmount();
+                ItemStack blockItem = new ItemStack(Material.ARROW, amount1 + (amount1 + 5 < 16 ? 5 : 5 - (amount1 + 5 - 16)));
+                p.getKiller().getInventory().setItem(index1, blockItem);
+              }
+            }
+            p.getKiller().playSound(p.getKiller().getLocation(), Sound.LEVEL_UP, 100.0F, 0.0F);
+          }
+          catch (NullPointerException e1) {
+            e1.printStackTrace();
+          }
       }
       level = Main.playerData.get(p.getKiller()).getPlayerKillStreak();
       killstreakKiller = String.valueOf(level);

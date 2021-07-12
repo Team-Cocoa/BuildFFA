@@ -33,6 +33,11 @@ public class InventoryClickListener implements Listener {
     if(Main.playerData.get(p).isBuild()){
         return;
     }
+    if(Main.playerData.get(p).isInGame() && (e.getAction().equals(InventoryAction.PICKUP_ALL) || e.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
+        e.setCancelled(true);
+        p.playSound(p.getLocation(), Sound.NOTE_BASS, 100F, 0F);
+        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &7Please use InventorySorting to edit your inventory layout!"));
+    }
     if (e.getView().getTitle().equals("§cKit Selection")) {
         ItemStack clickedItem = e.getCurrentItem();
         int kit = 0;
@@ -80,6 +85,7 @@ public class InventoryClickListener implements Listener {
                 .getAction().equals(InventoryAction.DROP_ALL_CURSOR) || e
                 .getAction().equals(InventoryAction.DROP_ONE_SLOT) || e
                 .getAction().equals(InventoryAction.DROP_ONE_CURSOR) || e
+                .getAction().equals(InventoryAction.HOTBAR_SWAP) || e
                 .getClickedInventory().equals(p.getInventory()) || e
                 .getClickedInventory().getType().equals(InventoryType.PLAYER)){
             e.setCancelled(true);

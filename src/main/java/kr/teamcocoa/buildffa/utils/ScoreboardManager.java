@@ -125,6 +125,7 @@ public class ScoreboardManager implements Listener {
 //            board.getTeam("map").setSuffix(mapSuffix);
             board.getTeam("teaming").setSuffix(teamingSuffix);
 //            board.getTeam("mapchange").setSuffix(mapchangeSuffix);
+            p.setScoreboard(board);
           } 
         }
       }).runTaskTimer((Plugin)Main.inst(), 0L, 20L);
