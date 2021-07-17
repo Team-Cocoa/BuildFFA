@@ -28,6 +28,7 @@ public class Main extends JavaPlugin {
   public MYSQL mysql;
   public Stats stats;
   public KitData kitData;
+  public ScoreboardManager scoreboardManager;
   
   public void onEnable() {
     System.out.println(" _____________________________________________________________");
@@ -39,6 +40,7 @@ public class Main extends JavaPlugin {
     mysql = new MYSQL();
     stats = new Stats();
     kitData = new KitData();
+    scoreboardManager = new ScoreboardManager();
     mysql.connect();
     System.out.println("|_____________________________________________________________|");
     loadListeners();
@@ -53,7 +55,7 @@ public class Main extends JavaPlugin {
       Locations.setCurrentMap(Config.config.getString("startmap").replaceAll("&", "§"));
     }
     if (Config.config.getBoolean("scoreboard")) {
-      new ScoreboardManager().ScoreboardUpdater();
+      scoreboardManager.ScoreboardUpdater();
     }
   }
 

@@ -46,14 +46,25 @@ public class Stats {
   public Integer getKills(String uuid) {
     Integer i = Integer.valueOf(0);
       if (playerExists(uuid)) {
+          ResultSet rs = null;
         try {
-          ResultSet rs = Main.inst().mysql.getResult("SELECT `KILLS` FROM Stats WHERE UUID= '" + uuid + "'");
+           rs = Main.inst().mysql.getResult("SELECT `KILLS` FROM Stats WHERE UUID= '" + uuid + "'");
           if (!rs.next() || Integer.valueOf(rs.getInt("KILLS")) == null);
           i = Integer.valueOf(rs.getInt("KILLS"));
           rs.close();
         } catch (SQLException e) {
           e.printStackTrace();
-        } 
+        }
+        finally {
+            if(rs != null) {
+                try {
+                    rs.close();
+                }
+                catch(SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
       } else {
         createPlayer(uuid);
         getKills(uuid);
@@ -64,14 +75,24 @@ public class Stats {
   public Integer getDeaths(String uuid) {
     Integer i = Integer.valueOf(0);
       if (playerExists(uuid)) {
+          ResultSet rs = null;
         try {
-          ResultSet rs = Main.inst().mysql.getResult("SELECT `DEATHS` FROM Stats WHERE UUID= '" + uuid + "'");
+           rs = Main.inst().mysql.getResult("SELECT `DEATHS` FROM Stats WHERE UUID= '" + uuid + "'");
           if (!rs.next() || Integer.valueOf(rs.getInt("DEATHS")) == null);
           i = Integer.valueOf(rs.getInt("DEATHS"));
-          rs.close();
         } catch (SQLException e) {
           e.printStackTrace();
-        } 
+        }
+        finally {
+            if(rs != null) {
+                try {
+                    rs.close();
+                }
+                catch(SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
       } else {
         createPlayer(uuid);
         getDeaths(uuid);

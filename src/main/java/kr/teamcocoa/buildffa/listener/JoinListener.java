@@ -15,7 +15,7 @@ public class JoinListener implements Listener {
   public void onJoin(PlayerJoinEvent e) {
     final Player p = e.getPlayer();
     p.setLevel(0);
-    new ScoreboardManager().setScoreboard(p);
+    Main.inst().scoreboardManager.setScoreboard(p);
     String uuid = String.valueOf(p.getUniqueId());
     Main.inst().stats.createPlayer(uuid);
     Main.playerData.put(p, new BffaPlayer(p));

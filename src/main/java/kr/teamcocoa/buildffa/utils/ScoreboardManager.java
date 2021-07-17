@@ -1,7 +1,6 @@
 package kr.teamcocoa.buildffa.utils;
 
 import kr.teamcocoa.buildffa.main.Main;
-import java.util.HashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -14,7 +13,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 public class ScoreboardManager implements Listener {
-  public Scoreboard sb;
   
   private String timeSek = "00";
   
@@ -22,11 +20,10 @@ public class ScoreboardManager implements Listener {
   
   private double i = Config.config.getInt("mapchangedelaysek");
   
-  public HashMap<Scoreboard, Player> boards = new HashMap<>();
-  
   public Boolean Mapchangeupdater = Boolean.valueOf(false);
   
   public void setScoreboard(Player p) {
+    Scoreboard sb;
     String uuid = String.valueOf(p.getUniqueId());
     String killsSuffix = Config.messages.getString("scoreboard.kills.suffix").replaceAll("&", "§").replaceAll("%KILLS%", String.valueOf(Main.inst().stats.getKills(uuid)));
     String killsPrefix = Config.messages.getString("scoreboard.kills.prefix").replaceAll("&", "§");
@@ -77,8 +74,8 @@ public class ScoreboardManager implements Listener {
     obj.getScore(ChatColor.DARK_AQUA.toString()).setScore(3);
     obj.getScore(teamingScore).setScore(2);
     obj.getScore(String.valueOf(ChatColor.DARK_GRAY.toString()) + teamingEntry).setScore(1);
-    boards.put(sb, p);
     p.setScoreboard(sb);
+    sb = null;
   }
   
 //  public static void MapChangeUpdater() {
@@ -112,20 +109,8 @@ public class ScoreboardManager implements Listener {
   public void ScoreboardUpdater() {
     (new BukkitRunnable() {
         public void run() {
-          for (Scoreboard board : boards.keySet()) {
-            Player p = boards.get(board);
-            String uuid = String.valueOf(p.getUniqueId());
-            String killsSuffix = Config.messages.getString("scoreboard.kills.suffix").replaceAll("&", "§").replaceAll("%KILLS%", String.valueOf(Main.inst().stats.getKills(uuid)));
-            String onlineSuffix = Config.messages.getString("scoreboard.online.suffix").replaceAll("&", "§").replaceAll("%ONLINEPLAYERS%", String.valueOf(Bukkit.getOnlinePlayers().size())).replaceAll("%MAXPLAYERS%", String.valueOf(Bukkit.getMaxPlayers()));
-//            String mapSuffix = Config.messages.getString("scoreboard.map.suffix").replaceAll("&", "§").replaceAll("%MAP%", Locations.getCurrentMap());
-            String teamingSuffix = Config.messages.getString("scoreboard.teaming.suffix").replaceAll("&", "§").replaceAll("%STATE%", Config.getTeaming());
-//            String mapchangeSuffix = Config.messages.getString("scoreboard.mapchange.suffix").replaceAll("&", "§").replaceAll("%MINUTES%", ScoreboardManager.timeMinutes).replaceAll("%SECONDS%", ScoreboardManager.timeSek);
-            board.getTeam("kills").setSuffix(killsSuffix);
-            board.getTeam("online").setSuffix(onlineSuffix);
-//            board.getTeam("map").setSuffix(mapSuffix);
-            board.getTeam("teaming").setSuffix(teamingSuffix);
-//            board.getTeam("mapchange").setSuffix(mapchangeSuffix);
-            p.setScoreboard(board);
+          for (Player player : Bukkit.getOnlinePlayers()) {
+            setScoreboard(player);
           } 
         }
       }).runTaskTimer((Plugin)Main.inst(), 0L, 20L);
