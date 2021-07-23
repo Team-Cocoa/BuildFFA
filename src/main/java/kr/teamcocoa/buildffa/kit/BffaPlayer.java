@@ -18,6 +18,11 @@ public class BffaPlayer {
     private boolean inGame;
     private boolean died;
 
+    /* Stats */
+    private int kills;
+    private int deaths;
+    private int bestKillStreaks;
+
     public BffaPlayer(Player player){
         this.threwPearlTime = 0L;
         this.playerKillStreak = 0;
@@ -28,7 +33,13 @@ public class BffaPlayer {
         this.inventory = Main.inst().kitData.getPlayerKit(player, Main.inst().kitData.getKit(player));
         this.inGame = false;
         this.died = false;
+
+        this.kills = Main.inst().stats.getKills(player.getUniqueId().toString());
+        this.bestKillStreaks = Main.inst().stats.getMaxKillStreak(player.getUniqueId().toString());
+        this.deaths = Main.inst().stats.getDeaths(player.getUniqueId().toString());
     }
+
+    /*Getter*/
 
     public ItemStack[] getInventory() {
         return inventory;
@@ -70,6 +81,20 @@ public class BffaPlayer {
         return inGame;
     }
 
+    public int getKills() {
+        return kills;
+    }
+
+    public int getDeaths() {
+        return deaths;
+    }
+
+    public int getBestKillStreaks() {
+        return bestKillStreaks;
+    }
+
+    /*Setter*/
+
     public void setBuild(boolean build) {
         this.build = build;
     }
@@ -102,6 +127,18 @@ public class BffaPlayer {
         this.inGame = inGame;
     }
 
+    public void setKills(int kills) {
+        this.kills = kills;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
+    }
+
+    public void setBestKillStreaks(int bestKillStreaks) {
+        this.bestKillStreaks = bestKillStreaks;
+    }
+
     public void setJoinInventory(){
         this.player.getInventory().clear();
         this.player.getInventory().setArmorContents(null);
@@ -116,4 +153,14 @@ public class BffaPlayer {
             this.player.getInventory().setItem(4, ItemManager.createItem(Material.CHEST, 1, "§cKits"));
         }
     }
+
+    /*Stats Adder*/
+    public void addKills() {
+        this.kills += 1;
+    }
+
+    public void addDeaths() {
+        this.deaths += 1;
+    }
+
 }

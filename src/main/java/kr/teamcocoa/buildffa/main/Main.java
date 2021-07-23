@@ -29,6 +29,7 @@ public class Main extends JavaPlugin {
   public Stats stats;
   public KitData kitData;
   public ScoreboardManager scoreboardManager;
+  public static boolean teaming;
   
   public void onEnable() {
     System.out.println(" _____________________________________________________________");
@@ -40,11 +41,14 @@ public class Main extends JavaPlugin {
     mysql = new MYSQL();
     stats = new Stats();
     kitData = new KitData();
+    teaming = false;
     scoreboardManager = new ScoreboardManager();
     mysql.connect();
     System.out.println("|_____________________________________________________________|");
     loadListeners();
     loadCommands();
+
+    stats.updateRanking();
 
     new RemoveBlockAnimation().runTaskTimer(this, 0L, 10L);
 
@@ -67,6 +71,7 @@ public class Main extends JavaPlugin {
     getServer().getPluginManager().registerEvents(new FoodLevelChangeListener(), this);
     getServer().getPluginManager().registerEvents(new InteractListener(), this);
     getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
+    getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
     getServer().getPluginManager().registerEvents(new ItemDropListener(), this);
     getServer().getPluginManager().registerEvents(new JoinListener(), this);
     getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);

@@ -1,9 +1,11 @@
 package kr.teamcocoa.buildffa.kit;
 
 import kr.teamcocoa.buildffa.main.Main;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
@@ -175,10 +177,10 @@ public class KitData {
     public ItemStack[] getArmor(){
         ItemStack[] armorList = new ItemStack[4];
         ItemMeta[] armorMetaList = new ItemMeta[4];
-        armorList[0] = new ItemStack(Material.LEATHER_BOOTS);
-        armorList[1] = new ItemStack(Material.LEATHER_LEGGINGS);
-        armorList[2] = new ItemStack(Material.CHAINMAIL_CHESTPLATE);
-        armorList[3] = new ItemStack(Material.LEATHER_HELMET);
+        armorList[0] = getUnbreakable(Material.LEATHER_BOOTS);
+        armorList[1] = getUnbreakable(Material.LEATHER_LEGGINGS);
+        armorList[2] = getUnbreakable(Material.CHAINMAIL_CHESTPLATE);
+        armorList[3] = getUnbreakable(Material.LEATHER_HELMET);
         for(int i = 0; i < 4; i++){
             armorMetaList[i] = armorList[i].getItemMeta();
             armorMetaList[i].addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2, true);
@@ -357,10 +359,8 @@ public class KitData {
     }
 
     private ItemStack getGoldenSword(String kit){
-        ItemStack goldenSword = new ItemStack(Material.GOLD_SWORD);
+        ItemStack goldenSword = getUnbreakable(Material.GOLD_SWORD);
         ItemMeta goldenSwordMeta = goldenSword.getItemMeta();
-        ItemManager goldenSwordManager = new ItemManager(goldenSword);
-        goldenSword = goldenSwordManager.modify().setUnbreakable(true).build();
         goldenSwordMeta.addEnchant(Enchantment.DURABILITY, 5, true);
         if(kit.equals("default")) {
             goldenSwordMeta.addEnchant(Enchantment.DAMAGE_ALL, 1, true);
@@ -437,6 +437,16 @@ public class KitData {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(name);
         itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    public ItemStack getUnbreakable(Material material){
+        ItemStack itemStack = new ItemStack(material);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("Unbreakable", true);
+        net.minecraft.server.v1_8_R3.ItemStack stack = CraftItemStack.asNMSCopy(itemStack);
+        stack.setTag(tag);
+        itemStack = CraftItemStack.asCraftMirror(stack);
         return itemStack;
     }
 }

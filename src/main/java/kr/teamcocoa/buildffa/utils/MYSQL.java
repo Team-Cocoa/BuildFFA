@@ -1,5 +1,7 @@
 package kr.teamcocoa.buildffa.utils;
 
+import org.bukkit.Bukkit;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -58,6 +60,9 @@ public class MYSQL {
       try {
         if(ps != null) {
           ps.close();
+          if(!ps.isClosed()) {
+            Bukkit.getLogger().info("update cannot closed!");
+          }
         }
       }
       catch(SQLException e) {

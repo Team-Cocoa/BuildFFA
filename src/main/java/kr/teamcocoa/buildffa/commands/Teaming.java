@@ -15,24 +15,18 @@ public class Teaming implements CommandExecutor {
     if (sender instanceof Player) {
       Player p = (Player)sender;
       if (p.hasPermission(Config.permissions.getString("teaming"))) {
-          if (Config.config.getBoolean("teaming")) {
-            Config.config.set("teaming", Boolean.valueOf(false));
-            try {
-              Config.config.save(Config.configFile);
-            } catch (IOException e2) {
-              e2.printStackTrace();
-            } 
-            p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("teaming.01").replaceAll("&", "§"));
-          } else {
-            Config.config.set("teaming", Boolean.valueOf(true));
-            try {
-              Config.config.save(Config.configFile);
-            } catch (IOException e2) {
-              e2.printStackTrace();
-            } 
-            Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("teaming.02").replaceAll("&", "§"));
+        if(Main.teaming) {
+          Main.teaming = false;
+          for(Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &7Teaming is &4&lPROHIBITED &7from now on!"));
           }
-          Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("teaming.03").replaceAll("&", "§"));
+        }
+        else {
+          Main.teaming = true;
+          for(Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &7Teaming is &a&lALLOWED &7from now on!"));
+          }
+        }
       } else {
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &7This command does not exist or is deactivated."));
       } 

@@ -1,6 +1,8 @@
 package kr.teamcocoa.buildffa.utils;
 
+import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
+import org.bukkit.Bukkit;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -42,6 +44,47 @@ public class Stats {
       }
 
   }
+
+  public Integer getMaxKillStreak(String uuid) {
+      Integer i = Integer.valueOf(0);
+      if (playerExists(uuid)) {
+          ResultSet rs = null;
+          try {
+              rs = Main.inst().mysql.getResult("SELECT `max_killstreak` FROM Stats WHERE UUID= '" + uuid + "'");
+              if (!rs.next() || Integer.valueOf(rs.getInt("max_killstreak")) == null);
+              i = Integer.valueOf(rs.getInt("max_killstreak"));
+          } catch (SQLException e) {
+              e.printStackTrace();
+          }
+          finally {
+              if(rs != null) {
+                  try {
+                      rs.close();
+                      if(!rs.isClosed()) {
+                          Bukkit.getLogger().info("MaxKillStreak Cannot closed!");
+                      }
+                  }
+                  catch(SQLException e) {
+                      e.printStackTrace();
+                  }
+              }
+          }
+      } else {
+          createPlayer(uuid);
+          getKills(uuid);
+      }
+      return i;
+  }
+
+  public void setMaxKillStreak(String uuid, int killStreak) {
+      if(playerExists(uuid)) {
+          Main.inst().mysql.update("UPDATE Stats SET `max_killstreak` = '" + killStreak + "' WHERE UUID= '" + uuid + "';");
+      }
+      else {
+          createPlayer(uuid);
+          setMaxKillStreak(uuid, killStreak);
+      }
+  }
   
   public Integer getKills(String uuid) {
     Integer i = Integer.valueOf(0);
@@ -59,6 +102,9 @@ public class Stats {
             if(rs != null) {
                 try {
                     rs.close();
+                    if(!rs.isClosed()) {
+                        Bukkit.getLogger().info("getKill Cannot closed!");
+                    }
                 }
                 catch(SQLException e) {
                     e.printStackTrace();
@@ -154,5 +200,23 @@ public class Stats {
         createPlayer(uuid);
         removeDeaths(uuid, deaths);
       }
+  }
+
+  public void updatePlayer(BffaPlayer bffaPlayer) {
+      int kills = bffaPlayer.getKills();
+      int deaths = bffaPlayer.getDeaths();
+      int bestKills = bffaPlayer.getBestKillStreaks();
+      Main.inst().mysql.update("UPDATE `stats` SET `KILLS` = '" + kills
+              + "', `DEATHS` = '" + deaths
+              + "', `max_killstreak` = '" +bestKills
+              + "' WHERE `UUID` = '" + bffaPlayer.getPlayer().getUniqueId().toString()
+              + "';"
+      );
+  }
+
+  public void updateRanking() {
+      Bukkit.getScheduler().runTaskTimer(Main.inst(),
+              () -> Main.playerData.forEach(((player, bffaPlayer) -> updatePlayer(bffaPlayer))),
+              0L, 6000L);
   }
 }

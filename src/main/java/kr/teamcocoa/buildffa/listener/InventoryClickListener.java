@@ -22,6 +22,9 @@ public class InventoryClickListener implements Listener {
   @EventHandler
   public void onInventoryClick(InventoryClickEvent e) {
     Player p = (Player)e.getWhoClicked();
+      if(Main.playerData.get(p).isBuild()){
+          return;
+      }
     if (e.getCurrentItem() == null && !e.getView().getTitle().equals("§cInventorySorting")) {
       e.setCancelled(true);
       return;
@@ -29,9 +32,6 @@ public class InventoryClickListener implements Listener {
     if (e.getCurrentItem().getItemMeta() == null && !e.getView().getTitle().equals("§cInventorySorting")) {
       e.setCancelled(true);
       return;
-    }
-    if(Main.playerData.get(p).isBuild()){
-        return;
     }
     if(Main.playerData.get(p).isInGame() && (e.getAction().equals(InventoryAction.PICKUP_ALL) || e.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
         e.setCancelled(true);

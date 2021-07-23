@@ -24,19 +24,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 public class PlayerDeathListener implements Listener {
-  public static String killstreakKiller;
-  
-  public static int level = 0;
   
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent e) {
     final Player p = e.getEntity();
-    String uuid = String.valueOf(p.getUniqueId());
-      Main.inst().stats.addDeaths(uuid, Integer.valueOf(1));
-      BffaPlayer bffaPlayer = Main.playerData.get(p);
-      bffaPlayer.setThrewPearlTime(System.currentTimeMillis());
-      bffaPlayer.setPlayerKillStreak(0);
-      Main.playerData.put(p, bffaPlayer);
+    final BffaPlayer bffaPlayer = Main.playerData.get(p);
+    final int deadPlayerKillStreak = Main.playerData.get(p).getPlayerKillStreak();
+    //Main.inst().stats.addDeaths(uuid, Integer.valueOf(1));
+    bffaPlayer.setThrewPearlTime(System.currentTimeMillis());
+    bffaPlayer.setPlayerKillStreak(0);
+    bffaPlayer.addDeaths();
+
     if (Locations.getCurrentMap() != null) {
       String Mapname = Locations.getCurrentMap();
       final Location spawnloc = Locations.getSpawnLocation(Mapname);
@@ -49,36 +47,43 @@ public class PlayerDeathListener implements Listener {
               p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
             }
           }, 1L);
-    } 
+    }
+
     if (p.getKiller() instanceof Player) {
+
+      if(p.equals(p.getKiller())) {
+        e.setDeathMessage("");
+        return;
+      }
+      final BffaPlayer killerBffaPlayer = Main.playerData.get(p.getKiller());
       final String uuidKiller = String.valueOf(p.getKiller().getUniqueId());
       final String nameKiller = p.getKiller().getName();
-      final String displaynameKiller = p.getKiller().getDisplayName();
-      if (Config.config.getBoolean("stats"))
-        Main.inst().stats.addKills(uuidKiller, Integer.valueOf(1));
-      if (Config.config.getBoolean("message.playerkill")) {
-        if (Config.config.getBoolean("displayname.deaths")) {
-          Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killall").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("&", "§"));
-        } else {
-          Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killall").replaceAll("%PLAYER%", p.getName()).replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("&", "§"));
-        } 
-      } else {
-        e.setDeathMessage(null);
-      } 
+      //Main.inst().stats.addKills(uuidKiller, Integer.valueOf(1));
+      killerBffaPlayer.addKills();
+
       String KillerHealth = (new DecimalFormat("#0.0")).format(p.getKiller().getHealth() / 2.0D);
-      if (Config.config.getBoolean("displayname.deaths")) {
-        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.kill").replaceAll("&", "§").replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
-      } else {
-        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.kill").replaceAll("&", "§").replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
-      } 
+      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.kill").replaceAll("&", "§").replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
+
+
+      int killerKillstreak = killerBffaPlayer.getPlayerKillStreak() + 1;
       p.getKiller().setHealth(20.0D);
-      level = Main.playerData.get(p.getKiller()).getPlayerKillStreak();
-      p.getKiller().setLevel(level + 1);
-      Main.playerData.get(p.getKiller()).setPlayerKillStreak(level + 1);
-      if(Main.playerData.get(p.getKiller()).getPlayerKillStreak() % 3 == 0){
+      p.getKiller().setLevel(killerKillstreak);
+      killerBffaPlayer.setPlayerKillStreak(killerKillstreak);
+
+      /*
+       * 여기서 부터 max kill streak 설정
+       * */
+      if(killerKillstreak > killerBffaPlayer.getBestKillStreaks()) {
+        killerBffaPlayer.setBestKillStreaks(killerKillstreak);
+      }
+      /*
+       * max kill streak 설정 끝
+       * */
+
+      if(killerKillstreak % 3 == 0){
           try {
             String kit = Main.inst().kitData.getKitByInt(Main.inst().kitData.getKit(p.getKiller()));
-            int index = Arrays.asList(Main.playerData.get(p.getKiller()).getInventory()).indexOf(new ItemStack(Material.ENDER_PEARL, 2));
+            int index = Arrays.asList(killerBffaPlayer.getInventory()).indexOf(new ItemStack(Material.ENDER_PEARL, 2));
             if(p.getKiller().getInventory().getItem(index) == null) {
               ItemStack blockItem = new ItemStack(Material.ENDER_PEARL,  1);
               p.getKiller().getInventory().setItem(index, blockItem);
@@ -105,47 +110,27 @@ public class PlayerDeathListener implements Listener {
           catch (NullPointerException e1) {
             e1.printStackTrace();
           }
+          Main.playerData.put(p.getKiller(), killerBffaPlayer);
       }
-      level = Main.playerData.get(p.getKiller()).getPlayerKillStreak();
-      killstreakKiller = String.valueOf(level);
+
+
       Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-        PlayerDeathListener.killstreakKiller = String.valueOf(PlayerDeathListener.level);
-        int killstreakPlayer = p.getLevel();
-//        Config.player.set("players." + uuidKiller + ".killstreak", Integer.valueOf(PlayerDeathListener.level));
-//        try {
-//          Config.player.save(Config.playerFile);
-//        } catch (IOException e1) {
-//          e1.printStackTrace();
-//        }
-//        if (Config.player.getString("players." + p.getUniqueId() + ".killstreak") != null)
-//          killstreakPlayer = Config.player.getInt("players." + p.getUniqueId() + ".killstreak");
-        killstreakPlayer = Main.playerData.get(p).getPlayerKillStreak();
-        if (Config.config.getBoolean("message.killstreak")) {
-          if (killstreakPlayer >= 5) {
-            String killstreakPlayerString = String.valueOf(killstreakPlayer);
-            if (Config.config.getBoolean("displayname.killstreak")) {
-              Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreakbroken").replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", displaynameKiller).replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
-            } else {
-              Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreakbroken").replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", nameKiller).replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
-            }
+        // 코드 원작자 나가 뒤져라 씨발
+        // 정리가 시급하다 나중에
+        if (deadPlayerKillStreak >= 5) {
+          String killstreakPlayerString = String.valueOf(deadPlayerKillStreak);
+          for(Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreakbroken").replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", nameKiller).replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
           }
-          if ((((PlayerDeathListener.level == 5) ? 1 : 0) | ((PlayerDeathListener.level == 10) ? 1 : 0) | ((PlayerDeathListener.level >= 15) ? 1 : 0)) != 0)
-            if (Config.config.getBoolean("displayname.killstreak")) {
-              Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreak").replaceAll("%KILLSTREAK%", PlayerDeathListener.killstreakKiller).replaceAll("%PLAYER%", displaynameKiller).replaceAll("&", "§"));
-            } else {
-              Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreak").replaceAll("%KILLSTREAK%", PlayerDeathListener.killstreakKiller).replaceAll("%PLAYER%", nameKiller).replaceAll("&", "§"));
-            }
         }
-//        if (Config.player.getString("players." + p.getUniqueId() + ".killstreak") != null) {
-//          Config.player.set("players." + p.getUniqueId() + ".killstreak", null);
-//          try {
-//            Config.player.save(Config.playerFile);
-//          } catch (IOException e2) {
-//            e2.printStackTrace();
-//          }
-//        }
+        if (killerKillstreak != 0 && (killerKillstreak % 5 == 0 || killerKillstreak > 15)) {
+          for(Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(Main.getPrefix() + Config.messages.getString("player.killstreak").replaceAll("%KILLSTREAK%", String.valueOf(killerKillstreak)).replaceAll("%PLAYER%", nameKiller).replaceAll("&", "§"));
+          }
+        }
       }, 3L);
     }
+
     else if (Config.config.getBoolean("message.playerdeath")) {
       if (Config.config.getBoolean("displayname.deaths")) {
         Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.death").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
@@ -165,5 +150,7 @@ public class PlayerDeathListener implements Listener {
 //    }
     e.setDroppedExp(0);
     e.getDrops().clear();
+    e.setDeathMessage("");
+    Main.playerData.put(p, bffaPlayer);
   }
 }

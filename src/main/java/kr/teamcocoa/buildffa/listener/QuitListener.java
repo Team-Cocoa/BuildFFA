@@ -1,9 +1,8 @@
 package kr.teamcocoa.buildffa.listener;
 
+import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Config;
-import kr.teamcocoa.buildffa.utils.Stats;
-import java.io.IOException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,9 +12,11 @@ public class QuitListener implements Listener {
   @EventHandler
   public void onQuit(PlayerQuitEvent e) {
     Player p = e.getPlayer();
+    BffaPlayer bffaPlayer = Main.playerData.get(p);
     if (Main.playerData.get(p).isInGame()) {
-      Main.inst().stats.addDeaths(p.getUniqueId().toString(), Integer.valueOf(1));
+      bffaPlayer.addDeaths();
     }
+    Main.inst().stats.updatePlayer(bffaPlayer);
     Main.playerData.remove(p);
 //    if (Config.player.getString("players." + p.getUniqueId() + ".killstreak") != null) {
 //      Config.player.set("players." + p.getUniqueId() + ".killstreak", null);
