@@ -20,14 +20,14 @@ public class PlayerMoveListener implements Listener {
   public void onPlayerMove(PlayerMoveEvent e) {
     final Player p = e.getPlayer();
     Location loc = p.getLocation();
-    if (Locations.getCurrentMap() != null && Config.locations.getString(String.valueOf(Locations.getCurrentMap()) + ".deathheight") != null && Config.locations.getString(String.valueOf(Locations.getCurrentMap()) + ".arenaheight") != null) {
-      if (loc.getY() <= Config.locations.getDouble(String.valueOf(Locations.getCurrentMap()) + ".deathheight") && Main.playerData.get(p).isDied() == false)
+    if (Locations.CurrentMapname != null && Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".deathheight") != null && Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".arenaheight") != null) {
+      if (loc.getY() <= Config.locations.getDouble(String.valueOf(Locations.CurrentMapname) + ".deathheight") && Main.playerData.get(p).isDied() == false)
         if (!Main.playerData.get(p).isBuild()) {
           p.setHealth(0.0D);
           Main.playerData.get(p).setDied(true);
           Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setDied(false), 20L);
         }
-      if (loc.getY() <= Config.locations.getDouble(String.valueOf(Locations.getCurrentMap()) + ".arenaheight")) {
+      if (loc.getY() <= Config.locations.getDouble(String.valueOf(Locations.CurrentMapname) + ".arenaheight")) {
         if (!Main.playerData.get(p).isInGame() && !Main.playerData.get(p).isBuild()) {
           BffaPlayer bffaPlayer = Main.playerData.get(p);
           p.closeInventory();

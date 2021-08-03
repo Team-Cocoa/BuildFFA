@@ -2,6 +2,7 @@ package kr.teamcocoa.buildffa.listener;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.utils.Bar;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -43,9 +43,9 @@ public class JoinListener implements Listener {
 //      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.03").replaceAll("&", "§"));
 //      return;
 //    }
-    if (Config.locations.getString(String.valueOf(Locations.getCurrentMap()) + ".deathheight") != null) {
-      if (Config.locations.getString(String.valueOf(Locations.getCurrentMap()) + ".arenaheight") != null) {
-        Location mapspawn = Locations.getSpawnLocation(Locations.getCurrentMap());
+    if (Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".deathheight") != null) {
+      if (Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".arenaheight") != null) {
+        Location mapspawn = Locations.getSpawnLocation(Locations.CurrentMapname);
         p.teleport(mapspawn);
         if (!Main.playerData.get(p).isBuild()) {
           Main.playerData.get(p).setJoinInventory();

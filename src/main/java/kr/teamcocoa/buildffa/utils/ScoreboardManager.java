@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import net.minecraft.server.v1_8_R3.IScoreboardCriteria;
 import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardDisplayObjective;
@@ -17,19 +16,14 @@ import net.minecraft.server.v1_8_R3.ScoreboardObjective;
 import net.minecraft.server.v1_8_R3.ScoreboardScore;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ScoreboardManager implements Listener {
-  
-  private String timeSek = "00";
-  
-  private String timeMinutes = "0";
-  
-  private double i = Config.config.getInt("mapchangedelaysek");
-  
-  public Boolean Mapchangeupdater = Boolean.valueOf(false);
+    public static int sec = 600;
+    public static int i = (int)(Math.random() * 2) + 1;
   
   public void setScoreboard(Player player) {
       int kills = Main.playerData.get(player).getKills();
@@ -74,33 +68,56 @@ public class ScoreboardManager implements Listener {
     return ChatColor.translateAlternateColorCodes('&', string);
   }
   
-//  public static void MapChangeUpdater() {
-//    Mapchangeupdater = Boolean.valueOf(true);
-//    (new BukkitRunnable() {
-//        public void run() {
-//          if (ScoreboardManager.i == 3.0D)
-//            Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("mapchange.01").replaceAll("&", "§"));
-//          if (ScoreboardManager.i == 2.0D)
-//            Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("mapchange.02").replaceAll("&", "§"));
-//          if (ScoreboardManager.i == 1.0D)
-//            Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("mapchange.03").replaceAll("&", "§"));
-//          if (ScoreboardManager.i == 0.0D) {
-//            ScoreboardManager.i = Config.config.getInt("mapchangedelaysek");
-//            Locations.MapChange();
-//          } else {
-//            ScoreboardManager.i = ScoreboardManager.i - 1.0D;
-//          }
-//          double DoubletimeMinutes = ScoreboardManager.i / 60.0D;
-//          ScoreboardManager.timeMinutes = String.valueOf((int)DoubletimeMinutes);
-//          double i2 = DoubletimeMinutes - Double.valueOf(ScoreboardManager.timeMinutes).doubleValue();
-//          double b = i2 * 60.0D;
-//          int sek = (int)Math.round(b);
-//          ScoreboardManager.timeSek = String.valueOf(sek);
-//          if (sek < 10)
-//            ScoreboardManager.timeSek = "0" + ScoreboardManager.timeSek;
-//        }
-//      }).runTaskTimer((Plugin)Main.inst(), 0L, 20L);
-//  }
+  public static void mapChangeUpdater() {
+
+      Bukkit.getScheduler().runTaskTimer(Main.inst(), () -> {
+          --sec;
+          LocalTime localTime = LocalTime.ofSecondOfDay(sec);
+          String time = localTime.toString();
+          for(Player player : Bukkit.getOnlinePlayers()) {
+              Bar.sendDefaultBar(player, time);
+          }
+          switch(sec) {
+              case 600:
+              case 300:
+              case 180:
+              case 60:
+              case 30:
+              case 10:
+              case 5:
+              case 4:
+              case 3:
+              case 2:
+              case 1:
+                  sendCountdownMessage();
+                  break;
+              case 0:
+                  sec = 600;
+                  i = i + 1 < 4 ? i + 1 : 1;
+                  Locations.MapChange(i);
+                  break;
+              default:
+                  break;
+          }
+          }, 0L, 20L);
+  }
+
+  public static void sendAllPlayer(String string) {
+      String message = ChatColor.translateAlternateColorCodes('&', string);
+      for(Player player : Bukkit.getOnlinePlayers()) {
+          player.sendMessage(message);
+      }
+  }
+
+  public static void sendCountdownMessage() {
+      if(sec >= 60) {
+          sendAllPlayer(sec / 60 == 1 ? "&a[&dTeamCocoa&a] &aA Map will be changed in &e&l" + sec / 60 + "&a minute!" : "&a[&dTeamCocoa&a] &aA Map will be changed in &e&l" + sec / 60 + "&a minutes!");
+      }
+      else {
+          sendAllPlayer(sec != 1 ? "&a[&dTeamCocoa&a] &aA Map will be changed in &e&l" + sec + "&a seconds!" : "&a[&dTeamCocoa&a] &aA Map will be changed in &e&l" + sec + "&a second!");
+
+      }
+  }
   
   public void ScoreboardUpdater() {
     (new BukkitRunnable() {
@@ -108,21 +125,7 @@ public class ScoreboardManager implements Listener {
           for (Player player : Bukkit.getOnlinePlayers()) {
             setScoreboard(player);
           }
-//          for (final Scoreboard board : boards.keySet()) {
-//            final Player p = boards.get(board);
-//            final String uuid = String.valueOf(p.getUniqueId());
-//            final String killsSuffix = Config.messages.getString("scoreboard.kills.suffix").replaceAll("&", "§").replaceAll("%KILLS%", String.valueOf(Main.inst().stats.getKills(uuid)));
-//            final String onlineSuffix = Config.messages.getString("scoreboard.online.suffix").replaceAll("&", "§").replaceAll("%ONLINEPLAYERS%", String.valueOf(Bukkit.getOnlinePlayers().size())).replaceAll("%MAXPLAYERS%", String.valueOf(Bukkit.getMaxPlayers()));
-//            final String mapSuffix = Config.messages.getString("scoreboard.map.suffix").replaceAll("&", "§").replaceAll("%MAP%", Locations.getCurrentMap());
-//            final String teamingSuffix = Config.messages.getString("scoreboard.teaming.suffix").replaceAll("&", "§").replaceAll("%STATE%", Config.getTeaming());
-//            //final String mapchangeSuffix = Config.messages.getString("scoreboard.mapchange.suffix").replaceAll("&", "§").replaceAll("%MINUTES%", timeMinutes).replaceAll("%SECONDS%", timeSek);
-//            board.getTeam("kills").setSuffix(killsSuffix);
-//            board.getTeam("online").setSuffix(onlineSuffix);
-//            board.getTeam("map").setSuffix(mapSuffix);
-//            board.getTeam("teaming").setSuffix(teamingSuffix);
-//            //board.getTeam("mapchange").setSuffix(mapchangeSuffix);
-//          }
         }
-      }).runTaskTimer((Plugin)Main.inst(), 0L, 20L);
+      }).runTaskTimer(Main.inst(), 0L, 20L);
   }
 }

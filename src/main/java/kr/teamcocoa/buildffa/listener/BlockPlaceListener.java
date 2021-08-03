@@ -19,7 +19,7 @@ public class BlockPlaceListener implements Listener {
   @EventHandler
   public void onBlockPlace(final BlockPlaceEvent e) {
     Player p = e.getPlayer();
-    double height = Config.locations.getDouble(String.valueOf(Locations.getCurrentMap()) + ".arenaheight");
+    double height = Config.locations.getDouble(String.valueOf(Locations.CurrentMapname) + ".arenaheight");
     if (p.getLocation().getY() <= height) {
       if (!Main.playerData.get(p).isBuild()) {
         Block b = e.getBlock();

@@ -1,5 +1,6 @@
 package kr.teamcocoa.buildffa.utils;
 
+import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
 import java.io.IOException;
 import org.bukkit.Bukkit;
@@ -8,7 +9,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class Locations {
-  private static String CurrentMapname;
+  public static String CurrentMapname;
   
   public static Location getSpawnLocation(String Mapname) {
     if (Config.locations.getString(Mapname) != null) {
@@ -67,91 +68,64 @@ public class Locations {
   }
   
   public static void setCurrentMap(String Mapname) {
-    Config.locations.set("currentmap", Mapname);
-    try {
-      Config.locations.save(Config.locationsFile);
-    } catch (IOException e) {
-      e.printStackTrace();
-    } 
+    CurrentMapname = Mapname;
   }
   
   public static String getCurrentMap() {
-    CurrentMapname = Config.locations.getString("currentmap");
-    if (CurrentMapname != null)
-      return CurrentMapname; 
-    return "Keine Map";
+    if (CurrentMapname != null) {
+      switch(CurrentMapname) {
+        case "NEWVERSION" :
+          return "NewVision";
+        case "RUGIA" :
+          return "Architecture";
+        case "CWBW" :
+          return "CwBw";
+        default:
+          return "Unknown Map";
+      }
+    }
+    return "Unknown Map";
+  }
+
+  public static String getMapNameByInt(int i) {
+    String mapName;
+    switch(i) {
+      case 2:
+        mapName = "NEWVERSION";
+        break;
+      case 3:
+        mapName = "RUGIA";
+        break;
+      default:
+        mapName = "CWBW";
+        break;
+    }
+    return mapName;
   }
   
-  public static void MapChange() {
-    if (Config.locations.getString("maps").equals("keine vorhanden")) {
-      Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("mapnotchanged").replaceAll("&", "§"));
-      return;
-    } 
-    if (Bukkit.getOnlinePlayers().size() == 0) {
-      Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("mapnotchanged").replaceAll("&", "§"));
-      return;
-    } 
-    Boolean MapChanged = Boolean.valueOf(false);
-    int i = 1;
-    while (!MapChanged.booleanValue()) {
-      if (Config.locations.getString("maps." + i).equals(getCurrentMap())) {
-        if (Config.locations.getString("maps." + (i + 1)) != null) {
-          String NewMapname = Config.locations.getString("maps." + (i + 1));
-          Location loc = getSpawnLocation(NewMapname);
-          for (Player all : Bukkit.getOnlinePlayers()) {
-            if (all != null) {
-              all.closeInventory();
-              all.teleport(loc);
-              all.getInventory().clear();
-              all.getInventory().setArmorContents(null);
-              if (Main.playerData.get(all).isInGame()){
-                Main.playerData.get(all).setInGame(false);
-              }
-              Main.playerData.get(all).setJoinInventory();
-            } 
-          } 
-          setCurrentMap(NewMapname);
-          Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("mapchanged").replaceAll("&", "§").replaceAll("%NEWMAP%", NewMapname));
-          MapChanged = Boolean.valueOf(true);
-          continue;
-        } 
-        if (!Config.locations.getString("maps.1").equals(getCurrentMap())) {
-          String NewMapname = Config.locations.getString("maps.1");
-          Location loc = getSpawnLocation(NewMapname);
-          for (Player all : Bukkit.getOnlinePlayers()) {
-            if (all != null) {
-              all.closeInventory();
-              all.teleport(loc);
-              all.getInventory().clear();
-              all.getInventory().setArmorContents(null);
-              if (Main.playerData.get(all).isInGame()){
-                Main.playerData.get(all).setInGame(false);
-              }
-              Main.playerData.get(all).setJoinInventory();
-            } 
-            MapChanged = Boolean.valueOf(true);
-            setCurrentMap(NewMapname);
-            Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("mapchanged").replaceAll("&", "§").replaceAll("%NEWMAP%", NewMapname));
-          } 
-          continue;
-        } 
-        Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("mapnotchanged").replaceAll("&", "§"));
-        MapChanged = Boolean.valueOf(true);
-        continue;
-      } 
-      i++;
-    } 
-  }
-  
-  public static Location getStatsSignLocation(int ID) {
-    if (Config.locations.getString("stats.sign." + ID) != null) {
-      World world = Bukkit.getWorld(Config.locations.getString("stats.sign." + ID + ".world"));
-      int x = (int)Config.locations.getDouble("stats.sign." + ID + ".x");
-      int y = (int)Config.locations.getDouble("stats.sign." + ID + ".y");
-      int z = (int)Config.locations.getDouble("stats.sign." + ID + ".z");
-      Location loc = new Location(world, x, y, z);
-      return loc;
-    } 
-    return null;
+  public static void MapChange(int i) {
+    String mapName;
+    switch(i) {
+      case 2:
+        mapName = "NEWVERSION";
+        break;
+      case 3:
+        mapName = "RUGIA";
+        break;
+      default:
+        mapName = "CWBW";
+        break;
+    }
+    CurrentMapname = mapName;
+    Location spawn = getSpawnLocation(CurrentMapname);
+    Main.worldData.removeBlocks();
+    setCurrentMap(mapName);
+    for(Player player : Bukkit.getOnlinePlayers()) {
+      player.teleport(spawn);
+      BffaPlayer bffaPlayer = Main.playerData.get(player);
+      bffaPlayer.setJoinInventory();
+      bffaPlayer.setInGame(false);
+
+    }
   }
 }

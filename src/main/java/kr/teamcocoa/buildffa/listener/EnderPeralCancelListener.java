@@ -46,7 +46,7 @@ public class EnderPeralCancelListener implements Listener {
         long latestDeadTime = bffaPlayer.getLatestDeadTime();
         long now = System.currentTimeMillis();
         if(latestDeadTime < threwTime && threwTime < now){
-            Location spawnLocation = Locations.getSpawnLocation(Locations.getCurrentMap());
+            Location spawnLocation = Locations.getSpawnLocation(Locations.CurrentMapname);
             if(e.getTo().getY() >= spawnLocation.getY() - 5){
                 e.setCancelled(true);
             }

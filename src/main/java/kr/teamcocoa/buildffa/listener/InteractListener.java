@@ -36,7 +36,7 @@ public class InteractListener implements Listener {
       if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cKillEffects")){
         p.performCommand("killeffect");
       }
-      if (p.getLocation().getY() >= Config.locations.getDouble(String.valueOf(Locations.getCurrentMap()) + ".arenaheight")) {
+      if (p.getLocation().getY() >= Config.locations.getDouble(String.valueOf(Locations.CurrentMapname) + ".arenaheight")) {
         e.setCancelled(true);
       }
     }

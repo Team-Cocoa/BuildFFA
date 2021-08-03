@@ -48,19 +48,13 @@ public class Main extends JavaPlugin {
     loadListeners();
     loadCommands();
 
+    Locations.setCurrentMap(Locations.getMapNameByInt(ScoreboardManager.i));
+
     stats.updateRanking();
-
     new RemoveBlockAnimation().runTaskTimer(this, 0L, 10L);
-
-    if (mysql.isConnected()) {
-      mysql.update("CREATE TABLE IF NOT EXISTS Stats(UUID varchar(64), KILLS int, DEATHS int);");
-    }
-    if (!Config.config.getString("startmap").equals("none")) {
-      Locations.setCurrentMap(Config.config.getString("startmap").replaceAll("&", "§"));
-    }
-    if (Config.config.getBoolean("scoreboard")) {
-      scoreboardManager.ScoreboardUpdater();
-    }
+    Locations.MapChange(ScoreboardManager.i);
+    scoreboardManager.ScoreboardUpdater();
+    scoreboardManager.mapChangeUpdater();
   }
 
   public void loadListeners() {

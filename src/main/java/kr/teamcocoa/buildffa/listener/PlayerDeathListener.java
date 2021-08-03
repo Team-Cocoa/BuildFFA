@@ -35,8 +35,8 @@ public class PlayerDeathListener implements Listener {
     bffaPlayer.setPlayerKillStreak(0);
     bffaPlayer.addDeaths();
 
-    if (Locations.getCurrentMap() != null) {
-      String Mapname = Locations.getCurrentMap();
+    if (Locations.CurrentMapname != null) {
+      String Mapname = Locations.CurrentMapname;
       final Location spawnloc = Locations.getSpawnLocation(Mapname);
       Bukkit.getScheduler().runTaskLater((Plugin)Main.inst(), new Runnable() {
             public void run() {
