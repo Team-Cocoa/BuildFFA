@@ -24,12 +24,5 @@ public class EntityDamageListener implements Listener {
       e.setCancelled(true);
       return;
     }
-    if(e.getEntity().getLastDamageCause().getEntity() instanceof Player) {
-      Player player = (Player) e.getEntity().getLastDamageCause().getEntity();
-      if(!Main.playerData.get(player).isInGame()) {
-        e.setCancelled(true);
-        return;
-      }
-    }
   }
 }
