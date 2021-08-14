@@ -30,10 +30,10 @@ public class PlayerDeathListener implements Listener {
     final Player p = e.getEntity();
     final BffaPlayer bffaPlayer = Main.playerData.get(p);
     final int deadPlayerKillStreak = Main.playerData.get(p).getPlayerKillStreak();
-    //Main.inst().stats.addDeaths(uuid, Integer.valueOf(1));
     bffaPlayer.setThrewPearlTime(System.currentTimeMillis());
     bffaPlayer.setPlayerKillStreak(0);
     bffaPlayer.addDeaths();
+    bffaPlayer.setLastHitPlayer(null);
 
     if (Locations.CurrentMapname != null) {
       String Mapname = Locations.CurrentMapname;
@@ -56,9 +56,7 @@ public class PlayerDeathListener implements Listener {
         return;
       }
       final BffaPlayer killerBffaPlayer = Main.playerData.get(p.getKiller());
-      final String uuidKiller = String.valueOf(p.getKiller().getUniqueId());
       final String nameKiller = p.getKiller().getName();
-      //Main.inst().stats.addKills(uuidKiller, Integer.valueOf(1));
       killerBffaPlayer.addKills();
 
       String KillerHealth = (new DecimalFormat("#0.0")).format(p.getKiller().getHealth() / 2.0D);
@@ -110,6 +108,7 @@ public class PlayerDeathListener implements Listener {
           catch (NullPointerException e1) {
             e1.printStackTrace();
           }
+          killerBffaPlayer.setLastHitPlayer(null);
           Main.playerData.put(p.getKiller(), killerBffaPlayer);
       }
 
@@ -139,15 +138,7 @@ public class PlayerDeathListener implements Listener {
       } 
     } else {
       e.setDeathMessage(null);
-    } 
-//    if (Config.player.getString("players." + p.getUniqueId() + ".killstreak") != null) {
-//      Config.player.set("players." + p.getUniqueId() + ".killstreak", null);
-//      try {
-//        Config.player.save(Config.playerFile);
-//      } catch (IOException e2) {
-//        e2.printStackTrace();
-//      }
-//    }
+    }
     e.setDroppedExp(0);
     e.getDrops().clear();
     e.setDeathMessage("");

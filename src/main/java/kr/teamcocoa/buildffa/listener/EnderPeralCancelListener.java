@@ -28,9 +28,6 @@ public class EnderPeralCancelListener implements Listener {
                 Main.playerData.put(player, bffaPlayer);
                 return;
             }
-            else {
-                return;
-            }
         }
         return;
     }

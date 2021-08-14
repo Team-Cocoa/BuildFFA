@@ -18,6 +18,11 @@ import org.bukkit.event.block.BlockPlaceEvent;
 public class BlockPlaceListener implements Listener {
   @EventHandler
   public void onBlockPlace(final BlockPlaceEvent e) {
+    Block block = e.getBlock();
+    if(block.getX() == 1000 && block.getZ() == 1000) {
+      e.setCancelled(true);
+      return;
+    }
     Player p = e.getPlayer();
     double height = Config.locations.getDouble(String.valueOf(Locations.CurrentMapname) + ".arenaheight");
     if (p.getLocation().getY() <= height) {

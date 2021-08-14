@@ -116,16 +116,28 @@ public class Locations {
         mapName = "CWBW";
         break;
     }
+
     CurrentMapname = mapName;
     Location spawn = getSpawnLocation(CurrentMapname);
     Main.worldData.removeBlocks();
     setCurrentMap(mapName);
+    long deadTime = System.currentTimeMillis();
     for(Player player : Bukkit.getOnlinePlayers()) {
       player.teleport(spawn);
       BffaPlayer bffaPlayer = Main.playerData.get(player);
       bffaPlayer.setJoinInventory();
       bffaPlayer.setInGame(false);
-
+      bffaPlayer.setLatestDeadTime(deadTime);
+      Main.playerData.put(player, bffaPlayer);
     }
+    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+      for(Player player : Bukkit.getOnlinePlayers()) {
+        for(Player player1 : Bukkit.getOnlinePlayers()) {
+          if(!player.equals(player1)) {
+            player.showPlayer(player1);
+          }
+        }
+      }
+    }, 5L);
   }
 }

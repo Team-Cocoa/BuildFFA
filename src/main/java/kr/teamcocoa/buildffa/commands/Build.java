@@ -28,40 +28,12 @@ public class Build implements CommandExecutor {
           } else {
             player.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("build.02").replaceAll("&", "§"));
             Main.playerData.get(player).setJoinInventory();
-            if (!Main.playerData.get(player).isInGame()) {
-              Main.playerData.get(player).setInGame(true);
-            }
             player.setGameMode(GameMode.SURVIVAL);
             Main.playerData.get(player).setBuild(false);
           }
         }
-//        } else if (args.length == 1) {
-//          Player target = Bukkit.getPlayer(args[0]);
-//          if (target != null) {
-//            if (!Main.playerData.get(player).isBuild()) {
-//              player.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("build.03").replaceAll("%TARGET%", target.getName()).replaceAll("&", "§"));
-//              target.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("build.04").replaceAll("%PLAYER%", player.getName()).replaceAll("&", "§"));
-//              target.setGameMode(GameMode.CREATIVE);
-//              target.getInventory().clear();
-//              target.getInventory().setArmorContents(null);
-//              Main.playerData.get(player).setBuild(true);
-//            } else {
-//              player.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("build.05").replaceAll("%TARGET%", target.getName()).replaceAll("&", "§"));
-//              target.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("build.06").replaceAll("%PLAYER%", player.getName()).replaceAll("&", "§"));
-//              Main.playerData.get(target).setJoinInventory();
-//              if (Main.playerData.get(target).isInGame()){
-//                Main.playerData.get(target).setInGame(false);
-//              }
-//              target.setGameMode(GameMode.SURVIVAL);
-//              Main.playerData.get(player).setBuild(false);
-//            }
-//          } else {
-//            player.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("build.07").replaceAll("%TARGET%", args[0]).replaceAll("&", "§"));
-//          }
-//        } else {
-//          player.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("build.08").replaceAll("&", "§"));
-//        }
-      } else {
+      }
+      else {
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &7This command does not exist or is deactivated."));
       } 
     } 

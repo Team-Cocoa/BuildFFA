@@ -25,6 +25,7 @@ public class WorldData {
     }
 
     public void removeBlock(Block block){
+        block.setType(Material.AIR);
         blocks.remove(block);
     }
 }

@@ -17,6 +17,7 @@ public class BffaPlayer {
     private int kit;
     private boolean inGame;
     private boolean died;
+    private Player lastHitPlayer;
 
     /* Stats */
     private int kills;
@@ -33,6 +34,7 @@ public class BffaPlayer {
         this.inventory = Main.inst().kitData.getPlayerKit(player, Main.inst().kitData.getKit(player));
         this.inGame = false;
         this.died = false;
+        this.lastHitPlayer = null;
 
         this.kills = Main.inst().stats.getKills(player.getUniqueId().toString());
         this.bestKillStreaks = Main.inst().stats.getMaxKillStreak(player.getUniqueId().toString());
@@ -79,6 +81,10 @@ public class BffaPlayer {
 
     public boolean isInGame() {
         return inGame;
+    }
+
+    public Player getLastHitPlayer() {
+        return lastHitPlayer;
     }
 
     public int getKills() {
@@ -137,6 +143,10 @@ public class BffaPlayer {
 
     public void setBestKillStreaks(int bestKillStreaks) {
         this.bestKillStreaks = bestKillStreaks;
+    }
+
+    public void setLastHitPlayer(Player lastHitPlayer) {
+        this.lastHitPlayer = lastHitPlayer;
     }
 
     public void setJoinInventory(){

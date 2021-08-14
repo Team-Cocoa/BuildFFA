@@ -20,7 +20,8 @@ public class PlayerMoveListener implements Listener {
   public void onPlayerMove(PlayerMoveEvent e) {
     final Player p = e.getPlayer();
     Location loc = p.getLocation();
-    if (Locations.CurrentMapname != null && Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".deathheight") != null && Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".arenaheight") != null) {
+    if (Locations.CurrentMapname
+            != null && Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".deathheight") != null && Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".arenaheight") != null) {
       if (loc.getY() <= Config.locations.getDouble(String.valueOf(Locations.CurrentMapname) + ".deathheight") && Main.playerData.get(p).isDied() == false)
         if (!Main.playerData.get(p).isBuild()) {
           p.setHealth(0.0D);

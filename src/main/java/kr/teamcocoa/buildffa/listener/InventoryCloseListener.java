@@ -10,7 +10,7 @@ public class InventoryCloseListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
-        if(!Main.playerData.get(player).isInGame()) {
+        if(!Main.playerData.get(player).isInGame() && !Main.playerData.get(player).isBuild()) {
             Main.playerData.get(player).setJoinInventory();
         }
     }

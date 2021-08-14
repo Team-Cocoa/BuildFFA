@@ -24,6 +24,7 @@ import java.util.List;
 public class ScoreboardManager implements Listener {
     public static int sec = 600;
     public static int i = (int)(Math.random() * 2) + 1;
+    public static boolean pvpAble = true;
   
   public void setScoreboard(Player player) {
       int kills = Main.playerData.get(player).getKills();
@@ -77,6 +78,9 @@ public class ScoreboardManager implements Listener {
           for(Player player : Bukkit.getOnlinePlayers()) {
               Bar.sendDefaultBar(player, time);
           }
+          if(sec == 5) {
+              pvpAble = false;
+          }
           switch(sec) {
               case 600:
               case 300:
@@ -95,6 +99,7 @@ public class ScoreboardManager implements Listener {
                   sec = 600;
                   i = i + 1 < 4 ? i + 1 : 1;
                   Locations.MapChange(i);
+                  pvpAble = true;
                   break;
               default:
                   break;
@@ -111,10 +116,10 @@ public class ScoreboardManager implements Listener {
 
   public static void sendCountdownMessage() {
       if(sec >= 60) {
-          sendAllPlayer(sec / 60 == 1 ? "&a[&dTeamCocoa&a] &aA Map will be changed in &e&l" + sec / 60 + "&a minute!" : "&a[&dTeamCocoa&a] &aA Map will be changed in &e&l" + sec / 60 + "&a minutes!");
+          sendAllPlayer(sec / 60 == 1 ? "&a[&dTeamCocoa&a] &aThe map will be changed in &e&l" + sec / 60 + "&a minute!" : "&a[&dTeamCocoa&a] &aThe map will be changed in &e&l" + sec / 60 + "&a minutes!");
       }
       else {
-          sendAllPlayer(sec != 1 ? "&a[&dTeamCocoa&a] &aA Map will be changed in &e&l" + sec + "&a seconds!" : "&a[&dTeamCocoa&a] &aA Map will be changed in &e&l" + sec + "&a second!");
+          sendAllPlayer(sec != 1 ? "&a[&dTeamCocoa&a] &aThe map will be changed in &e&l" + sec + "&a seconds!" : "&a[&dTeamCocoa&a] &aThe map will be changed in &e&l" + sec + "&a second!");
 
       }
   }
