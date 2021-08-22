@@ -1,7 +1,9 @@
 package kr.teamcocoa.buildffa.kit;
 
+import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.utils.LangUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -152,15 +154,15 @@ public class BffaPlayer {
     public void setJoinInventory(){
         this.player.getInventory().clear();
         this.player.getInventory().setArmorContents(null);
-        this.player.getInventory().setItem(0, ItemManager.createItem(Material.BLAZE_ROD, 1, "§cInventorySorting"));
+        this.player.getInventory().setItem(0, ItemManager.createItem(Material.BLAZE_ROD, 1, LangUtils.getMessage(this.player, ItemEnum.INVENTORY_SORTING)));
 
-        this.player.getInventory().setItem(8, ItemManager.createItem(Material.SLIME_BALL, 1, "§cReturn to lobby"));
+        this.player.getInventory().setItem(8, ItemManager.createItem(Material.SLIME_BALL, 1, LangUtils.getMessage(this.player, ItemEnum.LEAVE_ITEM)));
         if(this.player.hasPermission("killeffect.killeffect") || this.player.hasPermission("*")){
-            this.player.getInventory().setItem(3, ItemManager.createItem(Material.CHEST, 1, "§cKits"));
+            this.player.getInventory().setItem(3, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemEnum.KIT)));
             this.player.getInventory().setItem(5, ItemManager.createItem(Material.GOLD_SWORD, 1, "§cKillEffects"));
         }
         else{
-            this.player.getInventory().setItem(4, ItemManager.createItem(Material.CHEST, 1, "§cKits"));
+            this.player.getInventory().setItem(4, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemEnum.KIT)));
         }
     }
 

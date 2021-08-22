@@ -1,8 +1,11 @@
 package kr.teamcocoa.buildffa.utils;
 
+import kr.teamcocoa.buildffa.enums.MessageEnum;
+import kr.teamcocoa.buildffa.enums.OtherEnum;
 import kr.teamcocoa.buildffa.main.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -42,13 +45,13 @@ public class ScoreboardManager implements Listener {
       List<PacketPlayOutScoreboardScore> scores = new ArrayList<>();
       scores.add(getScorePacket(scoreboard, objective, color("&aTeamCocoa.kr"), 8));
       scores.add(getScorePacket(scoreboard, objective, "", 7));
-      scores.add(getScorePacket(scoreboard, objective, color("&fKills:"), 6));
+      scores.add(getScorePacket(scoreboard, objective, LangUtils.getMessage(player, OtherEnum.SCOREBOARD_KILLS), 6));
       scores.add(getScorePacket(scoreboard, objective, color("&8» &e" + kills), 5));
       scores.add(getScorePacket(scoreboard, objective, " ", 4));
-      scores.add(getScorePacket(scoreboard, objective, color("&fBest Killstreak:"), 3));
+      scores.add(getScorePacket(scoreboard, objective, LangUtils.getMessage(player, OtherEnum.SCOREBOARD_BEST_KILL_STREAK), 3));
       scores.add(getScorePacket(scoreboard, objective, color("&8» &e" + killstreak + " "), 2));
       scores.add(getScorePacket(scoreboard, objective, "  ", 1));
-      scores.add(getScorePacket(scoreboard, objective, color((Main.teaming ? "&a&lTeaming is Allowed" : "&4&lTeaming is Prohibited")), 0));
+      scores.add(getScorePacket(scoreboard, objective, LangUtils.getMessage(player, Main.teaming ? OtherEnum.SCOREBOARD_TEAMING_ALLOW : OtherEnum.SCOREBOARD_TEAMING_PROHIBIT), 0));
 
       PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
       connection.sendPacket(removeObjective);
@@ -79,6 +82,10 @@ public class ScoreboardManager implements Listener {
               Bar.sendDefaultBar(player, time);
           }
           if(sec == 5) {
+              Location spawn = Locations.getSpawnLocation(Locations.getMapNameByInt(i = i + 1 < 4 ? i + 1 : 1));
+              if(!spawn.getChunk().isLoaded()) {
+                  spawn.getChunk().load();
+              }
               pvpAble = false;
           }
           switch(sec) {
@@ -107,19 +114,18 @@ public class ScoreboardManager implements Listener {
           }, 0L, 20L);
   }
 
-  public static void sendAllPlayer(String string) {
-      String message = ChatColor.translateAlternateColorCodes('&', string);
+  public static void sendAllPlayer(MessageEnum node, int sec) {
       for(Player player : Bukkit.getOnlinePlayers()) {
-          player.sendMessage(message);
+          player.sendMessage(LangUtils.getMessage(player, node).replace("%time%", String.valueOf(sec)));
       }
   }
 
   public static void sendCountdownMessage() {
       if(sec >= 60) {
-          sendAllPlayer(sec / 60 == 1 ? "&a[&dTeamCocoa&a] &aThe map will be changed in &e&l" + sec / 60 + "&a minute!" : "&a[&dTeamCocoa&a] &aThe map will be changed in &e&l" + sec / 60 + "&a minutes!");
+          sendAllPlayer(sec / 60 == 1 ? MessageEnum.MAP_CHANGE_MINUTE : MessageEnum.MAP_CHANGE_MINUTES, sec / 60);
       }
       else {
-          sendAllPlayer(sec != 1 ? "&a[&dTeamCocoa&a] &aThe map will be changed in &e&l" + sec + "&a seconds!" : "&a[&dTeamCocoa&a] &aThe map will be changed in &e&l" + sec + "&a second!");
+          sendAllPlayer(sec != 1 ? MessageEnum.MAP_CHANGE_SECONDS : MessageEnum.MAP_CHANGE_SECOND, sec);
 
       }
   }

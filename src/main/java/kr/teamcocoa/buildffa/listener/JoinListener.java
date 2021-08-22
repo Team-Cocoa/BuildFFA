@@ -1,8 +1,10 @@
 package kr.teamcocoa.buildffa.listener;
 
+import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.*;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -26,10 +28,12 @@ public class JoinListener implements Listener {
         e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
       }
 
-      Title.sendTitle(p,
-              ChatColor.translateAlternateColorCodes('&', "&4/Kits"),
-              ChatColor.translateAlternateColorCodes('&', "&eUse this command to change your kits."),
-              10, 80, 10);
+      Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+        Title.sendTitle(p,
+                ChatColor.translateAlternateColorCodes('&', "&4/Kits"),
+                LangUtils.getMessage(p, MessageEnum.JOIN_TITLE),
+                10, 80, 10);
+      }, 5L);
 
     } else {
       e.setJoinMessage(null);

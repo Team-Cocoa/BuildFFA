@@ -1,5 +1,6 @@
 package kr.teamcocoa.buildffa.utils;
 
+import kr.teamcocoa.buildffa.enums.OtherEnum;
 import kr.teamcocoa.buildffa.main.Main;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
@@ -15,10 +16,10 @@ public class Bar {
     }
 
     public static void sendDefaultBar(Player player, String time) {
-        sendBar(player, ChatColor.translateAlternateColorCodes('&', "&8» &fMap : &e" + Locations.getCurrentMap()
-                + " &r&8» &fKits : &e"
+        sendBar(player, ChatColor.translateAlternateColorCodes('&', "&8» " + LangUtils.getMessage(player, OtherEnum.BAR_MAP) + " : &e" + Locations.getCurrentMap()
+                + " &r&8» " + LangUtils.getMessage(player, OtherEnum.BAR_KIT) + " : &e"
                 + Main.inst().kitData.getKitByInt(Main.playerData.get(player).getKit())
-                + " &r&8» &fMapChange Time : &e"
+                + " &r&8» " + LangUtils.getMessage(player, OtherEnum.BAR_TIME_LEFT) + " : &e"
                 + time));
     }
 }

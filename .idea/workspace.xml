@@ -5,27 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58d3d634-9719-411b-83b5-014a3e754570" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/InventoryEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/ItemEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/MessageEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/OtherEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/LanguageListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/LangUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/StringUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/commands/Build.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/commands/Build.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/commands/Kits.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/commands/Kits.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/BffaPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/BffaPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/BlockPlaceListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/BlockPlaceListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/EnderPeralCancelListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/EnderPeralCancelListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/KitData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/KitData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/EntityDamageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/EntityDamageListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InventoryCloseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InventoryCloseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InteractListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InteractListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InventoryClickListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/JoinListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/JoinListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerDeathListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerDeathListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerMoveListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/PlayerMoveListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/QuitListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/QuitListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/Bar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/Bar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/Locations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/Locations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/ScoreboardManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/ScoreboardManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/world/WorldData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/world/WorldData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/BuildFFA-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/BuildFFA-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/commands/Build.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/commands/Build.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/kit/BffaPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/kit/BffaPlayer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/BlockPlaceListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/BlockPlaceListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/EnderPeralCancelListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/EnderPeralCancelListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/EntityDamageListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/EntityDamageListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/PlayerDeathListener$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/PlayerDeathListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/PlayerDeathListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/PlayerMoveListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/PlayerMoveListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/QuitListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/QuitListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/utils/Locations.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/utils/Locations.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/utils/ScoreboardManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/utils/ScoreboardManager$1.class" afterDir="false" />
@@ -39,6 +43,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -78,7 +83,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../language" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -149,7 +154,14 @@
       <option name="project" value="LOCAL" />
       <updated>1628009220592</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="2021/08/15/03:23">
+      <created>1628965454167</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1628965454167</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -160,6 +172,7 @@
     <MESSAGE value="2021/07/12/22:47" />
     <MESSAGE value="2021/07/24/00:07" />
     <MESSAGE value="2021/08/04/01:46" />
-    <option name="LAST_COMMIT_MESSAGE" value="2021/08/04/01:46" />
+    <MESSAGE value="2021/08/15/03:23" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021/08/15/03:23" />
   </component>
 </project>

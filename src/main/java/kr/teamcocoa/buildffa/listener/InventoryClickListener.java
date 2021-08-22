@@ -1,8 +1,12 @@
 package kr.teamcocoa.buildffa.listener;
+import kr.teamcocoa.buildffa.enums.InventoryEnum;
+import kr.teamcocoa.buildffa.enums.ItemEnum;
+import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Bar;
+import kr.teamcocoa.buildffa.utils.LangUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,20 +30,20 @@ public class InventoryClickListener implements Listener {
       if(Main.playerData.get(p).isBuild()){
           return;
       }
-    if (e.getCurrentItem() == null && !e.getView().getTitle().equals("§cInventorySorting")) {
+    if (e.getCurrentItem() == null && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.INVENTORY_SORTING))) { //invsorting
       e.setCancelled(true);
       return;
     }
-    if (e.getCurrentItem().getItemMeta() == null && !e.getView().getTitle().equals("§cInventorySorting")) {
+    if (e.getCurrentItem().getItemMeta() == null && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.INVENTORY_SORTING))) {
       e.setCancelled(true);
       return;
     }
     if(Main.playerData.get(p).isInGame() && (e.getAction().equals(InventoryAction.PICKUP_ALL) || e.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
         e.setCancelled(true);
         p.playSound(p.getLocation(), Sound.NOTE_BASS, 100F, 0F);
-        p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &7Please use InventorySorting to edit your inventory layout!"));
+        p.sendMessage(LangUtils.getMessage(p, MessageEnum.USE_INVENTORY_SORTING));
     }
-    if (e.getView().getTitle().equals("§cKit Selection")) {
+    if (e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.KIT_SELECT))) {
         ItemStack clickedItem = e.getCurrentItem();
         int kit = 0;
         switch(clickedItem.getType()){
@@ -61,19 +65,19 @@ public class InventoryClickListener implements Listener {
             Main.inst().kitData.setKit(p, kit);
             Main.playerData.get(p).setKit(kit);
             Main.playerData.get(p).setInventory(Main.inst().kitData.getPlayerKit(p, kit));
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &aYour settings has been saved."));
+            p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));
         } catch (Exception e1) {
             e1.printStackTrace();
-            p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &cAn error has occurred."));
+            p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
         }
         p.closeInventory();
         return;
     }
 
 
-    if(e.getView().getTitle().equals("§cInventorySorting")){
-        ItemStack saveItem = Main.inst().kitData.createDye("§aSave", Material.INK_SACK, (short)10);
-        ItemStack resetItem = Main.inst().kitData.createDye("§cReset", Material.INK_SACK, (short)1);
+    if(e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.INVENTORY_SORTING))){
+        ItemStack saveItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.SAVE), Material.INK_SACK, (short)10);
+        ItemStack resetItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.RESET), Material.INK_SACK, (short)1);
         ItemStack clickedItem = e.getCurrentItem();
         ItemStack glassItem = Main.inst().kitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7);
         int kit = Main.playerData.get(p).getKit();
@@ -97,12 +101,12 @@ public class InventoryClickListener implements Listener {
             try{
                 Main.playerData.get(p).setInventory(inventory);
                 Main.inst().kitData.setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &cYour settings has been reset."));
+                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
                 p.closeInventory();
             }
             catch(Exception e1){
                 e1.printStackTrace();
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &cAn error has occurred."));
+                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
             }
         }
         if(clickedItem.equals(saveItem)){
@@ -121,12 +125,14 @@ public class InventoryClickListener implements Listener {
             try{
                 Main.inst().kitData.setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
                 Main.playerData.get(p).setInventory(inventory);
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &aYour settings has been saved."));
+                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));
                 p.closeInventory();
+                p.getInventory().clear();
+                Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
             }
             catch(Exception e1){
                 e1.printStackTrace();
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &cAn error has occurred."));
+                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
             }
         }
     }

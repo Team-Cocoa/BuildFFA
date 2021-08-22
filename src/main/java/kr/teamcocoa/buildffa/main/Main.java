@@ -1,5 +1,6 @@
 package kr.teamcocoa.buildffa.main;
 
+import es.minetsii.languages.utils.LanguageUtils;
 import kr.teamcocoa.buildffa.block.RemoveBlockAnimation;
 import kr.teamcocoa.buildffa.commands.*;
 import kr.teamcocoa.buildffa.kit.KitData;
@@ -32,6 +33,7 @@ public class Main extends JavaPlugin {
   public static boolean teaming;
   
   public void onEnable() {
+    LanguageUtils.loadPlugin(this);
     System.out.println(" _____________________________________________________________");
     System.out.println("|                                                             |");
     System.out.println("| [BuildFFA] Plugin is Loading...                             |");
@@ -75,6 +77,7 @@ public class Main extends JavaPlugin {
     getServer().getPluginManager().registerEvents(new WeatherChangeListener(), this);
     getServer().getPluginManager().registerEvents(new InventoryDragListener(), this);
     getServer().getPluginManager().registerEvents(new PlayerPickupItemListener(), this);
+    getServer().getPluginManager().registerEvents(new LanguageListener(), this);
   }
 
   public void loadCommands(){

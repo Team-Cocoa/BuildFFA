@@ -1,11 +1,10 @@
 package kr.teamcocoa.buildffa.listener;
 
+import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.utils.Config;
-import kr.teamcocoa.buildffa.utils.Locations;
-import kr.teamcocoa.buildffa.utils.MYSQL;
-import kr.teamcocoa.buildffa.utils.Stats;
+import kr.teamcocoa.buildffa.utils.*;
+
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,6 +26,7 @@ public class PlayerDeathListener implements Listener {
   
   @EventHandler
   public void onPlayerDeath(PlayerDeathEvent e) {
+    e.setDeathMessage(null);
     final Player p = e.getEntity();
     final BffaPlayer bffaPlayer = Main.playerData.get(p);
     final int deadPlayerKillStreak = Main.playerData.get(p).getPlayerKillStreak();
@@ -38,21 +38,18 @@ public class PlayerDeathListener implements Listener {
     if (Locations.CurrentMapname != null) {
       String Mapname = Locations.CurrentMapname;
       final Location spawnloc = Locations.getSpawnLocation(Mapname);
-      Bukkit.getScheduler().runTaskLater((Plugin)Main.inst(), new Runnable() {
-            public void run() {
+      Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
               Main.playerData.get(p).setInGame(false);
               Main.playerData.get(p).setLatestDeadTime(System.currentTimeMillis());
               p.spigot().respawn();
               p.teleport(spawnloc);
               p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
-            }
-          }, 1L);
+              }, 1L);
     }
 
     if (p.getKiller() instanceof Player) {
 
       if(p.equals(p.getKiller())) {
-        e.setDeathMessage("");
         return;
       }
       final BffaPlayer killerBffaPlayer = Main.playerData.get(p.getKiller());
@@ -60,7 +57,7 @@ public class PlayerDeathListener implements Listener {
       killerBffaPlayer.addKills();
 
       String KillerHealth = (new DecimalFormat("#0.0")).format(p.getKiller().getHealth() / 2.0D);
-      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.kill").replaceAll("&", "§").replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
+      p.sendMessage(LangUtils.getMessage(p, MessageEnum.PLAYER_KILL).replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
 
 
       int killerKillstreak = killerBffaPlayer.getPlayerKillStreak() + 1;
@@ -119,26 +116,17 @@ public class PlayerDeathListener implements Listener {
         if (deadPlayerKillStreak >= 5) {
           String killstreakPlayerString = String.valueOf(deadPlayerKillStreak);
           for(Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreakbroken").replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", nameKiller).replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
+            player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK_BROKEN).replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", nameKiller).replaceAll("%PLAYER%", p.getName()));
           }
         }
         if (killerKillstreak != 0 && (killerKillstreak % 5 == 0 || killerKillstreak > 15)) {
           for(Player player : Bukkit.getOnlinePlayers()) {
-            player.sendMessage(Main.getPrefix() + Config.messages.getString("player.killstreak").replaceAll("%KILLSTREAK%", String.valueOf(killerKillstreak)).replaceAll("%PLAYER%", nameKiller).replaceAll("&", "§"));
+            player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK).replaceAll("%KILLSTREAK%", String.valueOf(killerKillstreak)).replaceAll("%PLAYER%", nameKiller));
           }
         }
       }, 3L);
     }
 
-    else if (Config.config.getBoolean("message.playerdeath")) {
-      if (Config.config.getBoolean("displayname.deaths")) {
-        Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.death").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
-      } else {
-        Bukkit.broadcastMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.death").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
-      } 
-    } else {
-      e.setDeathMessage(null);
-    }
     e.setDroppedExp(0);
     e.getDrops().clear();
     e.setDeathMessage("");

@@ -1,6 +1,9 @@
 package kr.teamcocoa.buildffa.kit;
 
+import kr.teamcocoa.buildffa.enums.InventoryEnum;
+import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.utils.LangUtils;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -190,8 +193,8 @@ public class KitData {
         return armorList;
     }
 
-    public Inventory getKitSelection(){
-        Inventory kitSelection = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&cKit Selection"));
+    public Inventory getKitSelection(Player player){
+        Inventory kitSelection = Bukkit.createInventory(null, 27, LangUtils.getMessage(player, InventoryEnum.KIT_SELECT));
         for(int i = 0; i < 11; i++){
             kitSelection.setItem(i, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
         }
@@ -207,7 +210,7 @@ public class KitData {
 
     public Inventory getInventorySorting(Player player, int kit){
         ItemStack[] kitSorting = getPlayerKit(player, kit);
-        Inventory inventorySorting = Bukkit.createInventory(null, 27, ChatColor.translateAlternateColorCodes('&', "&cInventorySorting"));
+        Inventory inventorySorting = Bukkit.createInventory(null, 27, LangUtils.getMessage(player, InventoryEnum.INVENTORY_SORTING));
         for(int i = 0; i < 9; i++){
             inventorySorting.setItem(i, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
         }
@@ -217,8 +220,8 @@ public class KitData {
         for(int i = 18; i < 27; i++){
             inventorySorting.setItem(i, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
         }
-        inventorySorting.setItem(21, createDye("§aSave", Material.INK_SACK, (short)10));
-        inventorySorting.setItem(23, createDye("§cReset", Material.INK_SACK, (short)1));
+        inventorySorting.setItem(21, createDye(LangUtils.getMessage(player, ItemEnum.SAVE), Material.INK_SACK, (short)10));
+        inventorySorting.setItem(23, createDye(LangUtils.getMessage(player, ItemEnum.RESET), Material.INK_SACK, (short)1));
 
         return inventorySorting;
     }
