@@ -7,6 +7,7 @@ import kr.teamcocoa.buildffa.utils.Config;
 import kr.teamcocoa.buildffa.utils.Locations;
 import kr.teamcocoa.buildffa.block.RemoveBlockAnimation;
 
+import kr.teamcocoa.buildffa.utils.ScoreboardManager;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,11 @@ public class BlockPlaceListener implements Listener {
   public void onBlockPlace(final BlockPlaceEvent e) {
     Block block = e.getBlock();
     if(block.getX() == 1000 && block.getZ() == 1000) {
+      e.setCancelled(true);
+      return;
+    }
+
+    if(!ScoreboardManager.placeAble) {
       e.setCancelled(true);
       return;
     }

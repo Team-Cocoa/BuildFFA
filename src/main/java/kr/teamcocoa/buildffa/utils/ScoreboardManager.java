@@ -28,6 +28,7 @@ public class ScoreboardManager implements Listener {
     public static int sec = 600;
     public static int i = (int)(Math.random() * 2) + 1;
     public static boolean pvpAble = true;
+    public static boolean placeAble = true;
   
   public void setScoreboard(Player player) {
       int kills = Main.playerData.get(player).getKills();
@@ -87,6 +88,7 @@ public class ScoreboardManager implements Listener {
                   spawn.getChunk().load();
               }
               pvpAble = false;
+              placeAble = false;
           }
           switch(sec) {
               case 600:
@@ -101,12 +103,14 @@ public class ScoreboardManager implements Listener {
               case 2:
               case 1:
                   sendCountdownMessage();
+                  Main.worldData.removeBlocks();
                   break;
               case 0:
                   sec = 600;
                   i = i + 1 < 4 ? i + 1 : 1;
                   Locations.MapChange(i);
                   pvpAble = true;
+                  placeAble = true;
                   break;
               default:
                   break;
