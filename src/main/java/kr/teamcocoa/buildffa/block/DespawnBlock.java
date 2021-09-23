@@ -35,7 +35,9 @@ public class DespawnBlock {
             }
         }
         catch(NullPointerException e) {
+            block.setType(Material.AIR);
             this.giveAgain = false;
+            return false;
         }
         if(i < 10) {
             PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(

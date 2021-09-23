@@ -424,7 +424,7 @@ public class KitData {
         return air;
     }
 
-    public ItemStack createItemStack(Material material, String name, int amount, ArrayList lore, byte data) {
+    public static ItemStack createItemStack(Material material, String name, int amount, ArrayList lore, byte data) {
         ItemStack itemStack = new ItemStack(material, amount, (short)data);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(name);

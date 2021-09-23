@@ -15,7 +15,7 @@ public class WorldData {
         Iterator<Block> it = blocks.iterator();
         while (it.hasNext()) {
             Block block = it.next();
-            block.setType(Material.AIR);
+            removeBlock(block);
             it.remove();
         }
     }

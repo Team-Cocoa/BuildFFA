@@ -8,7 +8,8 @@ public enum OtherEnum {
     SCOREBOARD_KILLS("scoreboard_kills"),
     SCOREBOARD_BEST_KILL_STREAK("scoreboard_best_kill_streak"),
     SCOREBOARD_TEAMING_ALLOW("scoreboard_teaming_allow"),
-    SCOREBOARD_TEAMING_PROHIBIT("scoreboard_teaming_prohibit");
+    SCOREBOARD_TEAMING_PROHIBIT("scoreboard_teaming_prohibit"),
+    LORE_VOTE_COUNT("lore_vote_count");
 
     private final String name;
 
