@@ -1,8 +1,11 @@
 package kr.teamcocoa.buildffa.listener;
 
+import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Config;
+import kr.teamcocoa.buildffa.utils.LangUtils;
+import kr.teamcocoa.buildffa.world.MapVote;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,6 +23,10 @@ public class QuitListener implements Listener {
   public void onQuit(PlayerQuitEvent e) {
     Player p = e.getPlayer();
     BffaPlayer bffaPlayer = Main.playerData.get(p);
+    MapVote mapVote = MapVote.getInstance();
+    if(mapVote.getWherePlayerVoted(p) != null) {
+      mapVote.removeVote(p, mapVote.getWherePlayerVoted(p));
+    }
     if (Main.playerData.get(p).isInGame()) {
       bffaPlayer.addDeaths();
       try {
@@ -31,7 +38,7 @@ public class QuitListener implements Listener {
           killerBffaPlayer.addKills();
 
           String KillerHealth = (new DecimalFormat("#0.0")).format(killer.getHealth() / 2.0D);
-          p.sendMessage(Main.getPrefix() + Config.messages.getString("player.kill").replaceAll("&", "§").replaceAll("%KILLER%", killer.getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
+          p.sendMessage(LangUtils.getMessage(p, MessageEnum.PLAYER_KILL).replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
 
 
           int killerKillstreak = killerBffaPlayer.getPlayerKillStreak() + 1;
@@ -86,12 +93,12 @@ public class QuitListener implements Listener {
             if (bffaPlayer.getPlayerKillStreak() >= 5) {
               String killstreakPlayerString = String.valueOf(bffaPlayer.getPlayerKillStreak());
               for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("player.killstreakbroken").replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", nameKiller).replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
+                player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK_BROKEN).replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", nameKiller).replaceAll("%PLAYER%", p.getName()));
               }
             }
             if (killerKillstreak != 0 && (killerKillstreak % 5 == 0 || killerKillstreak > 15)) {
               for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(Main.getPrefix() + Config.messages.getString("player.killstreak").replaceAll("%KILLSTREAK%", String.valueOf(killerKillstreak)).replaceAll("%PLAYER%", nameKiller).replaceAll("&", "§"));
+                player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK).replaceAll("%KILLSTREAK%", String.valueOf(killerKillstreak)).replaceAll("%PLAYER%", nameKiller));
               }
             }
           }, 3L);

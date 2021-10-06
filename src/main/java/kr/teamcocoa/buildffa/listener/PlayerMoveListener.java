@@ -1,10 +1,8 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.utils.Config;
-import kr.teamcocoa.buildffa.utils.Locations;
+import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -20,15 +18,14 @@ public class PlayerMoveListener implements Listener {
   public void onPlayerMove(PlayerMoveEvent e) {
     final Player p = e.getPlayer();
     Location loc = p.getLocation();
-    if (Locations.CurrentMapname
-            != null && Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".deathheight") != null && Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".arenaheight") != null) {
-      if (loc.getY() <= Config.locations.getDouble(String.valueOf(Locations.CurrentMapname) + ".deathheight") && Main.playerData.get(p).isDied() == false)
+    if (WorldManager.getInstance().getCurrentMap() != null) {
+      if (loc.getY() <= 0 && Main.playerData.get(p).isDied() == false)
         if (!Main.playerData.get(p).isBuild()) {
           p.setHealth(0.0D);
           Main.playerData.get(p).setDied(true);
           Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setDied(false), 20L);
         }
-      if (loc.getY() <= Config.locations.getDouble(String.valueOf(Locations.CurrentMapname) + ".arenaheight")) {
+      if (loc.getY() <= 207) {
         if (!Main.playerData.get(p).isInGame() && !Main.playerData.get(p).isBuild()) {
           BffaPlayer bffaPlayer = Main.playerData.get(p);
           p.closeInventory();

@@ -4,6 +4,7 @@ import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.*;
+import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -37,34 +38,13 @@ public class JoinListener implements Listener {
 
     } else {
       e.setJoinMessage(null);
-    } 
-//    if (!Config.config.getString("startmap").equals("none")) {
-//      if (Locations.getCurrentMap().equals("Keine Map"))
-//        Locations.setCurrentMap(Config.config.getString("startmap").replaceAll("&", "§"));
-//    } else {
-//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.01").replaceAll("&", "§"));
-//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.02").replaceAll("&", "§"));
-//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.03").replaceAll("&", "§"));
-//      return;
-//    }
-    if (Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".deathheight") != null) {
-      if (Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".arenaheight") != null) {
-        Location mapspawn = Locations.getSpawnLocation(Locations.CurrentMapname);
-        p.teleport(mapspawn);
-        if (!Main.playerData.get(p).isBuild()) {
-          Main.playerData.get(p).setJoinInventory();
-          p.setHealth(1.0D);
-          p.setFoodLevel(20);
-        } 
-      }
-//      else {
-//        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("noarenaheight.01").replaceAll("&", "§"));
-//        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("noarenaheight.02").replaceAll("&", "§"));
-//      }
     }
-//    else {
-//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nodeathheight.01").replaceAll("&", "§"));
-//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nodeathheight.02").replaceAll("&", "§"));
-//    }
+    Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
+    p.teleport(spawn);
+    if (!Main.playerData.get(p).isBuild()) {
+      Main.playerData.get(p).setJoinInventory();
+      p.setHealth(1.0D);
+      p.setFoodLevel(20);
+    }
   }
 }

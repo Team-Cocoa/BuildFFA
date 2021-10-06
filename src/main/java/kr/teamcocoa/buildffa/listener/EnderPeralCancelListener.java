@@ -1,6 +1,7 @@
 package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,7 +11,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.utils.Locations;
 
 public class EnderPeralCancelListener implements Listener {
 
@@ -43,7 +43,7 @@ public class EnderPeralCancelListener implements Listener {
         long latestDeadTime = bffaPlayer.getLatestDeadTime();
         long now = System.currentTimeMillis();
         if(latestDeadTime < threwTime && threwTime < now){
-            Location spawnLocation = Locations.getSpawnLocation(Locations.CurrentMapname);
+            Location spawnLocation = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
             if(e.getTo().getY() >= spawnLocation.getY() - 5){
                 e.setCancelled(true);
             }

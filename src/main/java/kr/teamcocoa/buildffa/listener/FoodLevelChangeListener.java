@@ -1,7 +1,6 @@
 package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.utils.Config;
-import kr.teamcocoa.buildffa.utils.Locations;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +14,7 @@ public class FoodLevelChangeListener implements Listener {
       Player p = (Player)e.getEntity();
       Location loc = p.getLocation();
       if (Config.config.getBoolean("hunger")) {
-        if (loc.getY() > Config.locations.getDouble(String.valueOf(Locations.getCurrentMap()) + ".arenaheight"))
+        if (loc.getY() > 197)
           e.setCancelled(true); 
       } else {
         e.setCancelled(true);

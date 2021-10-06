@@ -7,6 +7,7 @@ import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Bar;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import kr.teamcocoa.buildffa.world.MapVoteInventory;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 public class InventoryClickListener implements Listener {
   @EventHandler
   public void onInventoryClick(InventoryClickEvent e) {
+      MapVoteInventory.getInstance().onClickInventory(e);
     Player p = (Player)e.getWhoClicked();
       if(Main.playerData.get(p).isBuild()){
           return;
@@ -38,6 +40,10 @@ public class InventoryClickListener implements Listener {
       e.setCancelled(true);
       return;
     }
+      if (e.getCurrentItem().getItemMeta() == null && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.VOTE))) {
+          e.setCancelled(true);
+          return;
+      }
     if(Main.playerData.get(p).isInGame() && (e.getAction().equals(InventoryAction.PICKUP_ALL) || e.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
         e.setCancelled(true);
         p.playSound(p.getLocation(), Sound.NOTE_BASS, 100F, 0F);

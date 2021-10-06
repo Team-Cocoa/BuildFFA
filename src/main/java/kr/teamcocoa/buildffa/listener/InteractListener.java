@@ -5,7 +5,6 @@ import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Config;
 import kr.teamcocoa.buildffa.utils.LangUtils;
-import kr.teamcocoa.buildffa.utils.Locations;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,7 +37,7 @@ public class InteractListener implements Listener {
       if (p.getItemInHand().getItemMeta().getDisplayName().equals("§cKillEffects")){
         p.performCommand("killeffect");
       }
-      if (p.getLocation().getY() >= Config.locations.getDouble(String.valueOf(Locations.CurrentMapname) + ".arenaheight")) {
+      if (p.getLocation().getY() >= 207) {
         e.setCancelled(true);
       }
     }

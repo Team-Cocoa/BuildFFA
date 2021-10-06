@@ -2,6 +2,7 @@ package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.ScoreboardManager;
+import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,7 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class EntityDamageListener implements Listener {
   @EventHandler
   public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-    if(!ScoreboardManager.pvpAble) {
+    if(!WorldManager.getInstance().isPvpAble()) {
       e.setCancelled(true);
       return;
     }
@@ -28,7 +29,7 @@ public class EntityDamageListener implements Listener {
   
   @EventHandler
   public void onEntityDamage(EntityDamageEvent e) {
-    if(!ScoreboardManager.pvpAble) {
+    if(!WorldManager.getInstance().isPvpAble()) {
       e.setCancelled(true);
       return;
     }

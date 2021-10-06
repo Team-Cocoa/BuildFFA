@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
+import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,17 +36,15 @@ public class PlayerDeathListener implements Listener {
     bffaPlayer.addDeaths();
     bffaPlayer.setLastHitPlayer(null);
 
-    if (Locations.CurrentMapname != null) {
-      String Mapname = Locations.CurrentMapname;
-      final Location spawnloc = Locations.getSpawnLocation(Mapname);
-      Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-              Main.playerData.get(p).setInGame(false);
-              Main.playerData.get(p).setLatestDeadTime(System.currentTimeMillis());
-              p.spigot().respawn();
-              p.teleport(spawnloc);
-              p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
-              }, 1L);
-    }
+
+    Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
+    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+      Main.playerData.get(p).setInGame(false);
+      Main.playerData.get(p).setLatestDeadTime(System.currentTimeMillis());
+      p.spigot().respawn();
+      p.teleport(spawn);
+      p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
+      }, 1L);
 
     if (p.getKiller() instanceof Player) {
 

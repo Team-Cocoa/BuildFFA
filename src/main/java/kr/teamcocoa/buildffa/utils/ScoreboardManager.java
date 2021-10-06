@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ScoreboardManager implements Listener {
     public static int sec = 600;
-    public static int i = (int)(Math.random() * 2) + 1;
+    public static int i = (int)(Math.random() * 3) + 1;
     public static boolean pvpAble = true;
     public static boolean placeAble = true;
   
@@ -73,50 +73,51 @@ public class ScoreboardManager implements Listener {
     return ChatColor.translateAlternateColorCodes('&', string);
   }
   
-  public static void mapChangeUpdater() {
-
-      Bukkit.getScheduler().runTaskTimer(Main.inst(), () -> {
-          --sec;
-          LocalTime localTime = LocalTime.ofSecondOfDay(sec);
-          String time = localTime.toString();
-          for(Player player : Bukkit.getOnlinePlayers()) {
-              Bar.sendDefaultBar(player, time);
-          }
-          if(sec == 5) {
-              Location spawn = Locations.getSpawnLocation(Locations.getMapNameByInt(i = i + 1 < 4 ? i + 1 : 1));
-              if(!spawn.getChunk().isLoaded()) {
-                  spawn.getChunk().load();
-              }
-              pvpAble = false;
-              placeAble = false;
-          }
-          switch(sec) {
-              case 600:
-              case 300:
-              case 180:
-              case 60:
-              case 30:
-              case 10:
-              case 5:
-              case 4:
-              case 3:
-              case 2:
-              case 1:
-                  sendCountdownMessage();
-                  Main.worldData.removeBlocks();
-                  break;
-              case 0:
-                  sec = 600;
-                  i = i + 1 < 4 ? i + 1 : 1;
-                  Locations.MapChange(i);
-                  pvpAble = true;
-                  placeAble = true;
-                  break;
-              default:
-                  break;
-          }
-          }, 0L, 20L);
-  }
+//  public static void mapChangeUpdater() {
+//
+//      Bukkit.getScheduler().runTaskTimer(Main.inst(), () -> {
+//          --sec;
+//          LocalTime localTime = LocalTime.ofSecondOfDay(sec);
+//          String time = localTime.toString();
+//          for(Player player : Bukkit.getOnlinePlayers()) {
+//              Bar.sendDefaultBar(player, time);
+//          }
+//          if(sec == 5) {
+//              Location spawn = Locations.getSpawnLocation(Locations.getMapNameByInt(i = i + 1 < 4 ? i + 1 : 1));
+//              if(!spawn.getChunk().isLoaded()) {
+//                  spawn.getChunk().load();
+//              }
+//              pvpAble = false;
+//              placeAble = false;
+//          }
+//          switch(sec) {
+//              case 600:
+//              case 300:
+//              case 180:
+//              case 60:
+//              case 30:
+//              case 10:
+//              case 5:
+//              case 4:
+//              case 3:
+//              case 2:
+//                  break;
+//              case 1:
+//                  sendCountdownMessage();
+//                  Main.worldData.removeBlocks();
+//                  break;
+//              case 0:
+//                  sec = 600;
+//                  i = i + 1 < 4 ? i + 1 : 1;
+////                  Locations.MapChange(i);
+//                  pvpAble = true;
+//                  placeAble = true;
+//                  break;
+//              default:
+//                  break;
+//          }
+//          }, 0L, 20L);
+//  }
 
   public static void sendAllPlayer(MessageEnum node, int sec) {
       for(Player player : Bukkit.getOnlinePlayers()) {

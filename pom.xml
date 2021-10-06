@@ -32,7 +32,7 @@
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId> <!-- Don't forget to replace this -->
             <artifactId>Multiverse-Core</artifactId> <!-- Replace this as well -->
-            <version>4.3.0</version> <!-- This too -->
+            <version>4.3.1-SNAPSHOT</version> <!-- This too -->
         </dependency>
     </dependencies>
 
