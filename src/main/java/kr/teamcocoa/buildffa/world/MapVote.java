@@ -140,11 +140,14 @@ public class MapVote {
     public String getVotingStatusMessage(Player player) {
         StringBuilder sb = new StringBuilder();
         sb.append(LangUtils.getMessage(player, MessageEnum.VOTE_CURRENT_INFO));
+        sb.append(StringUtils.color("&r"));
         for(String string : mapList) {
             sb.append("\n          ");
             sb.append(LangUtils.getMessage(player, MessageEnum.VOTE_NUMBER_OF_VOTE).replace("%map%", string).replace("%int%", String.valueOf(voteList.get(string))));
             sb.append(StringUtils.color("&r"));
         }
+        sb.append("\n          " + LangUtils.getMessage(player, MessageEnum.VOTE_COMMAND) + StringUtils.color("&r"));
+        sb.append(StringUtils.color("&e&l----------------------------------"));
         return sb.toString();
     }
 

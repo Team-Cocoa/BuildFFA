@@ -19,13 +19,18 @@ public class PlayerMoveListener implements Listener {
     final Player p = e.getPlayer();
     Location loc = p.getLocation();
     if (WorldManager.getInstance().getCurrentMap() != null) {
-      if (loc.getY() <= 0 && Main.playerData.get(p).isDied() == false)
+      if (loc.getY() <= WorldManager.getInstance().getDeathHeight() && Main.playerData.get(p).isDied() == false)
         if (!Main.playerData.get(p).isBuild()) {
           p.setHealth(0.0D);
           Main.playerData.get(p).setDied(true);
-          Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setDied(false), 20L);
+          try {
+            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setDied(false), 10L);
+          }
+          catch(Exception e1) {
+
+          }
         }
-      if (loc.getY() <= 207) {
+      if (loc.getY() <= WorldManager.getInstance().getArenaHeight()) {
         if (!Main.playerData.get(p).isInGame() && !Main.playerData.get(p).isBuild()) {
           BffaPlayer bffaPlayer = Main.playerData.get(p);
           p.closeInventory();

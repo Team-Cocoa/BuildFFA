@@ -46,6 +46,7 @@ kr\teamcocoa\buildffa\listener\InventoryDragListener.class
 kr\teamcocoa\buildffa\listener\InventoryClickListener$1.class
 kr\teamcocoa\buildffa\utils\Ranking$1.class
 kr\teamcocoa\buildffa\enums\ItemEnum.class
+kr\teamcocoa\buildffa\listener\WorldInitListener.class
 kr\teamcocoa\buildffa\utils\ScoreboardManager$1.class
 kr\teamcocoa\buildffa\listener\PlayerMoveListener.class
 kr\teamcocoa\buildffa\commands\Stats.class

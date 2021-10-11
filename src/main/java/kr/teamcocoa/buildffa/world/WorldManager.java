@@ -23,7 +23,7 @@ public class WorldManager {
     private String currentMapName = null;
     private String temp;
     private MVWorldManager worldManager = null;
-    private int sec = 60;
+    private int sec = 600;
 //    private int i = (int)(Math.random() * 3) + 1;
     private boolean pvpAble = true;
     private boolean placeAble = true;
@@ -34,6 +34,10 @@ public class WorldManager {
             return instance;
         }
         return instance;
+    }
+
+    public void setCurrentMapName(String currentMapName) {
+        this.currentMapName = currentMapName;
     }
 
     private WorldManager() {
@@ -50,7 +54,7 @@ public class WorldManager {
     }
 
     public void loadWorld(String name) {
-        worldManager.loadWorld(name);
+        worldManager.loadWorld(name.toLowerCase(Locale.ROOT));
     }
 
     public void unloadWorld() {
@@ -71,9 +75,7 @@ public class WorldManager {
 
     public void mapChange(String name) {
         if(temp != currentMapName) {
-            Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
-                unloadWorld();
-            }, 0L);
+            String t = currentMapName;
             currentMapName = temp;
             Location spawn = getSpawnByName(name);
             Main.worldData.removeBlocks();
@@ -88,12 +90,16 @@ public class WorldManager {
                     Main.playerData.put(player, bffaPlayer);
                 }
             }, 0L);
+            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+                unloadWorld(t);
+                System.gc();
+            }, 5L);
         }
-        else {
-            for(Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_MAP_NOT_SELECTED));
-            }
-        }
+//        else {
+//            for(Player player : Bukkit.getOnlinePlayers()) {
+//                player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_MAP_NOT_SELECTED));
+//            }
+//        }
     }
 
     public void mapChangeUpdater() {
@@ -122,34 +128,49 @@ public class WorldManager {
                 case 30:
                     sendCountdownMessage();
                     for(Player player : Bukkit.getOnlinePlayers()) {
-                        mapVote.getVotingStatusMessage(player);
+                        player.sendMessage(mapVote.getVotingStatusMessage(player));
                     }
+                    break;
+                case 310:
+                case 70:
+                case 40:
+                case 20:
+                case 15:
+                case 14:
+                case 13:
+                case 12:
+                case 11:
+                    sendVoteEndMessage();
                     break;
                 case 10:
                     mapVote.setVoteAble(false);
                     String map = mapVote.getMostVoted();
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
+                    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
                         loadWorld(map);
                         cloneWorld(map);
                     }, 0L);
+                    for(Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_ENDED));
+                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_MAP_SELECTED).replace("%map%", map));
+                    }
                 case 5:
                 case 4:
                 case 3:
                 case 2:
                     sendCountdownMessage();
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        mapVote.getVotingStatusMessage(player);
-                    }
+//                    for(Player player : Bukkit.getOnlinePlayers()) {
+//                        mapVote.getVotingStatusMessage(player);
+//                    }
                     break;
                 case 1:
                     sendCountdownMessage();
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        mapVote.getVotingStatusMessage(player);
-                    }
+//                    for(Player player : Bukkit.getOnlinePlayers()) {
+//                        mapVote.getVotingStatusMessage(player);
+//                    }
                     Main.worldData.removeBlocks();
                     break;
                 case 0:
-                    sec = 60;
+                    sec = 600;
 //                    i = i + 1 < 4 ? i + 1 : 1;
 //                    Locations.MapChange(i);
                     mapChange(temp);
@@ -170,12 +191,27 @@ public class WorldManager {
         }
     }
 
+    public void sendAllVotePlayer(MessageEnum node, int sec) {
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(LangUtils.getMessage(player, node).replace("%time%", String.valueOf(sec)));
+        }
+    }
+
     public void sendCountdownMessage() {
         if(sec >= 60) {
             sendAllPlayer(sec / 60 == 1 ? MessageEnum.MAP_CHANGE_MINUTE : MessageEnum.MAP_CHANGE_MINUTES, sec / 60);
         }
         else {
             sendAllPlayer(sec != 1 ? MessageEnum.MAP_CHANGE_SECONDS : MessageEnum.MAP_CHANGE_SECOND, sec);
+        }
+    }
+
+    public void sendVoteEndMessage() {
+        if(sec - 10 >= 60) {
+            sendAllVotePlayer((sec - 10) / 60 == 1 ? MessageEnum.VOTE_END_MINUTE : MessageEnum.VOTE_END_MINUTES, (sec - 10) / 60);
+        }
+        else {
+            sendAllVotePlayer((sec - 10) != 1 ? MessageEnum.VOTE_END_SECONDS : MessageEnum.VOTE_END_SECOND, sec - 10);
         }
     }
 
@@ -212,5 +248,27 @@ public class WorldManager {
 
     public void setPlaceAble(boolean placeAble) {
         this.placeAble = placeAble;
+    }
+
+    public double getArenaHeight() {
+        //        String map = WorldManager.getInstance().getCurrentMap();
+
+        //usually 217
+        return 207.0;
+    }
+
+    public double getDeathHeight() {
+        String map = WorldManager.getInstance().getCurrentMap();
+        //usually 0
+        switch(map.toLowerCase(Locale.ROOT)) {
+            case "cwbw":
+            case "spring":
+                return 0.0;
+            case "flatland":
+                return 85.0;
+            case "architecture":
+                return 64.0;
+        }
+        return 0.0;
     }
 }

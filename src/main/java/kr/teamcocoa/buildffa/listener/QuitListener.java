@@ -110,14 +110,15 @@ public class QuitListener implements Listener {
     }
     Main.inst().stats.updatePlayer(bffaPlayer);
     Main.playerData.remove(p);
-    if (Config.config.getBoolean("join-quit-message")) {
-      if (Config.config.getBoolean("displayname.quitmessage")) {
-        e.setQuitMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("quitmessage").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
-      } else {
-        e.setQuitMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("quitmessage").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
-      } 
-    } else {
-      e.setQuitMessage(null);
-    } 
+//    if (Config.config.getBoolean("join-quit-message")) {
+//      if (Config.config.getBoolean("displayname.quitmessage")) {
+//        e.setQuitMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("quitmessage").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
+//      } else {
+//        e.setQuitMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("quitmessage").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
+//      }
+//    } else {
+//      e.setQuitMessage(null);
+//    }
+    e.setQuitMessage(null);
   }
 }

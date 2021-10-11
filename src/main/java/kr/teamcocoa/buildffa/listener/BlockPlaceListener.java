@@ -8,11 +8,15 @@ import kr.teamcocoa.buildffa.block.RemoveBlockAnimation;
 
 import kr.teamcocoa.buildffa.utils.ScoreboardManager;
 import kr.teamcocoa.buildffa.world.WorldManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 
@@ -20,12 +24,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 public class BlockPlaceListener implements Listener {
   @EventHandler
   public void onBlockPlace(final BlockPlaceEvent e) {
-    Block block = e.getBlock();
-    if(e.getBlockAgainst().getType().equals(Material.WATER)) {
-      e.setCancelled(true);
-      return;
-    }
-
     if(!WorldManager.getInstance().isPlaceAble()) {
       e.setCancelled(true);
       return;

@@ -21,9 +21,13 @@ public enum MessageEnum {
     VOTE_CURRENT_INFO("message_vote_current_info"),
     VOTE_NUMBER_OF_VOTE("message_vote_number_of_vote"),
     VOTE_ENDED("message_vote_ended"),
+    VOTE_COMMAND("message_vote_command"),
     VOTE_MAP_SELECTED("message_vote_map_selected"),
-    VOTE_MAP_NOT_SELECTED("message_vote_map_not_selected"),
-    VOTE_CANNOT_VOTE_MAP("message_vote_cannot_vote_map");
+    VOTE_CANNOT_VOTE_MAP("message_vote_cannot_vote_map"),
+    VOTE_END_MINUTES("message_vote_end_minutes"),
+    VOTE_END_MINUTE("message_vote_end_minute"),
+    VOTE_END_SECONDS("message_vote_end_seconds"),
+    VOTE_END_SECOND("message_vote_end_second");
 
 
 

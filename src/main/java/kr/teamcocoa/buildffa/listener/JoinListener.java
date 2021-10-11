@@ -22,29 +22,38 @@ public class JoinListener implements Listener {
     Main.inst().stats.createPlayer(uuid);
     Main.playerData.put(p, new BffaPlayer(p));
     Main.inst().scoreboardManager.setScoreboard(p);
-    if (Config.config.getBoolean("join-quit-message")) {
-      if (Config.config.getBoolean("displayname.joinmessage")) {
-        e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
-      } else {
-        e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
+//    if (Config.config.getBoolean("join-quit-message")) {
+//      if (Config.config.getBoolean("displayname.joinmessage")) {
+//        e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
+//      } else {
+//        e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
+//      }
+//
+//
+//
+//    } else {
+//      e.setJoinMessage(null);
+//    }
+    e.setJoinMessage(null);
+
+//    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+//
+//    }, 5L);
+
+    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+      Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
+      p.teleport(spawn);
+      Title.sendTitle(p,
+              ChatColor.translateAlternateColorCodes('&', "&4/Kits"),
+              LangUtils.getMessage(p, MessageEnum.JOIN_TITLE),
+              10, 80, 10);
+      if (!Main.playerData.get(p).isBuild()) {
+        Main.playerData.get(p).setInGame(false);
+        Main.playerData.get(p).setJoinInventory();
+        p.setHealth(1.0D);
+        p.setFoodLevel(20);
       }
-
-      Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-        Title.sendTitle(p,
-                ChatColor.translateAlternateColorCodes('&', "&4/Kits"),
-                LangUtils.getMessage(p, MessageEnum.JOIN_TITLE),
-                10, 80, 10);
-      }, 5L);
-
-    } else {
-      e.setJoinMessage(null);
-    }
-    Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
-    p.teleport(spawn);
-    if (!Main.playerData.get(p).isBuild()) {
-      Main.playerData.get(p).setJoinInventory();
-      p.setHealth(1.0D);
-      p.setFoodLevel(20);
-    }
+    }, 1L);
+//    p.teleport(spawn);
   }
 }

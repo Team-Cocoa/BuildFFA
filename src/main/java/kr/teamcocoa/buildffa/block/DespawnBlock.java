@@ -3,9 +3,7 @@ package kr.teamcocoa.buildffa.block;
 import kr.teamcocoa.buildffa.main.Main;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.PacketPlayOutBlockBreakAnimation;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -19,12 +17,18 @@ public class DespawnBlock {
     int i = 0;
     private final Block block;
     private final int random;
+    private final int x, y, z;
     private final BlockPlaceEvent event;
     private boolean giveAgain;
+    private final World world;
     public DespawnBlock(BlockPlaceEvent event, Block block){
         this.random = new Random().nextInt(2000);
         this.block = block;
         this.event = event;
+        this.x = block.getX();
+        this.y = block.getY();
+        this.z = block.getZ();
+        this.world = block.getWorld();
         this.giveAgain = block.getType() == Material.SANDSTONE;
     }
 
@@ -34,8 +38,9 @@ public class DespawnBlock {
                 this.giveAgain = false;
             }
         }
-        catch(NullPointerException e) {
-            block.setType(Material.AIR);
+        catch(Exception e) {
+//            Bukkit.getLogger().info("a");
+            new Location(world, x, y, z).getBlock().setType(Material.AIR);
             this.giveAgain = false;
             return false;
         }
@@ -66,7 +71,9 @@ public class DespawnBlock {
                     event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
                     event.getPlayer().getInventory().setItem(index, blockItem);
                 }
-                catch(NullPointerException e){
+                catch(Exception e){
+//                    Bukkit.getLogger().info("b");
+                    new Location(world, x, y, z).getBlock().setType(Material.AIR);
                     return false;
                 }
             }

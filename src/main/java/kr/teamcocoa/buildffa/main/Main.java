@@ -54,12 +54,16 @@ public class Main extends JavaPlugin {
 
     WorldManager worldManager = WorldManager.getInstance();
     String map = MapVote.getInstance().getRandomMap();
+    worldManager.setCurrentMapName(map);
     for(String string : MapVote.getInstance().getMapList()) {
-      worldManager.unloadWorld(string);
+      if(!string.equals(map)) {
+        worldManager.unloadWorld(string);
+      }
     }
     WorldManager.getInstance().loadWorld(map);
     worldManager.cloneWorld(map);
-    worldManager.mapChange(map);
+    Bukkit.getWorld(map).loadChunk(worldManager.getSpawnByName(map).getChunk());
+//    worldManager.mapChange(map);
     WorldManager.getInstance().mapChangeUpdater();
 
     stats.updateRanking();
@@ -87,6 +91,7 @@ public class Main extends JavaPlugin {
     getServer().getPluginManager().registerEvents(new InventoryDragListener(), this);
     getServer().getPluginManager().registerEvents(new PlayerPickupItemListener(), this);
     getServer().getPluginManager().registerEvents(new LanguageListener(), this);
+    getServer().getPluginManager().registerEvents(new WorldInitListener(), this);
   }
 
   public void loadCommands(){
@@ -111,7 +116,7 @@ public class Main extends JavaPlugin {
   }
   
   public static String getPrefix() {
-    return Config.messages.getString("prefix").replaceAll("&", "§");
+    return StringUtils.color("&a[&dBuildFFA&a] ");
   }
   
   public static void createConfigs() {

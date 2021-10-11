@@ -32,22 +32,9 @@ public class InventoryClickListener implements Listener {
       if(Main.playerData.get(p).isBuild()){
           return;
       }
-    if (e.getCurrentItem() == null && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.INVENTORY_SORTING))) { //invsorting
+    if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null){ //invsorting
       e.setCancelled(true);
       return;
-    }
-    if (e.getCurrentItem().getItemMeta() == null && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.INVENTORY_SORTING))) {
-      e.setCancelled(true);
-      return;
-    }
-      if (e.getCurrentItem().getItemMeta() == null && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.VOTE))) {
-          e.setCancelled(true);
-          return;
-      }
-    if(Main.playerData.get(p).isInGame() && (e.getAction().equals(InventoryAction.PICKUP_ALL) || e.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
-        e.setCancelled(true);
-        p.playSound(p.getLocation(), Sound.NOTE_BASS, 100F, 0F);
-        p.sendMessage(LangUtils.getMessage(p, MessageEnum.USE_INVENTORY_SORTING));
     }
     if (e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.KIT_SELECT))) {
         ItemStack clickedItem = e.getCurrentItem();
@@ -141,6 +128,13 @@ public class InventoryClickListener implements Listener {
                 p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
             }
         }
+        return;
     }
+      if(Main.playerData.get(p).isInGame() && (e.getAction().equals(InventoryAction.PICKUP_ALL) && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.VOTE)) || e.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
+          e.setCancelled(true);
+          p.playSound(p.getLocation(), Sound.NOTE_BASS, 100F, 0F);
+          p.sendMessage(LangUtils.getMessage(p, MessageEnum.USE_INVENTORY_SORTING));
+          return;
+      }
   }
 }
