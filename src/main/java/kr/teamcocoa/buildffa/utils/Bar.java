@@ -17,10 +17,15 @@ public class Bar {
     }
 
     public static void sendDefaultBar(Player player, String time) {
-        sendBar(player, ChatColor.translateAlternateColorCodes('&', "&8» " + LangUtils.getMessage(player, OtherEnum.BAR_MAP) + " : &e" + WorldManager.getInstance().getCurrentMap()
-                + " &r&8» " + LangUtils.getMessage(player, OtherEnum.BAR_KIT) + " : &e"
-                + Main.inst().kitData.getKitByInt(Main.playerData.get(player).getKit())
-                + " &r&8» " + LangUtils.getMessage(player, OtherEnum.BAR_TIME_LEFT) + " : &e"
-                + time));
+        try {
+            sendBar(player, ChatColor.translateAlternateColorCodes('&', "&8» " + LangUtils.getMessage(player, OtherEnum.BAR_MAP) + " : &e" + WorldManager.getInstance().getCurrentMap()
+                    + " &r&8» " + LangUtils.getMessage(player, OtherEnum.BAR_KIT) + " : &e"
+                    + Main.inst().kitData.getKitByInt(Main.playerData.get(player).getKit())
+                    + " &r&8» " + LangUtils.getMessage(player, OtherEnum.BAR_TIME_LEFT) + " : &e"
+                    + time));
+        }
+        catch(NullPointerException e) {
+
+        }
     }
 }

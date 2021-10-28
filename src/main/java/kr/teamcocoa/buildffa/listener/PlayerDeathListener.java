@@ -35,15 +35,18 @@ public class PlayerDeathListener implements Listener {
     bffaPlayer.setPlayerKillStreak(0);
     bffaPlayer.addDeaths();
     bffaPlayer.setLastHitPlayer(null);
+    e.setDroppedExp(0);
+    e.getDrops().clear();
 
 
     Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
+
     Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-      Main.playerData.get(p).setInGame(false);
-      Main.playerData.get(p).setLatestDeadTime(System.currentTimeMillis());
       p.spigot().respawn();
       p.teleport(spawn);
       p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
+      bffaPlayer.setInGame(false);
+      bffaPlayer.setLatestDeadTime(System.currentTimeMillis());
       }, 1L);
 
     if (p.getKiller() instanceof Player) {
@@ -51,13 +54,13 @@ public class PlayerDeathListener implements Listener {
       if(p.equals(p.getKiller())) {
         return;
       }
+
       final BffaPlayer killerBffaPlayer = Main.playerData.get(p.getKiller());
       final String nameKiller = p.getKiller().getName();
       killerBffaPlayer.addKills();
 
       String KillerHealth = (new DecimalFormat("#0.0")).format(p.getKiller().getHealth() / 2.0D);
       p.sendMessage(LangUtils.getMessage(p, MessageEnum.PLAYER_KILL).replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
-
 
       int killerKillstreak = killerBffaPlayer.getPlayerKillStreak() + 1;
       p.getKiller().setHealth(20.0D);
@@ -105,11 +108,10 @@ public class PlayerDeathListener implements Listener {
             e1.printStackTrace();
           }
           killerBffaPlayer.setLastHitPlayer(null);
-          Main.playerData.put(p.getKiller(), killerBffaPlayer);
       }
 
 
-      Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+      Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
         // 코드 원작자 나가 뒤져라 씨발
         // 정리가 시급하다 나중에
         if (deadPlayerKillStreak >= 5) {
@@ -125,10 +127,5 @@ public class PlayerDeathListener implements Listener {
         }
       }, 3L);
     }
-
-    e.setDroppedExp(0);
-    e.getDrops().clear();
-    e.setDeathMessage("");
-    Main.playerData.put(p, bffaPlayer);
   }
 }

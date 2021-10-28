@@ -26,7 +26,6 @@ kr\teamcocoa\buildffa\enums\InventoryEnum.class
 kr\teamcocoa\buildffa\commands\Teaming.class
 kr\teamcocoa\buildffa\listener\LanguageListener.class
 kr\teamcocoa\buildffa\block\DespawnBlock.class
-kr\teamcocoa\buildffa\utils\Ranking.class
 kr\teamcocoa\buildffa\world\MapVoteInventory.class
 kr\teamcocoa\buildffa\listener\FoodLevelChangeListener.class
 kr\teamcocoa\buildffa\commands\Build.class
@@ -44,7 +43,6 @@ kr\teamcocoa\buildffa\commands\Stats$1.class
 kr\teamcocoa\buildffa\listener\InventoryCloseListener.class
 kr\teamcocoa\buildffa\listener\InventoryDragListener.class
 kr\teamcocoa\buildffa\listener\InventoryClickListener$1.class
-kr\teamcocoa\buildffa\utils\Ranking$1.class
 kr\teamcocoa\buildffa\enums\ItemEnum.class
 kr\teamcocoa\buildffa\listener\WorldInitListener.class
 kr\teamcocoa\buildffa\utils\ScoreboardManager$1.class

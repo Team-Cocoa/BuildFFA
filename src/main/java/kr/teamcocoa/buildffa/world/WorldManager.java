@@ -145,10 +145,10 @@ public class WorldManager {
                 case 10:
                     mapVote.setVoteAble(false);
                     String map = mapVote.getMostVoted();
-                    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
                         loadWorld(map);
                         cloneWorld(map);
-                    }, 0L);
+                    }, 1L);
                     for(Player player : Bukkit.getOnlinePlayers()) {
                         player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_ENDED));
                         player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_MAP_SELECTED).replace("%map%", map));
@@ -173,11 +173,11 @@ public class WorldManager {
                     sec = 600;
 //                    i = i + 1 < 4 ? i + 1 : 1;
 //                    Locations.MapChange(i);
-                    mapChange(temp);
                     pvpAble = true;
                     placeAble = true;
                     mapVote.setVoteAble(true);
                     mapVote.resetVotes();
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> mapChange(temp), 1L);
                     break;
                 default:
                     break;

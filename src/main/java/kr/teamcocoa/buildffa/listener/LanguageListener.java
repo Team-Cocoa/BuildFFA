@@ -16,10 +16,15 @@ public class LanguageListener implements Listener {
 
     @EventHandler
     public void onLangChange(PlayerChangesLanguageEvent e) {
-        Player player = e.getPlayer().getBukkitPlayer();
-        if(!Main.playerData.get(player).isInGame()) {
-            player.getInventory().clear();
-            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(player).setJoinInventory(), 5L);
+        try {
+            Player player = e.getPlayer().getBukkitPlayer();
+            if(!Main.playerData.get(player).isInGame()) {
+                player.getInventory().clear();
+                Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(player).setJoinInventory(), 5L);
+            }
+        }
+        catch(NullPointerException e1) {
+
         }
     }
 }
