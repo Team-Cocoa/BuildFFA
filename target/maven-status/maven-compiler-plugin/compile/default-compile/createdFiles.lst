@@ -1,8 +1,6 @@
 kr\teamcocoa\buildffa\kit\BffaPlayer.class
 kr\teamcocoa\buildffa\utils\MYSQL.class
-kr\teamcocoa\buildffa\commands\SetDeathheight.class
 kr\teamcocoa\buildffa\enums\OtherEnum.class
-kr\teamcocoa\buildffa\commands\SetArenaheight.class
 kr\teamcocoa\buildffa\utils\Stats.class
 kr\teamcocoa\buildffa\world\WorldData.class
 kr\teamcocoa\buildffa\commands\Stats$2.class
@@ -10,7 +8,6 @@ kr\teamcocoa\buildffa\enums\MessageEnum.class
 kr\teamcocoa\buildffa\listener\InteractListener.class
 kr\teamcocoa\buildffa\listener\BlockBreakListener.class
 kr\teamcocoa\buildffa\utils\Bar.class
-kr\teamcocoa\buildffa\commands\Item.class
 kr\teamcocoa\buildffa\commands\Kits.class
 kr\teamcocoa\buildffa\utils\LangUtils.class
 kr\teamcocoa\buildffa\utils\StringUtils.class
@@ -19,12 +16,9 @@ kr\teamcocoa\buildffa\listener\QuitListener.class
 kr\teamcocoa\buildffa\listener\EnderPeralCancelListener.class
 kr\teamcocoa\buildffa\listener\EntityDamageListener.class
 kr\teamcocoa\buildffa\listener\InventoryClickListener.class
-kr\teamcocoa\buildffa\utils\Locations.class
-kr\teamcocoa\buildffa\commands\SetSpawn.class
 kr\teamcocoa\buildffa\commands\Stats$3.class
 kr\teamcocoa\buildffa\listener\PlayerRespawnListener.class
 kr\teamcocoa\buildffa\listener\JoinListener.class
-kr\teamcocoa\buildffa\commands\SetStartmap.class
 kr\teamcocoa\buildffa\listener\WeatherChangeListener.class
 kr\teamcocoa\buildffa\utils\ItemManager.class
 kr\teamcocoa\buildffa\utils\Config.class
@@ -32,13 +26,14 @@ kr\teamcocoa\buildffa\enums\InventoryEnum.class
 kr\teamcocoa\buildffa\commands\Teaming.class
 kr\teamcocoa\buildffa\listener\LanguageListener.class
 kr\teamcocoa\buildffa\block\DespawnBlock.class
-kr\teamcocoa\buildffa\utils\Ranking.class
-kr\teamcocoa\buildffa\utils\ItemManager$Builder.class
+kr\teamcocoa\buildffa\world\MapVoteInventory.class
 kr\teamcocoa\buildffa\listener\FoodLevelChangeListener.class
 kr\teamcocoa\buildffa\commands\Build.class
 kr\teamcocoa\buildffa\kit\KitData.class
 kr\teamcocoa\buildffa\listener\BlockPlaceListener.class
+kr\teamcocoa\buildffa\commands\Vote.class
 kr\teamcocoa\buildffa\utils\Title.class
+kr\teamcocoa\buildffa\world\MapVote.class
 kr\teamcocoa\buildffa\listener\PlayerDeathListener.class
 kr\teamcocoa\buildffa\listener\ItemDropListener.class
 kr\teamcocoa\buildffa\main\Main.class
@@ -48,8 +43,9 @@ kr\teamcocoa\buildffa\commands\Stats$1.class
 kr\teamcocoa\buildffa\listener\InventoryCloseListener.class
 kr\teamcocoa\buildffa\listener\InventoryDragListener.class
 kr\teamcocoa\buildffa\listener\InventoryClickListener$1.class
-kr\teamcocoa\buildffa\utils\Ranking$1.class
 kr\teamcocoa\buildffa\enums\ItemEnum.class
+kr\teamcocoa\buildffa\listener\WorldInitListener.class
 kr\teamcocoa\buildffa\utils\ScoreboardManager$1.class
 kr\teamcocoa\buildffa\listener\PlayerMoveListener.class
 kr\teamcocoa\buildffa\commands\Stats.class
+kr\teamcocoa\buildffa\world\WorldManager.class

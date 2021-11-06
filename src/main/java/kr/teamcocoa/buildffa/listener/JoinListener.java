@@ -4,6 +4,7 @@ import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.*;
+import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,60 +12,59 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class JoinListener implements Listener {
   @EventHandler
   public void onJoin(PlayerJoinEvent e) {
     final Player p = e.getPlayer();
+    p.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(999999, 1));
+    Title.sendTitle(p, "", StringUtils.color("&7Your data is loading..."), 20, 1000, 20);
+    e.setJoinMessage(null);
     p.setLevel(0);
-    String uuid = String.valueOf(p.getUniqueId());
-    Main.inst().stats.createPlayer(uuid);
-    Main.playerData.put(p, new BffaPlayer(p));
-    Main.inst().scoreboardManager.setScoreboard(p);
-    if (Config.config.getBoolean("join-quit-message")) {
-      if (Config.config.getBoolean("displayname.joinmessage")) {
-        e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
-      } else {
-        e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
-      }
-
-      Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-        Title.sendTitle(p,
-                ChatColor.translateAlternateColorCodes('&', "&4/Kits"),
-                LangUtils.getMessage(p, MessageEnum.JOIN_TITLE),
-                10, 80, 10);
-      }, 5L);
-
-    } else {
-      e.setJoinMessage(null);
-    } 
-//    if (!Config.config.getString("startmap").equals("none")) {
-//      if (Locations.getCurrentMap().equals("Keine Map"))
-//        Locations.setCurrentMap(Config.config.getString("startmap").replaceAll("&", "§"));
-//    } else {
-//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.01").replaceAll("&", "§"));
-//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.02").replaceAll("&", "§"));
-//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nostartmap.03").replaceAll("&", "§"));
-//      return;
-//    }
-    if (Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".deathheight") != null) {
-      if (Config.locations.getString(String.valueOf(Locations.CurrentMapname) + ".arenaheight") != null) {
-        Location mapspawn = Locations.getSpawnLocation(Locations.CurrentMapname);
-        p.teleport(mapspawn);
-        if (!Main.playerData.get(p).isBuild()) {
-          Main.playerData.get(p).setJoinInventory();
-          p.setHealth(1.0D);
-          p.setFoodLevel(20);
-        } 
-      }
-//      else {
-//        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("noarenaheight.01").replaceAll("&", "§"));
-//        p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("noarenaheight.02").replaceAll("&", "§"));
+    p.setHealth(1.0D);
+    p.setFoodLevel(20);
+//    if (Config.config.getBoolean("join-quit-message")) {
+//      if (Config.config.getBoolean("displayname.joinmessage")) {
+//        e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
+//      } else {
+//        e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
 //      }
-    }
-//    else {
-//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nodeathheight.01").replaceAll("&", "§"));
-//      p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("nodeathheight.02").replaceAll("&", "§"));
+//
+//
+//
+//    } else {
+//      e.setJoinMessage(null);
 //    }
+
+
+//    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+//
+//    }, 5L);
+
+    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
+      String uuid = String.valueOf(p.getUniqueId());
+      Main.inst().stats.createPlayer(uuid);
+      Main.playerData.put(p, new BffaPlayer(p));
+      Main.inst().scoreboardManager.setScoreboard(p);
+      Title.sendTitle(p,
+              ChatColor.translateAlternateColorCodes('&', "&4/Kits"),
+              LangUtils.getMessage(p, MessageEnum.JOIN_TITLE),
+              10, 80, 10);
+      if (!Main.playerData.get(p).isBuild()) {
+        Main.playerData.get(p).setInGame(false);
+        Main.playerData.get(p).setJoinInventory();
+      }
+      for(PotionEffect effect : p.getActivePotionEffects()) {
+        p.removePotionEffect(effect.getType());
+      }
+      Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+        Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
+        p.teleport(spawn);
+      }, 1L);
+    }, 5L);
+//    p.teleport(spawn);
+
   }
 }

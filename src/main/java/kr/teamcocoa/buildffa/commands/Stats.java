@@ -72,14 +72,14 @@ public class Stats implements CommandExecutor {
                   }).runTaskAsynchronously(Main.inst());
                 } else {
                   p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.07").replaceAll("&", "§").replaceAll("%TARGET%", args[0]));
-                  if (p.hasPermission(Config.permissions.getString("stats.setup")))
-                    p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.setup.01").replaceAll("&", "§")); 
+//                  if (p.hasPermission(Config.permissions.getString("stats.setup")))
+//                    p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.setup.01").replaceAll("&", "§"));
                 }  
             } 
           } else {
             p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.08").replaceAll("&", "§"));
-            if (p.hasPermission(Config.permissions.getString("stats.setup")))
-              p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.setup.01").replaceAll("&", "§")); 
+//            if (p.hasPermission(Config.permissions.getString("stats.setup")))
+//              p.sendMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("stats.setup.01").replaceAll("&", "§"));
           } 
         } else {
           (new BukkitRunnable(){

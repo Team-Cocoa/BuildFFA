@@ -215,7 +215,7 @@ public class Stats {
   }
 
   public void updateRanking() {
-      Bukkit.getScheduler().runTaskTimer(Main.inst(),
+      Bukkit.getScheduler().runTaskTimerAsynchronously(Main.inst(),
               () -> Main.playerData.forEach(((player, bffaPlayer) -> updatePlayer(bffaPlayer))),
               0L, 6000L);
   }

@@ -9,7 +9,8 @@ public enum ItemEnum {
     RESET("item_reset"),
     DEFAULT_KIT("item_kit_default"),
     ARCHER_KIT("item_kit_archer"),
-    FISHER_KIT("item_kit_fisher");
+    FISHER_KIT("item_kit_fisher"),
+    CANCEL_VOTE("item_cancel_vote");
 
 
     private final String name;

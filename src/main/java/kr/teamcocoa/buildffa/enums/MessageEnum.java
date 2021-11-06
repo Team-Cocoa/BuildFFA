@@ -13,7 +13,21 @@ public enum MessageEnum {
     PLAYER_KILL("message_player_kill"),
     KILL_STREAK("message_kill_streak"),
     KILL_STREAK_BROKEN("message_kill_streak_broken"),
-    USE_INVENTORY_SORTING("message_use_inventory_sorting");
+    USE_INVENTORY_SORTING("message_use_inventory_sorting"),
+    VOTE_SUCCESS("message_vote_success"),
+    VOTE_RESET("message_vote_reset"),
+    VOTE_INVALID("message_vote_invalid"),
+    VOTE_CANNOT_VOTE("message_vote_cannot"),
+    VOTE_CURRENT_INFO("message_vote_current_info"),
+    VOTE_NUMBER_OF_VOTE("message_vote_number_of_vote"),
+    VOTE_ENDED("message_vote_ended"),
+    VOTE_COMMAND("message_vote_command"),
+    VOTE_MAP_SELECTED("message_vote_map_selected"),
+    VOTE_CANNOT_VOTE_MAP("message_vote_cannot_vote_map"),
+    VOTE_END_MINUTES("message_vote_end_minutes"),
+    VOTE_END_MINUTE("message_vote_end_minute"),
+    VOTE_END_SECONDS("message_vote_end_seconds"),
+    VOTE_END_SECOND("message_vote_end_second");
 
 
 

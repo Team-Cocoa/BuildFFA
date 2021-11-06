@@ -22,3 +22,5 @@ commands:
     description: Dieser Kommand enthaelt das Item-Setup.
   kits:
     description: get kits inventory
+  vote:
+

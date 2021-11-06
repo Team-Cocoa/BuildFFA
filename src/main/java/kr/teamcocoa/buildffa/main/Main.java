@@ -6,6 +6,8 @@ import kr.teamcocoa.buildffa.commands.*;
 import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.utils.*;
 import kr.teamcocoa.buildffa.utils.Stats;
+import kr.teamcocoa.buildffa.world.MapVote;
+import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -50,13 +52,24 @@ public class Main extends JavaPlugin {
     loadListeners();
     loadCommands();
 
-    Locations.setCurrentMap(Locations.getMapNameByInt(ScoreboardManager.i));
+    WorldManager worldManager = WorldManager.getInstance();
+    String map = MapVote.getInstance().getRandomMap();
+    worldManager.setCurrentMapName(map);
+    for(String string : MapVote.getInstance().getMapList()) {
+      if(!string.equals(map)) {
+        worldManager.unloadWorld(string);
+      }
+    }
+    WorldManager.getInstance().loadWorld(map);
+    worldManager.cloneWorld(map);
+    Bukkit.getWorld(map).loadChunk(worldManager.getSpawnByName(map).getChunk());
+//    worldManager.mapChange(map);
+    WorldManager.getInstance().mapChangeUpdater();
 
     stats.updateRanking();
     new RemoveBlockAnimation().runTaskTimer(this, 0L, 10L);
-    Locations.MapChange(ScoreboardManager.i);
     scoreboardManager.ScoreboardUpdater();
-    scoreboardManager.mapChangeUpdater();
+
   }
 
   public void loadListeners() {
@@ -78,18 +91,15 @@ public class Main extends JavaPlugin {
     getServer().getPluginManager().registerEvents(new InventoryDragListener(), this);
     getServer().getPluginManager().registerEvents(new PlayerPickupItemListener(), this);
     getServer().getPluginManager().registerEvents(new LanguageListener(), this);
+    getServer().getPluginManager().registerEvents(new WorldInitListener(), this);
   }
 
   public void loadCommands(){
-//    getCommand("setspawn").setExecutor((CommandExecutor)new SetSpawn());
-//    getCommand("setstartmap").setExecutor((CommandExecutor)new SetStartmap());
-//    getCommand("setdeathheight").setExecutor((CommandExecutor)new SetDeathheight());
-//    getCommand("setarenaheight").setExecutor((CommandExecutor)new SetArenaheight());
-    getCommand("build").setExecutor((CommandExecutor)new Build());
-    getCommand("stats").setExecutor((CommandExecutor)new kr.teamcocoa.buildffa.commands.Stats());
-    getCommand("teaming").setExecutor((CommandExecutor)new Teaming());
+    getCommand("build").setExecutor(new Build());
+    getCommand("stats").setExecutor(new kr.teamcocoa.buildffa.commands.Stats());
+    getCommand("teaming").setExecutor(new Teaming());
     getCommand("kits").setExecutor(new Kits());
-    //getCommand("item").setExecutor((CommandExecutor)new Item());
+    getCommand("vote").setExecutor(new Vote());
   }
 
   public void onDisable() {
@@ -101,18 +111,12 @@ public class Main extends JavaPlugin {
     Main.worldData.removeBlocks();
   }
 
-  public static void printMemory() {
-    Runtime r = Runtime.getRuntime();
-//    long memUsed = (r.totalMemory() - r.freeMemory()) / 1048576; //Converting
-    Bukkit.getLogger().info(String.valueOf(r.totalMemory() - r.freeMemory()));
-  }
-
   public static Main inst() {
     return mainInstance;
   }
   
   public static String getPrefix() {
-    return Config.messages.getString("prefix").replaceAll("&", "§");
+    return StringUtils.color("&a[&dBuildFFA&a] ");
   }
   
   public static void createConfigs() {

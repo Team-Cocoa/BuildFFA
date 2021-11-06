@@ -15,7 +15,7 @@ public class WorldData {
         Iterator<Block> it = blocks.iterator();
         while (it.hasNext()) {
             Block block = it.next();
-            removeBlock(block);
+//            removeBlock(block);
             it.remove();
         }
     }
