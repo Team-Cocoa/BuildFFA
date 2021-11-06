@@ -20,6 +20,7 @@ public class BffaPlayer {
     private boolean inGame;
     private boolean died;
     private Player lastHitPlayer;
+    private NickedBffaPlayer nickedBffaPlayer;
 
     /* Stats */
     private int kills;
@@ -173,6 +174,21 @@ public class BffaPlayer {
 
     public void addDeaths() {
         this.deaths += 1;
+    }
+
+    public NickedBffaPlayer getNickedBffaPlayer() {
+        if(this.nickedBffaPlayer == null) {
+            return null;
+        }
+        return this.nickedBffaPlayer;
+    }
+
+    public void addNicked() {
+        this.nickedBffaPlayer = new NickedBffaPlayer(this.player);
+    }
+
+    public void removeNicked() {
+        this.nickedBffaPlayer = null;
     }
 
 }

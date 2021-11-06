@@ -4,18 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="58d3d634-9719-411b-83b5-014a3e754570" name="Default Changelist" comment="2021/09/17/14:26">
-      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/world/MapVote.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/world/MapVoteInventory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/world/WorldManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+    <list default="true" id="58d3d634-9719-411b-83b5-014a3e754570" name="Default Changelist" comment="2021/09/23/17:53">
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/NickedBffaPlayer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/block/DespawnBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/block/DespawnBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/InventoryEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/InventoryEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/OtherEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/OtherEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/KitData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/KitData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/world/WorldData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/world/WorldData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/BffaPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/BffaPlayer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,7 +56,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../replay" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Algorithm" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -114,7 +106,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631856437403</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="2021/09/23/17:53">
+      <created>1632387226274</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1632387226274</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -135,6 +134,7 @@
     <MESSAGE value="2021/06/22/02:56" />
     <MESSAGE value="2021/07/12/08:27" />
     <MESSAGE value="2021/09/17/14:26" />
-    <option name="LAST_COMMIT_MESSAGE" value="2021/09/17/14:26" />
+    <MESSAGE value="2021/09/23/17:53" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021/09/23/17:53" />
   </component>
 </project>
