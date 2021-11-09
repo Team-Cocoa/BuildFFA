@@ -7,9 +7,11 @@ import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Bar;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import net.minecraft.server.v1_8_R3.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 
 import java.time.LocalTime;
@@ -62,7 +64,10 @@ public class WorldManager {
     }
 
     public void unloadWorld(String string) {
-        worldManager.unloadWorld(string.toLowerCase(Locale.ROOT));
+//        worldManager.unloadWorld(string.toLowerCase(Locale.ROOT));
+        Bukkit.unloadWorld(string, false);
+        System.gc();
+
     }
 
     public void deleteWorld() {
@@ -92,7 +97,6 @@ public class WorldManager {
             }, 0L);
             Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
                 unloadWorld(t);
-                System.gc();
             }, 5L);
         }
 //        else {

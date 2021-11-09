@@ -34,6 +34,9 @@ public class PlayerDeathListener implements Listener {
     bffaPlayer.setThrewPearlTime(System.currentTimeMillis());
     bffaPlayer.setPlayerKillStreak(0);
     bffaPlayer.addDeaths();
+    if(bffaPlayer.isNicked()) {
+      bffaPlayer.getNickedBffaPlayer().addDeaths();
+    }
     bffaPlayer.setLastHitPlayer(null);
     e.setDroppedExp(0);
     e.getDrops().clear();
@@ -58,6 +61,9 @@ public class PlayerDeathListener implements Listener {
       final BffaPlayer killerBffaPlayer = Main.playerData.get(p.getKiller());
       final String nameKiller = p.getKiller().getName();
       killerBffaPlayer.addKills();
+      if(killerBffaPlayer.isNicked()) {
+        killerBffaPlayer.getNickedBffaPlayer().addKills();
+      }
 
       String KillerHealth = (new DecimalFormat("#0.0")).format(p.getKiller().getHealth() / 2.0D);
       p.sendMessage(LangUtils.getMessage(p, MessageEnum.PLAYER_KILL).replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));

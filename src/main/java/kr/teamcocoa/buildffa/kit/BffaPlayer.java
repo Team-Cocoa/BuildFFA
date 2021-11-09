@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import kr.teamcocoa.buildffa.utils.ItemManager;
 
+import java.util.Arrays;
+
 public class BffaPlayer {
     private long threwPearlTime;
     private int playerKillStreak;
@@ -21,6 +23,7 @@ public class BffaPlayer {
     private boolean died;
     private Player lastHitPlayer;
     private NickedBffaPlayer nickedBffaPlayer;
+    private boolean shootAble;
 
     /* Stats */
     private int kills;
@@ -38,6 +41,8 @@ public class BffaPlayer {
         this.inGame = false;
         this.died = false;
         this.lastHitPlayer = null;
+        this.shootAble = true;
+        this.nickedBffaPlayer = null;
 
         this.kills = Main.inst().stats.getKills(player.getUniqueId().toString());
         this.bestKillStreaks = Main.inst().stats.getMaxKillStreak(player.getUniqueId().toString());
@@ -102,6 +107,10 @@ public class BffaPlayer {
         return bestKillStreaks;
     }
 
+    public boolean isShootAble() {
+        return shootAble;
+    }
+
     /*Setter*/
 
     public void setBuild(boolean build) {
@@ -152,6 +161,10 @@ public class BffaPlayer {
         this.lastHitPlayer = lastHitPlayer;
     }
 
+    public void setShootAble(boolean shootAble) {
+        this.shootAble = shootAble;
+    }
+
     public void setJoinInventory(){
         this.player.getInventory().clear();
         this.player.getInventory().setArmorContents(null);
@@ -183,6 +196,13 @@ public class BffaPlayer {
         return this.nickedBffaPlayer;
     }
 
+    public boolean isNicked() {
+        if(this.nickedBffaPlayer == null) {
+            return false;
+        }
+        return true;
+    }
+
     public void addNicked() {
         this.nickedBffaPlayer = new NickedBffaPlayer(this.player);
     }
@@ -191,4 +211,24 @@ public class BffaPlayer {
         this.nickedBffaPlayer = null;
     }
 
+    @Override
+    public String toString() {
+        return "BffaPlayer{" +
+                "threwPearlTime=" + threwPearlTime +
+                ", playerKillStreak=" + playerKillStreak +
+                ", latestDeadTime=" + latestDeadTime +
+                ", build=" + build +
+                ", player=" + player +
+                ", inventory=" + Arrays.toString(inventory) +
+                ", kit=" + kit +
+                ", inGame=" + inGame +
+                ", died=" + died +
+                ", lastHitPlayer=" + lastHitPlayer +
+                ", nickedBffaPlayer=" + nickedBffaPlayer +
+                ", shootAble=" + shootAble +
+                ", kills=" + kills +
+                ", deaths=" + deaths +
+                ", bestKillStreaks=" + bestKillStreaks +
+                '}';
+    }
 }

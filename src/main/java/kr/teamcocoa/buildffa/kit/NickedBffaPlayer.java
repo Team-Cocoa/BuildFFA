@@ -52,4 +52,12 @@ public class NickedBffaPlayer {
         this.deaths += 1;
     }
 
+    @Override
+    public String toString() {
+        return "NickedBffaPlayer{" +
+                "kills=" + kills +
+                ", deaths=" + deaths +
+                ", bestKillStreaks=" + bestKillStreaks +
+                '}';
+    }
 }

@@ -1,10 +1,11 @@
 package kr.teamcocoa.buildffa.utils;
 
 import kr.teamcocoa.buildffa.main.Main;
-import java.io.File;
-import java.io.IOException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
+import java.io.IOException;
 
 public class Config {
   private static String teaming;

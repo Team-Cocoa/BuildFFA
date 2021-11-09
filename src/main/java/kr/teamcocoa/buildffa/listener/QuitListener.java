@@ -36,7 +36,9 @@ public class QuitListener implements Listener {
           Player killer = killerBffaPlayer.getPlayer();
           killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
           killerBffaPlayer.addKills();
-
+          if(killerBffaPlayer.isNicked()) {
+            killerBffaPlayer.getNickedBffaPlayer().addKills();
+          }
           String KillerHealth = (new DecimalFormat("#0.0")).format(killer.getHealth() / 2.0D);
           p.sendMessage(LangUtils.getMessage(p, MessageEnum.PLAYER_KILL).replaceAll("%KILLER%", p.getKiller().getName()).replaceAll("%KILLERHEALTH%", KillerHealth));
 

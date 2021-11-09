@@ -27,7 +27,11 @@ public enum MessageEnum {
     VOTE_END_MINUTES("message_vote_end_minutes"),
     VOTE_END_MINUTE("message_vote_end_minute"),
     VOTE_END_SECONDS("message_vote_end_seconds"),
-    VOTE_END_SECOND("message_vote_end_second");
+    VOTE_END_SECOND("message_vote_end_second"),
+    BOW_COUNT_SECONDS("message_bow_count_seconds"),
+    BOW_COUNT_SECOND("message_bow_count_second"),
+    BOW_CANNOT_USE("message_bow_cannot_use"),
+    BOW_CAN_USE("message_bow_can_use");
 
 
 

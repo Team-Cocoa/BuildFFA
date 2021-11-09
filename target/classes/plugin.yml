@@ -1,8 +1,7 @@
 name: BuildFFA
 version: 1.0
 main: kr.teamcocoa.buildffa.main.Main
-depend:
-  - Languages
+depend: [Languages, NickSystem]
 commands:
   setspawn:
     description: Dieser Kommand setzt den Spawn einer Map und speichert desses Namen.

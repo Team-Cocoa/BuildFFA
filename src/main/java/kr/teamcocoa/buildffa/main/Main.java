@@ -92,6 +92,8 @@ public class Main extends JavaPlugin {
     getServer().getPluginManager().registerEvents(new PlayerPickupItemListener(), this);
     getServer().getPluginManager().registerEvents(new LanguageListener(), this);
     getServer().getPluginManager().registerEvents(new WorldInitListener(), this);
+    getServer().getPluginManager().registerEvents(new EntityShootBowListener(), this);
+    getServer().getPluginManager().registerEvents(new NickListener(), this);
   }
 
   public void loadCommands(){
