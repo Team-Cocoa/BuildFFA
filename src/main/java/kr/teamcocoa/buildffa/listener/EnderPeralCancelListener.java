@@ -20,6 +20,11 @@ public class EnderPeralCancelListener implements Listener {
 
         if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if(player.getItemInHand().getType().equals(Material.ENDER_PEARL)) {
+                Location spawnLocation = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
+                if(player.getLocation().getY() >= spawnLocation.getY()) {
+                    e.setCancelled(true);
+                    return;
+                }
                 BffaPlayer bffaPlayer = Main.playerData.get(player);
                 long now = System.currentTimeMillis();
                 bffaPlayer.setThrewPearlTime(now);

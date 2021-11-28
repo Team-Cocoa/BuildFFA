@@ -2,6 +2,7 @@ kr\teamcocoa\buildffa\kit\BffaPlayer.class
 kr\teamcocoa\buildffa\utils\MYSQL.class
 kr\teamcocoa\buildffa\listener\NickListener.class
 kr\teamcocoa\buildffa\enums\OtherEnum.class
+kr\teamcocoa\buildffa\listener\PlayerBedEnterListener.class
 kr\teamcocoa\buildffa\utils\Stats.class
 kr\teamcocoa\buildffa\world\WorldData.class
 kr\teamcocoa\buildffa\commands\Stats$2.class
