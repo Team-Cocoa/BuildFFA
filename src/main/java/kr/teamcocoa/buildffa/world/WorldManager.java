@@ -1,7 +1,5 @@
 package kr.teamcocoa.buildffa.world;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
@@ -11,6 +9,7 @@ import net.minecraft.server.v1_8_R3.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 
@@ -20,11 +19,10 @@ import java.util.Locale;
 public class WorldManager {
 
     private static WorldManager instance = null;
-    private MultiverseCore core = null;
+//    private MultiverseCore core = null;
     private String currentWorldUUID = null;
     private String currentMapName = null;
     private String temp;
-    private MVWorldManager worldManager = null;
     private int sec = 600;
 //    private int i = (int)(Math.random() * 3) + 1;
     private boolean pvpAble = true;
@@ -43,8 +41,8 @@ public class WorldManager {
     }
 
     private WorldManager() {
-        core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
-        worldManager = core.getMVWorldManager();
+//        core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+//        worldManager = core.getMVWorldManager();
     }
 
     public String cloneWorld(String name) {
@@ -56,11 +54,8 @@ public class WorldManager {
     }
 
     public void loadWorld(String name) {
-        worldManager.loadWorld(name.toLowerCase(Locale.ROOT));
-    }
-
-    public void unloadWorld() {
-        worldManager.unloadWorld(currentMapName.toLowerCase(Locale.ROOT));
+//        worldManager.loadWorld(name.toLowerCase(Locale.ROOT));
+        new WorldCreator(name.toLowerCase(Locale.ROOT)).createWorld();
     }
 
     public void unloadWorld(String string) {
@@ -70,9 +65,6 @@ public class WorldManager {
 
     }
 
-    public void deleteWorld() {
-        worldManager.deleteWorld(currentMapName);
-    }
 
     public String getCurrentWorldUUID() {
         return currentWorldUUID;
