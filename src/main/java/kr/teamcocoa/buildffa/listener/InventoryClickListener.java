@@ -90,8 +90,8 @@ public class InventoryClickListener implements Listener {
             return;
         }
         if(clickedItem.equals(resetItem)){
-            ItemStack[] inventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
             try{
+                ItemStack[] inventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
                 Main.playerData.get(p).setInventory(inventory);
                 Main.inst().kitData.setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
                 p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
@@ -103,19 +103,19 @@ public class InventoryClickListener implements Listener {
             }
         }
         if(clickedItem.equals(saveItem)){
-            ItemStack[] inventory = new ItemStack[9];
-            ItemStack[] defaultInventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
-            for(int i = 9; i < 18; i++){
-                ItemStack item = e.getInventory().getItem(i);
-                int defaultIndex = Arrays.asList(defaultInventory).indexOf(item);
-                if(defaultIndex != -1 && !item.equals(new ItemStack(Material.AIR))){
-                    inventory[i - 9] = item;
-                }
-                else{
-                    inventory[i - 9] = new ItemStack(Material.AIR);
-                }
-            }
             try{
+                ItemStack[] inventory = new ItemStack[9];
+                ItemStack[] defaultInventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
+                for(int i = 9; i < 18; i++){
+                    ItemStack item = e.getInventory().getItem(i);
+                    int defaultIndex = Arrays.asList(defaultInventory).indexOf(item);
+                    if(defaultIndex != -1 && !item.equals(new ItemStack(Material.AIR))){
+                        inventory[i - 9] = item;
+                    }
+                    else{
+                        inventory[i - 9] = new ItemStack(Material.AIR);
+                    }
+                }
                 Main.inst().kitData.setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
                 Main.playerData.get(p).setInventory(inventory);
                 p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));

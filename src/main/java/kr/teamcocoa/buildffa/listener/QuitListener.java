@@ -122,6 +122,6 @@ public class QuitListener implements Listener {
 //      e.setQuitMessage(null);
 //    }
     e.setQuitMessage(null);
-    System.gc();
+//    System.gc();
   }
 }

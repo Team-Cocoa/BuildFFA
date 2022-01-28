@@ -10,28 +10,17 @@ import java.sql.SQLException;
 
 public class Stats {
   public boolean playerExists(String uuid) {
-    ResultSet rs = null;
-    try {
-       rs = Main.inst().mysql.getResult("SELECT `UUID` FROM Stats WHERE UUID= '" + uuid + "'");
+    try(ResultSet rs = Main.inst().mysql.getResult("SELECT `UUID` FROM Stats WHERE UUID= '" + uuid + "'")) {
       if (rs.next()){
         boolean returnBoolean = rs.getString("UUID") != null;
         rs.close();
         return returnBoolean;
       }
       return false;
-    } catch (SQLException e) {
+    }
+    catch (SQLException e) {
       e.printStackTrace();
       return false;
-    }
-    finally {
-        try {
-            if(rs != null) {
-                rs.close();
-            }
-        }
-        catch(SQLException e) {
-            e.printStackTrace();
-        }
     }
   }
   
@@ -48,28 +37,15 @@ public class Stats {
   public Integer getMaxKillStreak(String uuid) {
       Integer i = Integer.valueOf(0);
       if (playerExists(uuid)) {
-          ResultSet rs = null;
-          try {
-              rs = Main.inst().mysql.getResult("SELECT `max_killstreak` FROM Stats WHERE UUID= '" + uuid + "'");
+          try(ResultSet rs = Main.inst().mysql.getResult("SELECT `max_killstreak` FROM Stats WHERE UUID= '" + uuid + "'")) {
               if (!rs.next() || Integer.valueOf(rs.getInt("max_killstreak")) == null);
               i = Integer.valueOf(rs.getInt("max_killstreak"));
-          } catch (SQLException e) {
+          }
+          catch (SQLException e) {
               e.printStackTrace();
           }
-          finally {
-              if(rs != null) {
-                  try {
-                      rs.close();
-                      if(!rs.isClosed()) {
-                          Bukkit.getLogger().info("MaxKillStreak Cannot closed!");
-                      }
-                  }
-                  catch(SQLException e) {
-                      e.printStackTrace();
-                  }
-              }
-          }
-      } else {
+      }
+      else {
           createPlayer(uuid);
           getKills(uuid);
       }
@@ -87,29 +63,15 @@ public class Stats {
   }
   
   public Integer getKills(String uuid) {
-    Integer i = Integer.valueOf(0);
+      Integer i = Integer.valueOf(0);
       if (playerExists(uuid)) {
-          ResultSet rs = null;
-        try {
-           rs = Main.inst().mysql.getResult("SELECT `KILLS` FROM Stats WHERE UUID= '" + uuid + "'");
-          if (!rs.next() || Integer.valueOf(rs.getInt("KILLS")) == null);
-          i = Integer.valueOf(rs.getInt("KILLS"));
-          rs.close();
-        } catch (SQLException e) {
-          e.printStackTrace();
+        try(ResultSet rs = Main.inst().mysql.getResult("SELECT `KILLS` FROM Stats WHERE UUID= '" + uuid + "'")) {
+          if (!rs.next() || Integer.valueOf(rs.getInt("KILLS")) == null) {
+              i = Integer.valueOf(rs.getInt("KILLS"));
+          }
         }
-        finally {
-            if(rs != null) {
-                try {
-                    rs.close();
-                    if(!rs.isClosed()) {
-                        Bukkit.getLogger().info("getKill Cannot closed!");
-                    }
-                }
-                catch(SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+        catch (SQLException e) {
+          e.printStackTrace();
         }
       } else {
         createPlayer(uuid);
@@ -121,23 +83,12 @@ public class Stats {
   public Integer getDeaths(String uuid) {
     Integer i = Integer.valueOf(0);
       if (playerExists(uuid)) {
-          ResultSet rs = null;
-        try {
-           rs = Main.inst().mysql.getResult("SELECT `DEATHS` FROM Stats WHERE UUID= '" + uuid + "'");
+        try(ResultSet rs = Main.inst().mysql.getResult("SELECT `DEATHS` FROM Stats WHERE UUID= '" + uuid + "'")) {
           if (!rs.next() || Integer.valueOf(rs.getInt("DEATHS")) == null);
           i = Integer.valueOf(rs.getInt("DEATHS"));
-        } catch (SQLException e) {
-          e.printStackTrace();
         }
-        finally {
-            if(rs != null) {
-                try {
-                    rs.close();
-                }
-                catch(SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+        catch (SQLException e) {
+          e.printStackTrace();
         }
       } else {
         createPlayer(uuid);

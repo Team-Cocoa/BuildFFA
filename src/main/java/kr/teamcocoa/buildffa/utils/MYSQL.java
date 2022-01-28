@@ -48,31 +48,15 @@ public class MYSQL {
   }
   
   public void update(String qry) {
-
-    PreparedStatement ps = null;
-    try {
-      ps = con.prepareStatement(qry);
+    try (PreparedStatement ps = con.prepareStatement(qry)) {
       ps.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    finally {
-      try {
-        if(ps != null) {
-          ps.close();
-          if(!ps.isClosed()) {
-            Bukkit.getLogger().info("update cannot closed!");
-          }
-        }
-      }
-      catch(SQLException e) {
-        e.printStackTrace();
-      }
-    }
   }
   
   public ResultSet getResult(String qry) {
-    PreparedStatement ps = null;
+    PreparedStatement ps;
     try {
       ps = con.prepareStatement(qry);
       return ps.executeQuery();

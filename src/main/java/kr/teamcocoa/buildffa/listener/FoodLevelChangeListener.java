@@ -11,14 +11,7 @@ public class FoodLevelChangeListener implements Listener {
   @EventHandler
   public void onFoodLevelChange(FoodLevelChangeEvent e) {
     if (e.getEntity() instanceof Player) {
-      Player p = (Player)e.getEntity();
-      Location loc = p.getLocation();
-      if (Config.config.getBoolean("hunger")) {
-        if (loc.getY() > 197)
-          e.setCancelled(true); 
-      } else {
-        e.setCancelled(true);
-      } 
-    } 
+      e.setCancelled(true);
+    }
   }
 }

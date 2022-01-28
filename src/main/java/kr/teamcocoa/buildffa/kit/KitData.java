@@ -66,7 +66,6 @@ public class KitData {
     public ItemStack[] getPlayerKit(Player player, int kit){
         ItemStack[] inventory = new ItemStack[9];
         String sql = "SELECT * FROM `kit_%kit%` WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
-        ResultSet rs = null;
         String[] kitString;
         String kitName;
         switch(kit){
@@ -114,11 +113,16 @@ public class KitData {
                 break;
 
         }
-        try{
-            rs = Main.inst().mysql.getResult(sql);
+        try(ResultSet rs = Main.inst().mysql.getResult(sql)) {
             if (rs.next()) {
                 for (int i = 0; i < kitString.length; i++) {
-                    inventory[rs.getInt(kitString[i])] = getItemByString(kitString[i], kitName);
+                    try {
+                        inventory[rs.getInt(kitString[i])] = getItemByString(kitString[i], kitName);
+                    }
+                    catch(ArrayIndexOutOfBoundsException e) {
+                        inventory = getDefaultKit(Main.inst().kitData.getKitByInt(kit));
+                        break;
+                    }
                 }
                 for(int i = 0; i < 9; i++){
                     if(inventory[i] == null){
@@ -130,16 +134,6 @@ public class KitData {
         catch(Exception e){
             e.printStackTrace();
             inventory = getDefaultKit("default");
-        }
-        finally {
-            try {
-                if(rs != null) {
-                    rs.close();
-                }
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return inventory;
     }
@@ -237,9 +231,7 @@ public class KitData {
 
     public int getKit(Player player){
         int i = -1;
-        ResultSet rs = null;
-        try{
-            rs = Main.inst().mysql.getResult("SELECT `kit` FROM `stats` WHERE `UUID` = \""+player.getUniqueId()+"\";");
+        try(ResultSet rs = Main.inst().mysql.getResult("SELECT `kit` FROM `stats` WHERE `UUID` = \""+player.getUniqueId()+"\";")) {
             if(rs.next()){
                 i = rs.getInt("kit");
             }
@@ -248,16 +240,6 @@ public class KitData {
         catch(SQLException e){
             e.printStackTrace();
             return -1;
-        }
-        finally {
-            try {
-                if(rs != null) {
-                    rs.close();
-                }
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
     }
     public String getKitByInt(int input){

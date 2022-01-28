@@ -1,10 +1,17 @@
 package kr.teamcocoa.buildffa.world;
 
+import com.grinderwolf.swm.api.SlimePlugin;
+import com.grinderwolf.swm.api.loaders.SlimeLoader;
+import com.grinderwolf.swm.api.world.SlimeWorld;
+import com.grinderwolf.swm.api.world.properties.SlimeProperties;
+import com.grinderwolf.swm.api.world.properties.SlimeProperty;
+import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Bar;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,12 +21,16 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class WorldManager {
 
     private static WorldManager instance = null;
+    private HashMap<String, SlimeWorld> worlds = new HashMap<>();
 //    private MultiverseCore core = null;
+    private SlimePlugin core;
+    private SlimeLoader loader;
     private String currentWorldUUID = null;
     private String currentMapName = null;
     private String temp;
@@ -43,6 +54,8 @@ public class WorldManager {
     private WorldManager() {
 //        core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 //        worldManager = core.getMVWorldManager();
+        core = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
+        loader = core.getLoader("file");
     }
 
     public String cloneWorld(String name) {
@@ -55,13 +68,36 @@ public class WorldManager {
 
     public void loadWorld(String name) {
 //        worldManager.loadWorld(name.toLowerCase(Locale.ROOT));
-        new WorldCreator(name.toLowerCase(Locale.ROOT)).createWorld();
+        try {
+            if(!worlds.containsKey(name)) {
+                SlimePropertyMap map = new SlimePropertyMap();
+                map.setInt(SlimeProperties.SPAWN_X, 0);
+                map.setInt(SlimeProperties.SPAWN_Y, 218);
+                map.setInt(SlimeProperties.SPAWN_Z, 0);
+                map.setString(SlimeProperties.DIFFICULTY, "easy");
+                map.setBoolean(SlimeProperties.ALLOW_ANIMALS, false);
+                map.setBoolean(SlimeProperties.ALLOW_MONSTERS, false);
+                map.setBoolean(SlimeProperties.PVP, true);
+                SlimeWorld world = core.loadWorld(loader, name, false, map);
+                worlds.put(name, world);
+                core.generateWorld(world);
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void unloadWorld(String string) {
 //        worldManager.unloadWorld(string.toLowerCase(Locale.ROOT));
-        Bukkit.unloadWorld(string, false);
-        System.gc();
+//        WorldServer world = ((CraftWorld) Bukkit.getWorld(string)).getHandle();
+        Bukkit.unloadWorld(string, true);
+
+
+//        MinecraftServer server = MinecraftServer.getServer();
+//        server.worlds.remove(world);
+
+//        System.gc();
 
     }
 
@@ -87,9 +123,9 @@ public class WorldManager {
                     Main.playerData.put(player, bffaPlayer);
                 }
             }, 0L);
-            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-                unloadWorld(t);
-            }, 5L);
+//            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+//                unloadWorld(t);
+//            }, 5L);
         }
 //        else {
 //            for(Player player : Bukkit.getOnlinePlayers()) {

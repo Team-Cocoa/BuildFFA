@@ -7,7 +7,6 @@ kr\teamcocoa\buildffa\utils\Stats.class
 kr\teamcocoa\buildffa\world\WorldData.class
 kr\teamcocoa\buildffa\commands\Stats$2.class
 kr\teamcocoa\buildffa\enums\MessageEnum.class
-kr\teamcocoa\buildffa\utils\BowCountDown.class
 kr\teamcocoa\buildffa\listener\InteractListener.class
 kr\teamcocoa\buildffa\kit\NickedBffaPlayer.class
 kr\teamcocoa\buildffa\listener\BlockBreakListener.class

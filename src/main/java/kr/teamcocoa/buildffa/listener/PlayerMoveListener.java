@@ -24,11 +24,14 @@ public class PlayerMoveListener implements Listener {
           if (!Main.playerData.get(p).isBuild()) {
             p.setHealth(0.0D);
             Main.playerData.get(p).setDied(true);
-            try {
-              Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setDied(false), 10L);
-            } catch (Exception e1) {
+            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+              try {
+                Main.playerData.get(p).setDied(false);
+              }
+              catch(Exception e1) {
 
-            }
+              }
+            }, 10L);
           }
         if (loc.getY() <= WorldManager.getInstance().getArenaHeight()) {
           if (!Main.playerData.get(p).isInGame() && !Main.playerData.get(p).isBuild()) {
