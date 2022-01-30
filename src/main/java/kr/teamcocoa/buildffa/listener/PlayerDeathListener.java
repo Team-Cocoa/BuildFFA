@@ -111,7 +111,7 @@ public class PlayerDeathListener implements Listener {
             p.getKiller().playSound(p.getKiller().getLocation(), Sound.LEVEL_UP, 100.0F, 0.0F);
           }
           catch (NullPointerException e1) {
-            e1.printStackTrace();
+
           }
           killerBffaPlayer.setLastHitPlayer(null);
       }

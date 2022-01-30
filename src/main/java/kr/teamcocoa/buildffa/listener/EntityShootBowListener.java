@@ -12,21 +12,21 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 
 public class EntityShootBowListener implements Listener {
 
-    @EventHandler
-    public void onShoot(EntityShootBowEvent e) {
-        if(e.getEntity() instanceof Player) {
-            Player player = (Player) e.getEntity();
-            BffaPlayer bffaPlayer = Main.playerData.get(player);
-            if(!bffaPlayer.isShootAble()) {
-                player.sendMessage(LangUtils.getMessage(player, MessageEnum.BOW_CANNOT_USE));
-                e.setCancelled(true);
-                return;
-            }
-            bffaPlayer.setShootAble(false);
-            Bukkit.getScheduler().runTaskTimer(Main.inst(), () -> {
-                bffaPlayer.setShootAble(true);
-                player.sendMessage(LangUtils.getMessage(player, MessageEnum.BOW_CAN_USE));
-            }, 1L, 20L);
-        }
-    }
+//    @EventHandler
+//    public void onShoot(EntityShootBowEvent e) {
+//        if(e.getEntity() instanceof Player) {
+//            Player player = (Player) e.getEntity();
+//            BffaPlayer bffaPlayer = Main.playerData.get(player);
+//            if(!bffaPlayer.isShootAble()) {
+//                player.sendMessage(LangUtils.getMessage(player, MessageEnum.BOW_CANNOT_USE));
+//                e.setCancelled(true);
+//                return;
+//            }
+//            bffaPlayer.setShootAble(false);
+//            Bukkit.getScheduler().runTaskTimer(Main.inst(), () -> {
+//                bffaPlayer.setShootAble(true);
+//                player.sendMessage(LangUtils.getMessage(player, MessageEnum.BOW_CAN_USE));
+//            }, 1L, 20L);
+//        }
+//    }
 }

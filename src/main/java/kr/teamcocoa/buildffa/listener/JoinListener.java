@@ -1,5 +1,7 @@
 package kr.teamcocoa.buildffa.listener;
 
+import de.fct.NickSystem.MySQL;
+import de.fct.NickSystem.Nick;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
@@ -43,6 +45,19 @@ public class JoinListener implements Listener {
 
     Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
       String uuid = String.valueOf(p.getUniqueId());
+      boolean nicked = MySQL.containsPlayer(uuid);
+      String joinMessage = StringUtils.color("&a[&dBuildFFA&a] &e%name% joined the game!");
+      if(nicked) {
+        String nickedName = MySQL.getNick(uuid);
+        joinMessage = joinMessage.replace("%name%", nickedName);
+      }
+      else {
+        joinMessage = joinMessage.replace("%name%", p.getName());
+      }
+
+      for(Player player : Bukkit.getOnlinePlayers()) {
+        player.sendMessage(joinMessage);
+      }
       Main.inst().stats.createPlayer(uuid);
       Main.inst().scoreboardManager.setScoreboard(p);
       Title.sendTitle(p,

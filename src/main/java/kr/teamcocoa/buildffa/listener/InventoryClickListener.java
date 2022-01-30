@@ -124,7 +124,7 @@ public class InventoryClickListener implements Listener {
                 Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
             }
             catch(Exception e1){
-                e1.printStackTrace();
+//                e1.printStackTrace();
                 p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
             }
         }
