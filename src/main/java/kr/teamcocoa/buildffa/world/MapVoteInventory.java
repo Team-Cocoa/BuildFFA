@@ -95,6 +95,7 @@ public class MapVoteInventory {
             e.setCancelled(true);
             if(!MapVote.getInstance().isVoteAble()) {
                 player.closeInventory();
+
                 player.playSound(player.getLocation(), Sound.NOTE_BASS, 100F, 0F);
                 player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_CANNOT_VOTE));
                 return;
