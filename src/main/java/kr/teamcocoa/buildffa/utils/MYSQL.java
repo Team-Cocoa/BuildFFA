@@ -1,6 +1,5 @@
 package kr.teamcocoa.buildffa.utils;
 
-import org.bukkit.Bukkit;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,7 +23,7 @@ public class MYSQL {
   public void connect() {
     if (!isConnected())
       try {
-        con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
+        con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?validationQuery=select 1&testWhileIdle=true&timeBetweenEvictionRunsMillis=30000", username, password);
         System.out.println("| [BuildFFA] Successfully connected to MYSQL!                 |");
       } catch (SQLException e) {
         System.out.println("| [BuildFFA] Failed to connect to MYSQL server.               |");
