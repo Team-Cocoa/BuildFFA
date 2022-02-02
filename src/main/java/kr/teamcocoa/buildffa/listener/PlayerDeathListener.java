@@ -22,6 +22,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
 
 public class PlayerDeathListener implements Listener {
   
@@ -45,6 +46,9 @@ public class PlayerDeathListener implements Listener {
     Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
 
     Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+      for(PotionEffect effect : p.getActivePotionEffects()) {
+        p.removePotionEffect(effect.getType());
+      }
       p.spigot().respawn();
       p.teleport(spawn);
       p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
