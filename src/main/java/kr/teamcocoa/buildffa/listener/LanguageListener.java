@@ -1,23 +1,18 @@
 package kr.teamcocoa.buildffa.listener;
 
-import es.minetsii.languages.events.custom.LangsLoadEvent;
-import es.minetsii.languages.events.custom.PlayerChangesLanguageEvent;
 import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.language.bukkit.events.PlayerChangeLanguageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public class LanguageListener implements Listener {
-    @EventHandler
-    public void onLangLoad(LangsLoadEvent e) {
-        e.addPlugin(Main.inst());
-    }
 
     @EventHandler
-    public void onLangChange(PlayerChangesLanguageEvent e) {
+    public void onLangChange(PlayerChangeLanguageEvent e) {
         try {
-            Player player = e.getPlayer().getBukkitPlayer();
+            Player player = e.getPlayer();
             if(!Main.playerData.get(player).isInGame()) {
                 player.getInventory().clear();
                 Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(player).setJoinInventory(), 5L);

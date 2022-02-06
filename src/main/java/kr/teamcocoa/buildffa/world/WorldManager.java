@@ -122,6 +122,7 @@ public class WorldManager {
                     bffaPlayer.setLatestDeadTime(deadTime);
                     Main.playerData.put(player, bffaPlayer);
                 }
+                placeAble = true;
             }, 0L);
 //            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
 //                unloadWorld(t);
@@ -206,7 +207,6 @@ public class WorldManager {
 //                    i = i + 1 < 4 ? i + 1 : 1;
 //                    Locations.MapChange(i);
                     pvpAble = true;
-                    placeAble = true;
                     mapVote.setVoteAble(true);
                     mapVote.resetVotes();
                     Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> mapChange(temp), 1L);

@@ -2,13 +2,13 @@ package kr.teamcocoa.buildffa.enums;
 
 public enum OtherEnum {
 
-    BAR_MAP("bar_map"),
-    BAR_KIT("bar_kit"),
-    BAR_TIME_LEFT("bar_time_left"),
-    SCOREBOARD_KILLS("scoreboard_kills"),
-    SCOREBOARD_BEST_KILL_STREAK("scoreboard_best_kill_streak"),
-    SCOREBOARD_TEAMING_ALLOW("scoreboard_teaming_allow"),
-    SCOREBOARD_TEAMING_PROHIBIT("scoreboard_teaming_prohibit"),
+    BAR_MAP("bar.map"),
+    BAR_KIT("bar.kit"),
+    BAR_TIME_LEFT("bar.time_left"),
+    SCOREBOARD_KILLS("scoreboard.kills"),
+    SCOREBOARD_BEST_KILL_STREAK("scoreboard.best_kill_streak"),
+    SCOREBOARD_TEAMING_ALLOW("scoreboard.teaming_allow"),
+    SCOREBOARD_TEAMING_PROHIBIT("scoreboard.teaming_prohibit"),
     LORE_VOTE_COUNT("lore_vote_count");
 
     private final String name;

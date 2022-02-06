@@ -1,16 +1,8 @@
 name: BuildFFA
 version: 1.0
 main: kr.teamcocoa.buildffa.main.Main
-depend: [Languages, NickSystem, SlimeWorldManager]
+depend: [Language, NickSystem, SlimeWorldManager]
 commands:
-  setspawn:
-    description: Dieser Kommand setzt den Spawn einer Map und speichert desses Namen.
-  setstartmap:
-    description: Dieser Kommand setzt die erste Map auf welcher gespielt wird.
-  setdeathheight:
-    description: Dieser Kommand setzt die Todeshoehe.
-  setarenaheight:
-    description: Dieser Kommand setzt die Arenahoehe.
   build:
     description: Dieser Kommand setzt Spieler in den Buildmode.
   stats:

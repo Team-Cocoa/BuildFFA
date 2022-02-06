@@ -2,15 +2,15 @@ package kr.teamcocoa.buildffa.enums;
 
 public enum ItemEnum {
 
-    INVENTORY_SORTING("item_inventory_sorting"),
-    LEAVE_ITEM("item_leave_item"),
-    KIT("item_kit"),
-    SAVE("item_save"),
-    RESET("item_reset"),
-    DEFAULT_KIT("item_kit_default"),
-    ARCHER_KIT("item_kit_archer"),
-    FISHER_KIT("item_kit_fisher"),
-    CANCEL_VOTE("item_cancel_vote");
+    INVENTORY_SORTING("inventory_sorting"),
+    LEAVE_ITEM("leave_item"),
+    KIT("kit"),
+    SAVE("save"),
+    RESET("reset"),
+    DEFAULT_KIT("kit_default"),
+    ARCHER_KIT("kit_archer"),
+    FISHER_KIT("kit_fisher"),
+    CANCEL_VOTE("cancel_vote");
 
 
     private final String name;
@@ -20,6 +20,6 @@ public enum ItemEnum {
     }
 
     private ItemEnum(String name) {
-        this.name = name;
+        this.name = "item." + name;
     }
 }

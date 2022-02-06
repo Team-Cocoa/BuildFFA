@@ -32,11 +32,11 @@
             <version>1.8.8-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>es.minetsii</groupId>
-            <artifactId>languages</artifactId>
+            <groupId>kr.teamcocoa</groupId>
+            <artifactId>LangaugeLib</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/languages-1.0-SNAPSHOT.jar</systemPath>
+            <systemPath>${project.basedir}/lib/LanguageLib-1.0-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.grinderwolf</groupId>

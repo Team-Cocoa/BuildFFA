@@ -1,10 +1,12 @@
 package kr.teamcocoa.buildffa.listener;
 
+import de.fct.NickSystem.MySQL;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Config;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import kr.teamcocoa.buildffa.utils.StringUtils;
 import kr.teamcocoa.buildffa.world.MapVote;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,6 +23,7 @@ import java.util.Arrays;
 public class QuitListener implements Listener {
   @EventHandler
   public void onQuit(PlayerQuitEvent e) {
+    e.setQuitMessage(null);
     Player p = e.getPlayer();
     BffaPlayer bffaPlayer = Main.playerData.get(p);
     MapVote mapVote = MapVote.getInstance();
@@ -112,16 +115,20 @@ public class QuitListener implements Listener {
     }
     Main.inst().stats.updatePlayer(bffaPlayer);
     Main.playerData.remove(p);
-//    if (Config.config.getBoolean("join-quit-message")) {
-//      if (Config.config.getBoolean("displayname.quitmessage")) {
-//        e.setQuitMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("quitmessage").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
-//      } else {
-//        e.setQuitMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("quitmessage").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
-//      }
-//    } else {
-//      e.setQuitMessage(null);
-//    }
-    e.setQuitMessage(null);
-//    System.gc();
+
+    String uuid = String.valueOf(p.getUniqueId());
+    boolean nicked = MySQL.containsPlayer(uuid);
+    String joinMessage = StringUtils.color("&a[&dBuildFFA&a] &e%name% left the game!");
+    if(nicked) {
+      String nickedName = MySQL.getNick(uuid);
+      joinMessage = joinMessage.replace("%name%", nickedName);
+    }
+    else {
+      joinMessage = joinMessage.replace("%name%", p.getName());
+    }
+
+    for(Player player : Bukkit.getOnlinePlayers()) {
+      player.sendMessage(joinMessage);
+    }
   }
 }

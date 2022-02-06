@@ -2,9 +2,9 @@ package kr.teamcocoa.buildffa.enums;
 
 public enum InventoryEnum {
 
-    KIT_SELECT("inventory_kit_selection"),
-    INVENTORY_SORTING("inventory_inventory_sorting"),
-    VOTE("inventory_vote");
+    KIT_SELECT("kit_selection"),
+    INVENTORY_SORTING("inventory_sorting"),
+    VOTE("vote");
 
     private final String name;
 
@@ -13,6 +13,6 @@ public enum InventoryEnum {
     }
 
     private InventoryEnum(String name) {
-        this.name = name;
+        this.name = "inventory." + name;
     }
 }
