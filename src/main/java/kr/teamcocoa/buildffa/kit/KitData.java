@@ -27,42 +27,6 @@ import java.util.List;
 
 public class KitData {
 
-    public void setInventorySetting(Player player, ItemStack[] inventorySorting, String kitName){
-        int[] inventory = new int[9];
-        String sql;
-        String[] kitString;
-        List<ItemStack> inventorySortingList = Arrays.asList(inventorySorting);
-        switch(kitName){
-            case "default":
-                kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
-                sql = "UPDATE `kit_default` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%6%\", `pearl` = \"%5%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
-                for(int i = 0; i < 6; i++){
-                    inventory[i] = inventorySortingList.indexOf(getItemByString(kitString[i], "default"));
-                    sql = sql.replace("%" + (i + 1) + "%", String.valueOf(inventory[i]));
-                }
-                break;
-            case "fisher":
-                kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder", "rod"};
-                sql = "UPDATE `kit_fisher` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%6%\", `pearl` = \"%5%\", `rod` = \"%7%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
-                for(int i = 0; i < 7; i++){
-                    inventory[i] = inventorySortingList.indexOf(getItemByString(kitString[i], "fisher"));
-                    sql = sql.replace("%" + (i + 1) + "%", String.valueOf(inventory[i]));
-                }
-                break;
-            case "archer":
-                kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder", "arrow", "bow"};
-                sql = "UPDATE `kit_archer` SET `sword` = \"%1%\", `stick` = \"%2%\", `block` = \"%3%\", `web` = \"%4%\", `ladder` = \"%6%\", `pearl` = \"%5%\", `arrow` = \"%7%\", `bow` = \"%8%\" WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
-                for(int i = 0; i < 8; i++){
-                    inventory[i] = inventorySortingList.indexOf(getItemByString(kitString[i], "archer"));
-                    sql = sql.replace("%" + (i + 1) + "%", String.valueOf(inventory[i]));
-                }
-                break;
-            default:
-                return;
-        }
-        Main.inst().mysql.update(sql);
-    }
-
     public ItemStack[] getPlayerKit(Player player, int kit){
         ItemStack[] inventory = new ItemStack[9];
         String sql = "SELECT * FROM `kit_%kit%` WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
@@ -94,7 +58,7 @@ public class KitData {
                  * 6 : web
                  * 7 : pearl
                  * */
-                kitString = new String[]{"sword", "stick", "block", "bow", "arrow", "ladder", "web", "pearl"};
+                kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder", "arrow", "bow"};
                 sql = sql.replace("%kit%", "archer");
                 kitName = "archer";
                 break;
@@ -107,7 +71,7 @@ public class KitData {
                  * 4 : ladder
                  * 5 : pearl
                  * */
-                kitString = new String[]{"sword", "stick", "block", "web", "ladder", "pearl"};
+                kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
                 sql = sql.replace("%kit%", "default");
                 kitName = "default";
                 break;
@@ -120,6 +84,7 @@ public class KitData {
                         inventory[rs.getInt(kitString[i])] = getItemByString(kitString[i], kitName);
                     }
                     catch(ArrayIndexOutOfBoundsException e) {
+                        e.printStackTrace();
                         inventory = getDefaultKit(Main.inst().kitData.getKitByInt(kit));
                         break;
                     }
@@ -200,24 +165,6 @@ public class KitData {
             kitSelection.setItem(i, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
         }
         return kitSelection;
-    }
-
-    public Inventory getInventorySorting(Player player, int kit){
-        ItemStack[] kitSorting = getPlayerKit(player, kit);
-        Inventory inventorySorting = Bukkit.createInventory(null, 27, LangUtils.getMessage(player, InventoryEnum.INVENTORY_SORTING));
-        for(int i = 0; i < 9; i++){
-            inventorySorting.setItem(i, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
-        }
-        for(int i = 9; i < 18; i++){
-            inventorySorting.setItem(i, kitSorting[i - 9]);
-        }
-        for(int i = 18; i < 27; i++){
-            inventorySorting.setItem(i, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
-        }
-        inventorySorting.setItem(21, createDye(LangUtils.getMessage(player, ItemEnum.SAVE), Material.INK_SACK, (short)10));
-        inventorySorting.setItem(23, createDye(LangUtils.getMessage(player, ItemEnum.RESET), Material.INK_SACK, (short)1));
-
-        return inventorySorting;
     }
 
     public void setKit(Player player, int kit){
@@ -306,7 +253,7 @@ public class KitData {
         }
     }
 
-    private ItemStack getItemByString(String string, String kit){
+    public ItemStack getItemByString(String string, String kit){
         ItemStack item;
         switch(string){
             case "sword":

@@ -4,6 +4,7 @@ import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.kit.KitData;
+import kr.teamcocoa.buildffa.kit.KitEdit;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Bar;
 import kr.teamcocoa.buildffa.utils.LangUtils;
@@ -78,24 +79,34 @@ public class InventoryClickListener implements Listener {
             e.setCancelled(true);
             return;
         }
-        if(e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || e
-                .getAction().equals(InventoryAction.DROP_ALL_SLOT) || e
-                .getAction().equals(InventoryAction.DROP_ALL_CURSOR) || e
-                .getAction().equals(InventoryAction.DROP_ONE_SLOT) || e
-                .getAction().equals(InventoryAction.DROP_ONE_CURSOR) || e
-                .getAction().equals(InventoryAction.HOTBAR_SWAP) || e
-                .getClickedInventory().equals(p.getInventory()) || e
-                .getClickedInventory().getType().equals(InventoryType.PLAYER)){
-            e.setCancelled(true);
-            return;
-        }
+//        Bukkit.getLogger().info("InventoryClickListener.Action = " + e.getAction());
+//        if(e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || e
+//                .getAction().equals(InventoryAction.DROP_ALL_SLOT) || e
+//                .getAction().equals(InventoryAction.DROP_ALL_CURSOR) || e
+//                .getAction().equals(InventoryAction.DROP_ONE_SLOT) || e
+//                .getAction().equals(InventoryAction.DROP_ONE_CURSOR) || e
+//                .getAction().equals(InventoryAction.HOTBAR_SWAP) || e
+//                .getClickedInventory().equals(p.getInventory()) || e
+//                .getClickedInventory().getType().equals(InventoryType.PLAYER)){
+//            e.setCancelled(true);
+//            return;
+//        }
         if(clickedItem.equals(resetItem)){
             try{
                 ItemStack[] inventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
-                Main.playerData.get(p).setInventory(inventory);
-                Main.inst().kitData.setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
-                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
+//                Main.playerData.get(p).setInventory(inventory);
+                boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
+                if(saved) {
+                    Main.playerData.get(p).setInventory(inventory);
+                    p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
+                }
+                else {
+                    p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
+                }
+//                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
                 p.closeInventory();
+                p.getInventory().clear();
+                Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
             }
             catch(Exception e1){
                 e1.printStackTrace();
@@ -105,26 +116,24 @@ public class InventoryClickListener implements Listener {
         if(clickedItem.equals(saveItem)){
             try{
                 ItemStack[] inventory = new ItemStack[9];
-                ItemStack[] defaultInventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
-                for(int i = 9; i < 18; i++){
-                    ItemStack item = e.getInventory().getItem(i);
-                    int defaultIndex = Arrays.asList(defaultInventory).indexOf(item);
-                    if(defaultIndex != -1 && !item.equals(new ItemStack(Material.AIR))){
-                        inventory[i - 9] = item;
-                    }
-                    else{
-                        inventory[i - 9] = new ItemStack(Material.AIR);
-                    }
+//                ItemStack[] defaultInventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
+                for(int i = 0; i < 9; i++){
+                    inventory[i] = p.getInventory().getContents()[i];
                 }
-                Main.inst().kitData.setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
-                Main.playerData.get(p).setInventory(inventory);
-                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));
+                boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
+                if(saved) {
+                    Main.playerData.get(p).setInventory(inventory);
+                    p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));
+                }
+                else {
+                    p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
+                }
                 p.closeInventory();
                 p.getInventory().clear();
                 Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
             }
             catch(Exception e1){
-//                e1.printStackTrace();
+                e1.printStackTrace();
                 p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
             }
         }

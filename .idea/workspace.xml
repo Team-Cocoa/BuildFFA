@@ -5,26 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="58d3d634-9719-411b-83b5-014a3e754570" name="Default Changelist" comment="2021/11/06/16:53">
-      <change afterPath="$PROJECT_DIR$/lib/LanguageLib-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/KitEdit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/languages-1.0-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/InventoryEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/InventoryEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/ItemEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/ItemEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/MessageEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/MessageEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/OtherEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/OtherEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/LanguageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/LanguageListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/QuitListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/QuitListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/LangUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/LangUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/world/WorldManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/world/WorldManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/KitData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/KitData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InteractListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InteractListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InventoryClickListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InventoryClickListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InventoryCloseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/listener/InventoryCloseListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/BuildFFA-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/BuildFFA-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/PlayerDeathListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/PlayerDeathListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/QuitListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/QuitListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/main/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/main/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/utils/MYSQL.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/utils/MYSQL.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/kit/KitData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/kit/KitData.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/InteractListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/InteractListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/InventoryClickListener$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/InventoryClickListener$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/InventoryClickListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/InventoryClickListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

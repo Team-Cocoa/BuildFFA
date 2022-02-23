@@ -21,6 +21,7 @@ kr\teamcocoa\buildffa\listener\EnderPeralCancelListener.class
 kr\teamcocoa\buildffa\listener\EntityDamageListener.class
 kr\teamcocoa\buildffa\listener\InventoryClickListener.class
 kr\teamcocoa\buildffa\commands\Stats$3.class
+kr\teamcocoa\buildffa\kit\KitEdit.class
 kr\teamcocoa\buildffa\listener\PlayerRespawnListener.class
 kr\teamcocoa\buildffa\listener\JoinListener.class
 kr\teamcocoa\buildffa\listener\WeatherChangeListener.class

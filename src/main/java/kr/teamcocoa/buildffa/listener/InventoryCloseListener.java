@@ -1,6 +1,7 @@
 package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.main.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +12,7 @@ public class InventoryCloseListener implements Listener {
     public void onClose(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
         if(!Main.playerData.get(player).isInGame() && !Main.playerData.get(player).isBuild()) {
-            Main.playerData.get(player).setJoinInventory();
+            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(player).setJoinInventory(), 5L);
         }
     }
 }
