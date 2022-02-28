@@ -7,11 +7,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
 public class ItemDropListener implements Listener {
-  @EventHandler
-  public void onItemDrop(PlayerDropItemEvent e) {
-    Player p = e.getPlayer();
-    if (!Main.playerData.get(p).isBuild()) {
-      e.setCancelled(true);
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent e) {
+        Player p = e.getPlayer();
+        if (!Main.playerData.get(p).isBuild()) {
+            e.setCancelled(true);
+        }
     }
-  }
 }

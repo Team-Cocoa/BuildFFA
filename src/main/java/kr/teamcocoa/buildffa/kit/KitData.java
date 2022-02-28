@@ -177,7 +177,7 @@ public class KitData {
     }
 
     public int getKit(Player player){
-        int i = -1;
+        int i = 0;
         try(ResultSet rs = Main.inst().mysql.getResult("SELECT `kit` FROM `stats` WHERE `UUID` = \""+player.getUniqueId()+"\";")) {
             if(rs.next()){
                 i = rs.getInt("kit");
@@ -186,7 +186,7 @@ public class KitData {
         }
         catch(SQLException e){
             e.printStackTrace();
-            return -1;
+            return 0;
         }
     }
     public String getKitByInt(int input){

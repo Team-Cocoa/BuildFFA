@@ -12,7 +12,7 @@ public class InventoryDragListener implements Listener {
     @EventHandler
     public void onDrag(InventoryDragEvent e){
         if(e.getWhoClicked() instanceof Player){
-            if(e.getInventory().getName().equals(ChatColor.translateAlternateColorCodes('&', "&cInventorySorting"))){
+            if(e.getInventory().getName().equals(ChatColor.translateAlternateColorCodes('&', "&cInventorySorting"))) {
                 e.setCancelled(true);
             }
         }

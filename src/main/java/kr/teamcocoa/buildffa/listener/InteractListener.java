@@ -46,6 +46,7 @@ public class InteractListener implements Listener {
                 return;
             }
             if (p.getLocation().getY() >= 207) {
+                Bukkit.getLogger().info("a");
                 e.setCancelled(true);
                 return;
             }

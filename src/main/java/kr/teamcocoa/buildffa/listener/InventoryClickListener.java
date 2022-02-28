@@ -1,4 +1,5 @@
 package kr.teamcocoa.buildffa.listener;
+
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
@@ -26,59 +27,59 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class InventoryClickListener implements Listener {
-  @EventHandler
-  public void onInventoryClick(InventoryClickEvent e) {
-      MapVoteInventory.getInstance().onClickInventory(e);
-    Player p = (Player)e.getWhoClicked();
-      if(Main.playerData.get(p).isBuild()){
-          return;
-      }
-    if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null){ //invsorting
-      e.setCancelled(true);
-      return;
-    }
-    if (e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.KIT_SELECT))) {
-        ItemStack clickedItem = e.getCurrentItem();
-        int kit = 0;
-        switch(clickedItem.getType()){
-            case STICK:
-                kit = 0;
-                break;
-            case FISHING_ROD:
-                kit = 1;
-                break;
-            case BOW:
-                kit = 2;
-                break;
-            default:
-                e.setCancelled(true);
-                return;
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        MapVoteInventory.getInstance().onClickInventory(e);
+        Player p = (Player) e.getWhoClicked();
+        if (Main.playerData.get(p).isBuild()) {
+            return;
         }
-        p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
-        try {
-            Main.inst().kitData.setKit(p, kit);
-            Main.playerData.get(p).setKit(kit);
-            Main.playerData.get(p).setInventory(Main.inst().kitData.getPlayerKit(p, kit));
-            p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));
-        } catch (Exception e1) {
-            e1.printStackTrace();
-            p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
-        }
-        p.closeInventory();
-        return;
-    }
-
-
-    if(e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.INVENTORY_SORTING))){
-        ItemStack saveItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.SAVE), Material.INK_SACK, (short)10);
-        ItemStack resetItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.RESET), Material.INK_SACK, (short)1);
-        ItemStack clickedItem = e.getCurrentItem();
-        ItemStack glassItem = Main.inst().kitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7);
-        int kit = Main.playerData.get(p).getKit();
-        if(clickedItem.equals(glassItem)){
+        if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null) { //invsorting
             e.setCancelled(true);
             return;
         }
+        if (e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.KIT_SELECT))) {
+            ItemStack clickedItem = e.getCurrentItem();
+            int kit = 0;
+            switch (clickedItem.getType()) {
+                case STICK:
+                    kit = 0;
+                    break;
+                case FISHING_ROD:
+                    kit = 1;
+                    break;
+                case BOW:
+                    kit = 2;
+                    break;
+                default:
+                    e.setCancelled(true);
+                    return;
+            }
+            p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
+            try {
+                Main.inst().kitData.setKit(p, kit);
+                Main.playerData.get(p).setKit(kit);
+                Main.playerData.get(p).setInventory(Main.inst().kitData.getPlayerKit(p, kit));
+                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));
+            } catch (Exception e1) {
+                e1.printStackTrace();
+                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
+            }
+            p.closeInventory();
+            return;
+        }
+
+
+        if (e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.INVENTORY_SORTING))) {
+            ItemStack saveItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.SAVE), Material.INK_SACK, (short) 10);
+            ItemStack resetItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.RESET), Material.INK_SACK, (short) 1);
+            ItemStack clickedItem = e.getCurrentItem();
+            ItemStack glassItem = Main.inst().kitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte) 7);
+            int kit = Main.playerData.get(p).getKit();
+            if (clickedItem.equals(glassItem)) {
+                e.setCancelled(true);
+                return;
+            }
 //        Bukkit.getLogger().info("InventoryClickListener.Action = " + e.getAction());
 //        if(e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || e
 //                .getAction().equals(InventoryAction.DROP_ALL_SLOT) || e
@@ -91,59 +92,55 @@ public class InventoryClickListener implements Listener {
 //            e.setCancelled(true);
 //            return;
 //        }
-        if(clickedItem.equals(resetItem)){
-            try{
-                ItemStack[] inventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
+            if (clickedItem.equals(resetItem)) {
+                try {
+                    ItemStack[] inventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
 //                Main.playerData.get(p).setInventory(inventory);
-                boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
-                if(saved) {
-                    Main.playerData.get(p).setInventory(inventory);
-                    p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
-                }
-                else {
-                    p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
-                }
+                    boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
+                    if (saved) {
+                        Main.playerData.get(p).setInventory(inventory);
+                        p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
+                    } else {
+                        p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
+                    }
 //                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
-                p.closeInventory();
-                p.getInventory().clear();
-                Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
-            }
-            catch(Exception e1){
-                e1.printStackTrace();
-                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
-            }
-        }
-        if(clickedItem.equals(saveItem)){
-            try{
-                ItemStack[] inventory = new ItemStack[9];
-//                ItemStack[] defaultInventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
-                for(int i = 0; i < 9; i++){
-                    inventory[i] = p.getInventory().getContents()[i];
-                }
-                boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
-                if(saved) {
-                    Main.playerData.get(p).setInventory(inventory);
-                    p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));
-                }
-                else {
+                    p.closeInventory();
+                    p.getInventory().clear();
+                    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                     p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
                 }
-                p.closeInventory();
-                p.getInventory().clear();
-                Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
             }
-            catch(Exception e1){
-                e1.printStackTrace();
-                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
+            if (clickedItem.equals(saveItem)) {
+                try {
+                    ItemStack[] inventory = new ItemStack[9];
+//                ItemStack[] defaultInventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
+                    for (int i = 0; i < 9; i++) {
+                        inventory[i] = p.getInventory().getContents()[i];
+                    }
+                    boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
+                    if (saved) {
+                        Main.playerData.get(p).setInventory(inventory);
+                        p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));
+                    } else {
+                        p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
+                    }
+                    p.closeInventory();
+                    p.getInventory().clear();
+                    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                    p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
+                }
             }
+            return;
         }
-        return;
+        if (Main.playerData.get(p).isInGame() && (e.getAction().equals(InventoryAction.PICKUP_ALL) && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.VOTE)) || e.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
+            e.setCancelled(true);
+            p.playSound(p.getLocation(), Sound.NOTE_BASS, 100F, 0F);
+            p.sendMessage(LangUtils.getMessage(p, MessageEnum.USE_INVENTORY_SORTING));
+            return;
+        }
     }
-      if(Main.playerData.get(p).isInGame() && (e.getAction().equals(InventoryAction.PICKUP_ALL) && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.VOTE)) || e.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
-          e.setCancelled(true);
-          p.playSound(p.getLocation(), Sound.NOTE_BASS, 100F, 0F);
-          p.sendMessage(LangUtils.getMessage(p, MessageEnum.USE_INVENTORY_SORTING));
-          return;
-      }
-  }
 }

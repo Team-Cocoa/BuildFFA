@@ -7,11 +7,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
 public class BlockBreakListener implements Listener {
-  @EventHandler
-  public void onBlockBreak(BlockBreakEvent e) {
-    Player p = e.getPlayer();
-    if (!Main.playerData.get(p).isBuild()) {
-      e.setCancelled(true);
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent e) {
+        Player p = e.getPlayer();
+        if (!Main.playerData.get(p).isBuild()) {
+            e.setCancelled(true);
+        }
     }
-  }
 }
