@@ -53,11 +53,11 @@ public class Main extends JavaPlugin {
         WorldManager worldManager = WorldManager.getInstance();
         String map = MapVote.getInstance().getRandomMap();
         worldManager.setCurrentMapName(map);
-        for (String string : MapVote.getInstance().getMapList()) {
-            if (!string.equals(map)) {
-                worldManager.unloadWorld(string);
-            }
-        }
+//        for (String string : MapVote.getInstance().getMapList()) {
+//            if (!string.equals(map)) {
+//                worldManager.unloadWorld(string);
+//            }
+//        }
         WorldManager.getInstance().loadWorld(map);
         worldManager.cloneWorld(map);
         Bukkit.getWorld(map).loadChunk(worldManager.getSpawnByName(map).getChunk());

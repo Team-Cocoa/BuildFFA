@@ -29,15 +29,16 @@ import java.util.Arrays;
 public class InventoryClickListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
+        Bukkit.getLogger().info(e.getEventName() + "is executed!");
         MapVoteInventory.getInstance().onClickInventory(e);
         Player p = (Player) e.getWhoClicked();
         if (Main.playerData.get(p).isBuild()) {
             return;
         }
-        if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null) { //invsorting
-            e.setCancelled(true);
-            return;
-        }
+//        if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null) { //invsorting
+//            e.setCancelled(true);
+//            return;
+//        }
         if (e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.KIT_SELECT))) {
             ItemStack clickedItem = e.getCurrentItem();
             int kit = 0;

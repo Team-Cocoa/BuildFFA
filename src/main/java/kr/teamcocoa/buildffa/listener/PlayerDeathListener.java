@@ -43,11 +43,11 @@ public class PlayerDeathListener implements Listener {
 
 
         Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
-
+        for(PotionEffect effect : p.getActivePotionEffects()) {
+            p.removePotionEffect(effect.getType());
+        }
         Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-            for(PotionEffect effect : p.getActivePotionEffects()) {
-                p.removePotionEffect(effect.getType());
-            }
+
             p.spigot().respawn();
             p.teleport(spawn);
             p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);

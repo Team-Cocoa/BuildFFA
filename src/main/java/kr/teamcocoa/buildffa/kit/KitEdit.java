@@ -122,4 +122,8 @@ public class KitEdit {
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
+
+    public void addItemInInventory(Player player, ItemStack itemStack) {
+        player.getInventory().addItem(itemStack);
+    }
 }
