@@ -95,6 +95,9 @@ public class KitData {
                     }
                 }
             }
+            else {
+                inventory = getDefaultKit("default");
+            }
         }
         catch(Exception e){
             e.printStackTrace();
@@ -192,9 +195,6 @@ public class KitData {
     public String getKitByInt(int input){
         String output;
         switch(input){
-            case 0:
-                output = "default";
-                break;
             case 1:
                 output = "fisher";
                 break;
@@ -202,7 +202,7 @@ public class KitData {
                 output = "archer";
                 break;
             default:
-                output = "error";
+                output = "default";
                 break;
         }
         return output;

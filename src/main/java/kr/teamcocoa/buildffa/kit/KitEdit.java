@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -84,7 +85,11 @@ public class KitEdit {
                 kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
                 sql = "UPDATE kit_default SET sword = {0}, stick = {1}, block = {2}, web = {3}, pearl = {4}, ladder = {5} WHERE uuid = '" + player.getUniqueId().toString() + "';";
                 for(int i = 0; i < 6; i++) {
-                    inventory[i] = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i], "default"));
+                    int index = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i], "default"));
+                    if(index == -1) {
+                        return false;
+                    }
+                    inventory[i] = index;
                     sql = sql.replace("{" + i + "}", String.valueOf(inventory[i]));
                 }
                 break;
@@ -92,7 +97,11 @@ public class KitEdit {
                 kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder", "rod"};
                 sql = "UPDATE kit_fisher SET sword = {0}, stick = {1}, block = {2}, web = {3}, pearl = {4}, ladder = {5}, rod = {6} WHERE uuid = '" + player.getUniqueId().toString() + "';";
                 for(int i = 0; i < 7; i++){
-                    inventory[i] = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i], "fisher"));
+                    int index = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i], "fisher"));
+                    if(index == -1) {
+                        return false;
+                    }
+                    inventory[i] = index;
                     sql = sql.replace("{" + i + "}", String.valueOf(inventory[i]));
                 }
                 break;
@@ -100,17 +109,27 @@ public class KitEdit {
                 kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder", "arrow", "bow"};
                 sql = "UPDATE `kit_archer` SET sword = {0}, stick = {1}, block = {2}, web = {3}, pearl = {4}, ladder = {5}, arrow = {6}, bow = {7} WHERE uuid = '" + player.getUniqueId().toString() + "';";
                 for(int i = 0; i < 8; i++){
-                    inventory[i] = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i], "archer"));
+                    int index = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i], "archer"));
+                    if(index == -1) {
+                        return false;
+                    }
+                    inventory[i] = index;
                     sql = sql.replace("{" + i + "}", String.valueOf(inventory[i]));
                 }
                 break;
             default:
                 return false;
         }
-        if(sql.contains("-1")) {
-//            setInventorySetting(player, Main.inst().kitData.getDefaultKit(kitName), kitName);
-            return false;
-        }
+//        if(sql.contains("-1")) {
+////            setInventorySetting(player, Main.inst().kitData.getDefaultKit(kitName), kitName);
+//            Bukkit.getLogger().info(MessageFormat.format("player : {0} | {1} , InventoryList = {2}, KitName = {3} , sql = {4}",
+//                    player.getName(),
+//                    player.getUniqueId().toString(),
+//                    Arrays.toString(inventorySortingList.toArray()),
+//                    kitName,
+//                    sql));
+//            return false;
+//        }
         Main.inst().mysql.update(sql);
         return true;
     }
