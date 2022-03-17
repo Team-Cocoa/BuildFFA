@@ -4,7 +4,8 @@ public enum InventoryEnum {
 
     KIT_SELECT("kit_selection"),
     INVENTORY_SORTING("inventory_sorting"),
-    VOTE("vote");
+    VOTE("vote"),
+    EXTRA_ITEM("extra_item");
 
     private final String name;
 

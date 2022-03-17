@@ -10,7 +10,9 @@ public enum ItemEnum {
     DEFAULT_KIT("kit_default"),
     ARCHER_KIT("kit_archer"),
     FISHER_KIT("kit_fisher"),
-    CANCEL_VOTE("cancel_vote");
+    CANCEL_VOTE("cancel_vote"),
+    RESCUE_PLATFORM("rescue_platform"),
+    GOLDEN_HEAD("golden_head");
 
 
     private final String name;
