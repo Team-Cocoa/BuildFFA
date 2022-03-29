@@ -28,6 +28,8 @@ public class BffaPlayer {
     private NickedBffaPlayer nickedBffaPlayer;
     private boolean shootAble;
 
+    private boolean headBought, rescueBought;
+
     /* Stats */
     private int kills;
     private int deaths;
@@ -50,6 +52,8 @@ public class BffaPlayer {
         this.kills = Main.inst().stats.getKills(player.getUniqueId().toString());
         this.bestKillStreaks = Main.inst().stats.getMaxKillStreak(player.getUniqueId().toString());
         this.deaths = Main.inst().stats.getDeaths(player.getUniqueId().toString());
+        this.headBought = false;
+        this.rescueBought = false;
     }
 
     /*Getter*/
@@ -112,6 +116,14 @@ public class BffaPlayer {
 
     public boolean isShootAble() {
         return shootAble;
+    }
+
+    public boolean isHeadBought() {
+        return headBought;
+    }
+
+    public boolean isRescueBought() {
+        return rescueBought;
     }
 
     /*Setter*/
@@ -181,6 +193,14 @@ public class BffaPlayer {
         else{
             this.player.getInventory().setItem(4, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemEnum.KIT)));
         }
+    }
+
+    public void setHeadBought(boolean headBought) {
+        this.headBought = headBought;
+    }
+
+    public void setRescueBought(boolean rescueBought) {
+        this.rescueBought = rescueBought;
     }
 
     /*Stats Adder*/

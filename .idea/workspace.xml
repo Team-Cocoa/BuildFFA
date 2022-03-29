@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="58d3d634-9719-411b-83b5-014a3e754570" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/lib/DKCoins v3.2.0.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -15,6 +16,19 @@
       <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/kit/BffaPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/kit/BffaPlayer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/PlayerDeathListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/PlayerDeathListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/QuitListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/kr/teamcocoa/buildffa/listener/QuitListener.class" afterDir="false" />
+=======
+    <list default="true" id="58d3d634-9719-411b-83b5-014a3e754570" name="Default Changelist" comment="2021/11/06/16:53">
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/items/AbstractExtraItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/items/ExtraItemInventory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/items/GoldenHead.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/items/RescuePlatform.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/InventoryEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/InventoryEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/ItemEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/ItemEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/OtherEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/enums/OtherEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/BffaPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/kit/BffaPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/ItemManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/kr/teamcocoa/buildffa/utils/ItemManager.java" afterDir="false" />
+>>>>>>> BuildFFA/master
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,16 +78,15 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+<<<<<<< HEAD
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../dkperms" />
+=======
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Clutch-master/Clutch-master" />
+>>>>>>> BuildFFA/master
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="discord-application" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\fixca\OneDrive\바탕 화면\개발의 흔적\plugin\BuildFFA\lib" />
-    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -168,6 +181,7 @@
       <option name="project" value="LOCAL" />
       <updated>1633974380606</updated>
     </task>
+<<<<<<< HEAD
     <task id="LOCAL-00013" summary="2022/02/23/21:19">
       <created>1645618764963</created>
       <option name="number" value="00013" />
@@ -197,9 +211,21 @@
       <updated>1646584803765</updated>
     </task>
     <option name="localTasksCounter" value="17" />
+=======
+    <option name="localTasksCounter" value="13" />
+>>>>>>> BuildFFA/master
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
@@ -214,10 +240,14 @@
     <MESSAGE value="2021/08/23/02:06" />
     <MESSAGE value="2021/10/06/12:52" />
     <MESSAGE value="2021/10/12/02:45 tried to fix world saver memory leaking" />
+<<<<<<< HEAD
     <MESSAGE value="2022/02/23/21:19" />
     <MESSAGE value="2022/03/01/02:28" />
     <MESSAGE value="2022/03/03/02:00" />
     <MESSAGE value="2022/03/07/01:39" />
     <option name="LAST_COMMIT_MESSAGE" value="2022/03/07/01:39" />
+=======
+    <option name="LAST_COMMIT_MESSAGE" value="2021/10/12/02:45 tried to fix world saver memory leaking" />
+>>>>>>> BuildFFA/master
   </component>
 </project>
