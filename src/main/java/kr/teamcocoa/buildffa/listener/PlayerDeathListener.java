@@ -68,6 +68,7 @@ public class PlayerDeathListener implements Listener {
             BffaPlayer killerBffaPlayer = Main.playerData.get(bffaPlayer.getLastHitPlayer());
             String killerName = bffaPlayer.getLastHitPlayer().getName();
             Player killer = bffaPlayer.getLastHitPlayer();
+            killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 1, 2);
             String KillerHealth = (new DecimalFormat("#0.0")).format(killer.getHealth() / 2.0D);
 
             killerBffaPlayer.addKills();

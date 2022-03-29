@@ -37,7 +37,7 @@ public class QuitListener implements Listener {
                     final BffaPlayer killerBffaPlayer = Main.playerData.get(bffaPlayer.getLastHitPlayer());
                     final String nameKiller = bffaPlayer.getLastHitPlayer().getName();
                     Player killer = killerBffaPlayer.getPlayer();
-                    killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
+                    killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 1F, 2F);
                     killerBffaPlayer.addKills();
                     if (killerBffaPlayer.isNicked()) {
                         killerBffaPlayer.getNickedBffaPlayer().addKills();

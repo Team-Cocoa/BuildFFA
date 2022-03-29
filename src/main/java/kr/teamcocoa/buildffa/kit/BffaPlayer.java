@@ -1,9 +1,12 @@
 package kr.teamcocoa.buildffa.kit;
 
+import ch.dkrieger.coinsystem.core.CoinSystem;
+import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import kr.teamcocoa.buildffa.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -183,6 +186,9 @@ public class BffaPlayer {
     /*Stats Adder*/
     public void addKills() {
         this.kills += 1;
+        CoinPlayer coinPlayer = CoinSystem.getInstance().getPlayerManager().getPlayer(this.player.getUniqueId());
+        coinPlayer.addCoins(50);
+        this.player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &6+50 coins!"));
     }
 
     public void addDeaths() {
