@@ -53,15 +53,9 @@ public class Main extends JavaPlugin {
         WorldManager worldManager = WorldManager.getInstance();
         String map = MapVote.getInstance().getRandomMap();
         worldManager.setCurrentMapName(map);
-//        for (String string : MapVote.getInstance().getMapList()) {
-//            if (!string.equals(map)) {
-//                worldManager.unloadWorld(string);
-//            }
-//        }
         WorldManager.getInstance().loadWorld(map);
         worldManager.cloneWorld(map);
         Bukkit.getWorld(map).loadChunk(worldManager.getSpawnByName(map).getChunk());
-//    worldManager.mapChange(map);
         WorldManager.getInstance().mapChangeUpdater();
 
         stats.updateRanking();
@@ -86,7 +80,6 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerRespawnListener(), this);
         getServer().getPluginManager().registerEvents(new QuitListener(), this);
         getServer().getPluginManager().registerEvents(new WeatherChangeListener(), this);
-//        getServer().getPluginManager().registerEvents(new InventoryDragListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerPickupItemListener(), this);
         getServer().getPluginManager().registerEvents(new LanguageListener(), this);
         getServer().getPluginManager().registerEvents(new WorldInitListener(), this);
@@ -99,7 +92,6 @@ public class Main extends JavaPlugin {
         getCommand("build").setExecutor(new Build());
         getCommand("stats").setExecutor(new kr.teamcocoa.buildffa.commands.Stats());
         getCommand("teaming").setExecutor(new Teaming());
-        getCommand("kits").setExecutor(new Kits());
         getCommand("vote").setExecutor(new Vote());
     }
 

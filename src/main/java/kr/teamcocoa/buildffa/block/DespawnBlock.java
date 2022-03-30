@@ -39,7 +39,6 @@ public class DespawnBlock {
             }
         }
         catch(Exception e) {
-//            Bukkit.getLogger().info("a");
             new Location(world, x, y, z).getBlock().setType(Material.AIR);
             this.giveAgain = false;
             return false;
@@ -72,7 +71,6 @@ public class DespawnBlock {
                     event.getPlayer().getInventory().setItem(index, blockItem);
                 }
                 catch(Exception e){
-//                    Bukkit.getLogger().info("b");
                     new Location(world, x, y, z).getBlock().setType(Material.AIR);
                     return false;
                 }

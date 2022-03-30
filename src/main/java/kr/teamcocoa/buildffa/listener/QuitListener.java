@@ -63,7 +63,6 @@ public class QuitListener implements Listener {
 
                     if (killerKillstreak % 3 == 0) {
                         try {
-                            String kit = Main.inst().kitData.getKitByInt(Main.inst().kitData.getKit(killer));
                             int index = Arrays.asList(killerBffaPlayer.getInventory()).indexOf(new ItemStack(Material.ENDER_PEARL, 2));
                             if (killer.getInventory().getItem(index) == null) {
                                 ItemStack blockItem = new ItemStack(Material.ENDER_PEARL, 1);
@@ -73,7 +72,7 @@ public class QuitListener implements Listener {
                                 ItemStack blockItem = new ItemStack(Material.ENDER_PEARL, amount + 1);
                                 killer.getInventory().setItem(index, blockItem);
                             }
-                            if (kit.toLowerCase() == "archer") {
+                            if (true) { // TODO : 여기에 활 샀을때 조건 추가
                                 int index1 = Arrays.asList(Main.playerData.get(killer).getInventory()).indexOf(new ItemStack(Material.ARROW, 16));
                                 if (killer.getInventory().getItem(index) == null) {
                                     ItemStack blockItem = new ItemStack(Material.ARROW, 5);

@@ -3,7 +3,6 @@ package kr.teamcocoa.buildffa.kit;
 import ch.dkrieger.coinsystem.core.CoinSystem;
 import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
-import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.utils.StringUtils;
@@ -21,14 +20,13 @@ public class BffaPlayer {
     private boolean build;
     private Player player;
     private ItemStack[] inventory;
-    private int kit;
     private boolean inGame;
     private boolean died;
     private Player lastHitPlayer;
     private NickedBffaPlayer nickedBffaPlayer;
     private boolean shootAble;
 
-    private boolean headBought, rescueBought;
+    private boolean gappleBought, rescueBought;
 
     /* Stats */
     private int kills;
@@ -41,8 +39,7 @@ public class BffaPlayer {
         this.latestDeadTime = 0L;
         this.build = false;
         this.player = player;
-        this.kit = Main.inst().kitData.getKit(player);
-        this.inventory = Main.inst().kitData.getPlayerKit(player, Main.inst().kitData.getKit(player));
+        this.inventory = Main.inst().kitData.getPlayerKit(player);
         this.inGame = false;
         this.died = false;
         this.lastHitPlayer = null;
@@ -52,7 +49,7 @@ public class BffaPlayer {
         this.kills = Main.inst().stats.getKills(player.getUniqueId().toString());
         this.bestKillStreaks = Main.inst().stats.getMaxKillStreak(player.getUniqueId().toString());
         this.deaths = Main.inst().stats.getDeaths(player.getUniqueId().toString());
-        this.headBought = false;
+        this.gappleBought = false;
         this.rescueBought = false;
     }
 
@@ -80,10 +77,6 @@ public class BffaPlayer {
 
     public Player getPlayer() {
         return player;
-    }
-
-    public int getKit() {
-        return kit;
     }
 
     public void setDied(boolean died) {
@@ -118,8 +111,8 @@ public class BffaPlayer {
         return shootAble;
     }
 
-    public boolean isHeadBought() {
-        return headBought;
+    public boolean isGappleBought() {
+        return gappleBought;
     }
 
     public boolean isRescueBought() {
@@ -150,10 +143,6 @@ public class BffaPlayer {
 
     public void setInventory(ItemStack[] inventory) {
         this.inventory = inventory;
-    }
-
-    public void setKit(int kit) {
-        this.kit = kit;
     }
 
     public void setInGame(boolean inGame) {
@@ -195,8 +184,8 @@ public class BffaPlayer {
         }
     }
 
-    public void setHeadBought(boolean headBought) {
-        this.headBought = headBought;
+    public void setGappleBought(boolean gappleBought) {
+        this.gappleBought = gappleBought;
     }
 
     public void setRescueBought(boolean rescueBought) {
@@ -246,7 +235,6 @@ public class BffaPlayer {
                 ", build=" + build +
                 ", player=" + player +
                 ", inventory=" + Arrays.toString(inventory) +
-                ", kit=" + kit +
                 ", inGame=" + inGame +
                 ", died=" + died +
                 ", lastHitPlayer=" + lastHitPlayer +

@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,7 +48,6 @@ public class PlayerDeathListener implements Listener {
             p.removePotionEffect(effect.getType());
         }
         Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-
             p.spigot().respawn();
             p.teleport(spawn);
             p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
@@ -89,7 +89,6 @@ public class PlayerDeathListener implements Listener {
 
             if(killerKillstreak % 3 == 0){
                 try {
-                    String kit = Main.inst().kitData.getKitByInt(Main.inst().kitData.getKit(killer));
                     int index = Arrays.asList(killerBffaPlayer.getInventory()).indexOf(new ItemStack(Material.ENDER_PEARL, 2));
                     if(killer.getInventory().getItem(index) == null) {
                         ItemStack blockItem = new ItemStack(Material.ENDER_PEARL,  1);
@@ -100,7 +99,7 @@ public class PlayerDeathListener implements Listener {
                         ItemStack blockItem = new ItemStack(Material.ENDER_PEARL, amount + 1);
                         killer.getInventory().setItem(index, blockItem);
                     }
-                    if(kit.toLowerCase() == "archer") {
+                    if(true) { // TODO : 여기에 활 샀을때 조건 추가
                         int index1 = Arrays.asList(Main.playerData.get(p.getKiller()).getInventory()).indexOf(new ItemStack(Material.ARROW, 16));
                         if(killer.getInventory().getItem(index) == null) {
                             ItemStack blockItem = new ItemStack(Material.ARROW,  5);

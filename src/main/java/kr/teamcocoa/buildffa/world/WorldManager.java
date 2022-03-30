@@ -4,20 +4,15 @@ import com.grinderwolf.swm.api.SlimePlugin;
 import com.grinderwolf.swm.api.loaders.SlimeLoader;
 import com.grinderwolf.swm.api.world.SlimeWorld;
 import com.grinderwolf.swm.api.world.properties.SlimeProperties;
-import com.grinderwolf.swm.api.world.properties.SlimeProperty;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Bar;
 import kr.teamcocoa.buildffa.utils.LangUtils;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
-import net.minecraft.server.v1_8_R3.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 
 import java.time.LocalTime;
@@ -28,14 +23,12 @@ public class WorldManager {
 
     private static WorldManager instance = null;
     private HashMap<String, SlimeWorld> worlds = new HashMap<>();
-//    private MultiverseCore core = null;
     private SlimePlugin core;
     private SlimeLoader loader;
     private String currentWorldUUID = null;
     private String currentMapName = null;
     private String temp;
     private int sec = 600;
-//    private int i = (int)(Math.random() * 3) + 1;
     private boolean pvpAble = true;
     private boolean placeAble = true;
 
@@ -52,24 +45,18 @@ public class WorldManager {
     }
 
     private WorldManager() {
-//        core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
-//        worldManager = core.getMVWorldManager();
         core = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SlimeWorldManager");
         loader = core.getLoader("file");
     }
 
     public String cloneWorld(String name) {
         temp = name;
-//        if(worldManager.cloneWorld(name.toLowerCase(Locale.ROOT), "b-" + name)) {
-//            return "b-" + name;
-//        }
         return null;
     }
 
     public void loadWorld(String name) {
-//        worldManager.loadWorld(name.toLowerCase(Locale.ROOT));
         try {
-            if(!worlds.containsKey(name)) {
+            if(!worlds.containsKey(name) && Bukkit.getWorld(name) == null) {
                 SlimePropertyMap map = new SlimePropertyMap();
                 map.setInt(SlimeProperties.SPAWN_X, 0);
                 map.setInt(SlimeProperties.SPAWN_Y, 218);
@@ -88,23 +75,6 @@ public class WorldManager {
         }
     }
 
-    public void unloadWorld(String string) {
-//        worldManager.unloadWorld(string.toLowerCase(Locale.ROOT));
-//        WorldServer world = ((CraftWorld) Bukkit.getWorld(string)).getHandle();
-        Bukkit.unloadWorld(string, true);
-
-
-//        MinecraftServer server = MinecraftServer.getServer();
-//        server.worlds.remove(world);
-
-//        System.gc();
-
-    }
-
-
-    public String getCurrentWorldUUID() {
-        return currentWorldUUID;
-    }
 
     public void mapChange(String name) {
         if(temp != currentMapName) {
@@ -114,7 +84,7 @@ public class WorldManager {
             Main.worldData.removeBlocks();
             long deadTime = System.currentTimeMillis();
             Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-                for(Player player : Bukkit.getOnlinePlayers()) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
                     player.teleport(spawn);
                     BffaPlayer bffaPlayer = Main.playerData.get(player);
                     bffaPlayer.setJoinInventory();
@@ -124,15 +94,7 @@ public class WorldManager {
                 }
                 placeAble = true;
             }, 0L);
-//            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-//                unloadWorld(t);
-//            }, 5L);
         }
-//        else {
-//            for(Player player : Bukkit.getOnlinePlayers()) {
-//                player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_MAP_NOT_SELECTED));
-//            }
-//        }
     }
 
     public void mapChangeUpdater() {
@@ -146,10 +108,6 @@ public class WorldManager {
                 Bar.sendDefaultBar(player, time);
             }
             if(sec == 5) {
-//                Location spawn = Locations.getSpawnLocation(Locations.getMapNameByInt(i = i + 1 < 4 ? i + 1 : 1));
-//                if(!spawn.getChunk().isLoaded()) {
-//                    spawn.getChunk().load();
-//                }
                 pvpAble = false;
                 placeAble = false;
             }
@@ -191,21 +149,13 @@ public class WorldManager {
                 case 3:
                 case 2:
                     sendCountdownMessage();
-//                    for(Player player : Bukkit.getOnlinePlayers()) {
-//                        mapVote.getVotingStatusMessage(player);
-//                    }
                     break;
                 case 1:
                     sendCountdownMessage();
-//                    for(Player player : Bukkit.getOnlinePlayers()) {
-//                        mapVote.getVotingStatusMessage(player);
-//                    }
                     Main.worldData.removeBlocks();
                     break;
                 case 0:
                     sec = 600;
-//                    i = i + 1 < 4 ? i + 1 : 1;
-//                    Locations.MapChange(i);
                     pvpAble = true;
                     mapVote.setVoteAble(true);
                     mapVote.resetVotes();
@@ -254,7 +204,6 @@ public class WorldManager {
             case "Spring":
             case "FlatLand":
             case "Architecture":
-//                world = Bukkit.getWorld("b-" + name);
                 world = Bukkit.getWorld(name);
                 Location location = new Location(world,0.5F, 218F, 0.5F, 0F, 90F);
                 return location;
@@ -283,8 +232,6 @@ public class WorldManager {
     }
 
     public double getArenaHeight() {
-        //        String map = WorldManager.getInstance().getCurrentMap();
-
         //usually 217
         return 207.0;
     }

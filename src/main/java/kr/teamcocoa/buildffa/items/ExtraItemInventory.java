@@ -4,15 +4,10 @@ import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.utils.ItemManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-
-import static kr.teamcocoa.buildffa.kit.KitData.*;
 
 public class ExtraItemInventory {
 
@@ -37,7 +32,7 @@ public class ExtraItemInventory {
             return;
         }
 
-        if(clickedItem.getItemMeta().getDisplayName().equals(GoldenHead.getInstance().getName(player))) {
+        if(clickedItem.getItemMeta().getDisplayName().equals(GoldenApple.getInstance().getName(player))) {
 
         }
 

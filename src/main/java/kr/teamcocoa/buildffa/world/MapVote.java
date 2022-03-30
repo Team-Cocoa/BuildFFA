@@ -103,7 +103,6 @@ public class MapVote {
         int most = 0;
         List<String> maps = new ArrayList<>();
         for(String string : mapList) {
-//            Bukkit.getLogger().info(Arrays.toString(maps.toArray()));
             if(most < voteList.get(string) && !string.equals(WorldManager.getInstance().getCurrentMap())) {
                 most = voteList.get(string);
                 Iterator<String> it = maps.iterator();
@@ -121,13 +120,10 @@ public class MapVote {
         int r;
         if(maps.size() > 1) {
             r = random.nextInt(maps.size() - 1);
-//            Bukkit.getLogger().info("size > 1");
         }
         else {
-//            Bukkit.getLogger().info("size = 1");
             r = 0;
         }
-//        Bukkit.getLogger().info(String.valueOf(r));
 
         return maps.get(r);
     }

@@ -56,80 +56,19 @@ public class KitEdit {
         player.openInventory(inventorySorting);
     }
 
-//    public void sorting(BffaPlayer bffaPlayer) {
-//        if(bffaPlayer.isInGame()) {
-//            return;
-//        }
-//        Player player = bffaPlayer.getPlayer();
-//        try {
-//            setInventorySetting(player, player.getInventory().getContents(), Main.inst().kitData.getKitByInt(bffaPlayer.getKit()));
-//            player.sendMessage(LangUtils.getMessage(player, MessageEnum.SETTING_SAVED));
-//        }
-//        catch(Exception e) {
-//            e.printStackTrace();
-//            player.sendMessage(LangUtils.getMessage(player, MessageEnum.SETTING_ERROR));
-//        }
-//        finally {
-//            player.closeInventory();
-//        }
-//    }
-
-
-    public boolean setInventorySetting(Player player, ItemStack[] inventorySorting, String kitName){
+    public boolean setInventorySetting(Player player, ItemStack[] inventorySorting){
         int[] inventory = new int[9];
-        String sql;
-        String[] kitString;
+        String sql = "UPDATE kit_default SET sword = {0}, stick = {1}, block = {2}, web = {3}, pearl = {4}, ladder = {5} WHERE uuid = '" + player.getUniqueId().toString() + "';";
+        String[] kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
         List<ItemStack> inventorySortingList = Arrays.asList(inventorySorting);
-        switch(kitName){
-            case "default":
-                kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
-                sql = "UPDATE kit_default SET sword = {0}, stick = {1}, block = {2}, web = {3}, pearl = {4}, ladder = {5} WHERE uuid = '" + player.getUniqueId().toString() + "';";
-                for(int i = 0; i < 6; i++) {
-                    int index = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i], "default"));
-                    if(index == -1) {
-                        return false;
-                    }
-                    inventory[i] = index;
-                    sql = sql.replace("{" + i + "}", String.valueOf(inventory[i]));
-                }
-                break;
-            case "fisher":
-                kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder", "rod"};
-                sql = "UPDATE kit_fisher SET sword = {0}, stick = {1}, block = {2}, web = {3}, pearl = {4}, ladder = {5}, rod = {6} WHERE uuid = '" + player.getUniqueId().toString() + "';";
-                for(int i = 0; i < 7; i++){
-                    int index = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i], "fisher"));
-                    if(index == -1) {
-                        return false;
-                    }
-                    inventory[i] = index;
-                    sql = sql.replace("{" + i + "}", String.valueOf(inventory[i]));
-                }
-                break;
-            case "archer":
-                kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder", "arrow", "bow"};
-                sql = "UPDATE `kit_archer` SET sword = {0}, stick = {1}, block = {2}, web = {3}, pearl = {4}, ladder = {5}, arrow = {6}, bow = {7} WHERE uuid = '" + player.getUniqueId().toString() + "';";
-                for(int i = 0; i < 8; i++){
-                    int index = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i], "archer"));
-                    if(index == -1) {
-                        return false;
-                    }
-                    inventory[i] = index;
-                    sql = sql.replace("{" + i + "}", String.valueOf(inventory[i]));
-                }
-                break;
-            default:
+        for (int i = 0; i < 6; i++) {
+            int index = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i]));
+            if (index == -1) {
                 return false;
+            }
+            inventory[i] = index;
+            sql = sql.replace("{" + i + "}", String.valueOf(inventory[i]));
         }
-//        if(sql.contains("-1")) {
-////            setInventorySetting(player, Main.inst().kitData.getDefaultKit(kitName), kitName);
-//            Bukkit.getLogger().info(MessageFormat.format("player : {0} | {1} , InventoryList = {2}, KitName = {3} , sql = {4}",
-//                    player.getName(),
-//                    player.getUniqueId().toString(),
-//                    Arrays.toString(inventorySortingList.toArray()),
-//                    kitName,
-//                    sql));
-//            return false;
-//        }
         Main.inst().mysql.update(sql);
         return true;
     }

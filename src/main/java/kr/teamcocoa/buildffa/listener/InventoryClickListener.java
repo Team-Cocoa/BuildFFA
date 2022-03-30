@@ -35,40 +35,6 @@ public class InventoryClickListener implements Listener {
         if (Main.playerData.get(p).isBuild()) {
             return;
         }
-//        if (e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null) { //invsorting
-//            e.setCancelled(true);
-//            return;
-//        }
-        if (e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.KIT_SELECT))) {
-            ItemStack clickedItem = e.getCurrentItem();
-            int kit = 0;
-            switch (clickedItem.getType()) {
-                case STICK:
-                    kit = 0;
-                    break;
-                case FISHING_ROD:
-                    kit = 1;
-                    break;
-                case BOW:
-                    kit = 2;
-                    break;
-                default:
-                    e.setCancelled(true);
-                    return;
-            }
-            p.playSound(p.getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
-            try {
-                Main.inst().kitData.setKit(p, kit);
-                Main.playerData.get(p).setKit(kit);
-                Main.playerData.get(p).setInventory(Main.inst().kitData.getPlayerKit(p, kit));
-                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));
-            } catch (Exception e1) {
-                e1.printStackTrace();
-                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
-            }
-            p.closeInventory();
-            return;
-        }
 
 
         if (e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.INVENTORY_SORTING))) {
@@ -76,28 +42,16 @@ public class InventoryClickListener implements Listener {
             ItemStack resetItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.RESET), Material.INK_SACK, (short) 1);
             ItemStack clickedItem = e.getCurrentItem();
             ItemStack glassItem = Main.inst().kitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte) 7);
-            int kit = Main.playerData.get(p).getKit();
             if (clickedItem.equals(glassItem)) {
                 e.setCancelled(true);
                 return;
             }
-//        Bukkit.getLogger().info("InventoryClickListener.Action = " + e.getAction());
-//        if(e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || e
-//                .getAction().equals(InventoryAction.DROP_ALL_SLOT) || e
-//                .getAction().equals(InventoryAction.DROP_ALL_CURSOR) || e
-//                .getAction().equals(InventoryAction.DROP_ONE_SLOT) || e
-//                .getAction().equals(InventoryAction.DROP_ONE_CURSOR) || e
-//                .getAction().equals(InventoryAction.HOTBAR_SWAP) || e
-//                .getClickedInventory().equals(p.getInventory()) || e
-//                .getClickedInventory().getType().equals(InventoryType.PLAYER)){
-//            e.setCancelled(true);
-//            return;
-//        }
+
             if (clickedItem.equals(resetItem)) {
                 try {
-                    ItemStack[] inventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
+                    ItemStack[] inventory = Main.inst().kitData.getDefaultKit();
 //                Main.playerData.get(p).setInventory(inventory);
-                    boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
+                    boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory);
                     if (saved) {
                         Main.playerData.get(p).setInventory(inventory);
                         p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
@@ -120,7 +74,7 @@ public class InventoryClickListener implements Listener {
                     for (int i = 0; i < 9; i++) {
                         inventory[i] = p.getInventory().getContents()[i];
                     }
-                    boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory, Main.inst().kitData.getKitByInt(kit));
+                    boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory);
                     if (saved) {
                         Main.playerData.get(p).setInventory(inventory);
                         p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_SAVED));

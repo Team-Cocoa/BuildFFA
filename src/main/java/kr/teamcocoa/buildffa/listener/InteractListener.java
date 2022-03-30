@@ -29,10 +29,6 @@ public class InteractListener implements Listener {
 
         if (p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().getDisplayName() != null) {
             String displayName = p.getItemInHand().getItemMeta().getDisplayName();
-            if (displayName.equals(LangUtils.getMessage(p, ItemEnum.KIT))) {
-                p.openInventory(Main.inst().kitData.getKitSelection(p));
-                return;
-            }
             if (displayName.equals(LangUtils.getMessage(p, ItemEnum.INVENTORY_SORTING))) {
                 KitEdit.getInstance().openInventorySorting(Main.playerData.get(p));
                 return;
