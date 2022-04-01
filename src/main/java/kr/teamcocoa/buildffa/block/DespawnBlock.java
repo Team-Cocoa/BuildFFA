@@ -9,11 +9,12 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.Random;
 
-public class DespawnBlock {
+public class DespawnBlock extends BukkitRunnable {
     int i = 0;
     private final Block block;
     private final int random;
@@ -32,7 +33,7 @@ public class DespawnBlock {
         this.giveAgain = block.getType() == Material.SANDSTONE;
     }
 
-    public boolean run() {
+    public void run() {
         try {
             if (!Main.playerData.get(event.getPlayer()).isInGame()) {
                 this.giveAgain = false;
@@ -41,7 +42,7 @@ public class DespawnBlock {
         catch(Exception e) {
             new Location(world, x, y, z).getBlock().setType(Material.AIR);
             this.giveAgain = false;
-            return false;
+            cancel();
         }
         if(i < 10) {
             PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(
@@ -52,7 +53,6 @@ public class DespawnBlock {
                 ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
             }
             i++;
-            return true;
         }
         else{
             block.setType(Material.AIR);
@@ -64,18 +64,15 @@ public class DespawnBlock {
             Main.worldData.removeBlock(block);
             if(this.giveAgain){
                 try {
-                    int index = Arrays.asList(Main.playerData.get(event.getPlayer()).getInventory()).indexOf(new ItemStack(Material.SANDSTONE, 64));
-                    int amount = event.getPlayer().getInventory().getItem(index).getAmount();
-                    ItemStack blockItem = new ItemStack(Material.SANDSTONE, amount + 1);
+                    event.getPlayer().getInventory().addItem(new ItemStack(Material.SANDSTONE));
                     event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
-                    event.getPlayer().getInventory().setItem(index, blockItem);
+                    cancel();
                 }
                 catch(Exception e){
                     new Location(world, x, y, z).getBlock().setType(Material.AIR);
-                    return false;
+                    cancel();
                 }
             }
-            return false;
         }
     }
 }

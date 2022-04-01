@@ -12,7 +12,8 @@ public enum ItemEnum {
     FISHER_KIT("kit_fisher"),
     CANCEL_VOTE("cancel_vote"),
     RESCUE_PLATFORM("rescue_platform"),
-    GOLDEN_HEAD("golden_head");
+    GOLDEN_HEAD("golden_head"),
+    SHOP("shop");
 
 
     private final String name;

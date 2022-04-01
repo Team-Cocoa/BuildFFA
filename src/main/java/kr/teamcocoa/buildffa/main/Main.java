@@ -59,7 +59,7 @@ public class Main extends JavaPlugin {
         WorldManager.getInstance().mapChangeUpdater();
 
         stats.updateRanking();
-        new RemoveBlockAnimation().runTaskTimer(this, 0L, 10L);
+//        new RemoveBlockAnimation().runTaskTimer(this, 0L, 10L);
         scoreboardManager.ScoreboardUpdater();
 
     }

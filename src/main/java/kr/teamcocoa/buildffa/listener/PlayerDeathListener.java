@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.List;
 
 import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Bukkit;
@@ -44,11 +45,14 @@ public class PlayerDeathListener implements Listener {
 
 
         Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
+
         for(PotionEffect effect : p.getActivePotionEffects()) {
             p.removePotionEffect(effect.getType());
         }
+
         Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-            p.spigot().respawn();
+//            p.spigot().respawn();
+            p.setHealth(20);
             p.teleport(spawn);
             p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
             bffaPlayer.setInGame(false);
@@ -89,26 +93,25 @@ public class PlayerDeathListener implements Listener {
 
             if(killerKillstreak % 3 == 0){
                 try {
-                    int index = Arrays.asList(killerBffaPlayer.getInventory()).indexOf(new ItemStack(Material.ENDER_PEARL, 2));
-                    if(killer.getInventory().getItem(index) == null) {
-                        ItemStack blockItem = new ItemStack(Material.ENDER_PEARL,  1);
-                        killer.getInventory().setItem(index, blockItem);
-                    }
-                    else if(killer.getInventory().getItem(index).getAmount() < 2) {
-                        int amount = p.getKiller().getInventory().getItem(index).getAmount();
-                        ItemStack blockItem = new ItemStack(Material.ENDER_PEARL, amount + 1);
-                        killer.getInventory().setItem(index, blockItem);
+                    List<ItemStack> list = Arrays.asList(killerBffaPlayer.getInventory().clone());
+                    int index = list.indexOf(new ItemStack(Material.ENDER_PEARL, 2));
+                    if(index == -1) {
+                        killer.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
                     }
                     if(true) { // TODO : 여기에 활 샀을때 조건 추가
-                        int index1 = Arrays.asList(Main.playerData.get(p.getKiller()).getInventory()).indexOf(new ItemStack(Material.ARROW, 16));
-                        if(killer.getInventory().getItem(index) == null) {
-                            ItemStack blockItem = new ItemStack(Material.ARROW,  5);
-                            killer.getInventory().setItem(index1, blockItem);
+                        int arrayIndex = -1;
+                        for(int i = 0; i < list.size(); i++) {
+                            if(list.get(i).getType() == Material.ARROW) {
+                                arrayIndex = i;
+                                break;
+                            }
                         }
-                        else if(killer.getInventory().getItem(index1).getAmount() < 16) {
-                            int amount1 = killer.getInventory().getItem(index1).getAmount();
-                            ItemStack blockItem = new ItemStack(Material.ARROW, amount1 + (amount1 + 5 < 16 ? 5 : 5 - (amount1 + 5 - 16)));
-                            killer.getInventory().setItem(index1, blockItem);
+                        if(arrayIndex == -1) {
+                            killer.getInventory().addItem(new ItemStack(Material.ARROW, 5));
+                        }
+                        else {
+                            int amount = list.get(arrayIndex).getAmount();
+                            killer.getInventory().addItem(new ItemStack(Material.ARROW, amount + 5 < 16 ? 5 : 5 - (amount + 5 - 16)));
                         }
                     }
                     killer.playSound(p.getKiller().getLocation(), Sound.LEVEL_UP, 100.0F, 0.0F);

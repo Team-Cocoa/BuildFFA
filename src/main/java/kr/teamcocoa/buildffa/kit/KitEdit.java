@@ -58,7 +58,7 @@ public class KitEdit {
 
     public boolean setInventorySetting(Player player, ItemStack[] inventorySorting){
         int[] inventory = new int[9];
-        String sql = "UPDATE kit_default SET sword = {0}, stick = {1}, block = {2}, web = {3}, pearl = {4}, ladder = {5} WHERE uuid = '" + player.getUniqueId().toString() + "';";
+        String sql = "UPDATE inventory SET sword = {0}, stick = {1}, block = {2}, web = {3}, pearl = {4}, ladder = {5} WHERE uuid = '" + player.getUniqueId().toString() + "';";
         String[] kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
         List<ItemStack> inventorySortingList = Arrays.asList(inventorySorting);
         for (int i = 0; i < 6; i++) {
@@ -71,6 +71,20 @@ public class KitEdit {
         }
         Main.inst().mysql.update(sql);
         return true;
+    }
+
+    public boolean resetInventorySetting(Player player) {
+        try {
+            String sql = "INSERT INTO `inventory`(uuid) VALUES (\"" + player.getUniqueId().toString() + "\")" +
+                    " ON DUPLICATE KEY " +
+                    "UPDATE sword = 0, stick = 1, block = 2, ladder = 6, web = 7, pearl = 8;";
+            Main.inst().mysql.update(sql);
+            return true;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public ItemStack createDye(String name, Material material, short s) {

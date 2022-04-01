@@ -1,4 +1,4 @@
-package kr.teamcocoa.buildffa.items;
+package kr.teamcocoa.buildffa.items.shop;
 
 import ch.dkrieger.coinsystem.core.CoinSystem;
 import ch.dkrieger.coinsystem.core.player.CoinPlayer;

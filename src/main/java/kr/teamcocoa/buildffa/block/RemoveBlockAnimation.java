@@ -9,10 +9,10 @@ public class RemoveBlockAnimation extends BukkitRunnable {
     public void run(){
         for(Iterator<DespawnBlock> iterator = blocks.iterator(); iterator.hasNext();) {
             DespawnBlock despawnBlock = iterator.next();
-            boolean result = despawnBlock.run();
-            if(!result) {
-                iterator.remove();
-            }
+//            boolean result = despawnBlock.run();
+//            if(!result) {
+//                iterator.remove();
+//            }
         }
     }
 

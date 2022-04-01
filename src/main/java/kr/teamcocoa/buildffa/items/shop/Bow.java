@@ -1,32 +1,33 @@
-package kr.teamcocoa.buildffa.items;
+package kr.teamcocoa.buildffa.items.shop;
 
-import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.OtherEnum;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import kr.teamcocoa.buildffa.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import java.text.MessageFormat;
 
-public class GoldenApple extends AbstractExtraItem {
+public class Bow extends AbstractExtraItem {
 
-    private static GoldenApple instance;
+    private static Bow instance;
 
-    private GoldenApple() {
-        super.price = 250;
+    private Bow() {
+        super.price = 500;
     }
 
-    public static GoldenApple getInstance() {
+    public static Bow getInstance() {
         if(instance == null) {
-            instance = new GoldenApple();
+            instance = new Bow();
         }
         return instance;
     }
 
     @Override
     public ItemStack getItemStack(Player player, int count) {
-        ItemStack itemStack = new ItemStack(Material.GOLDEN_APPLE, count);
+        ItemStack itemStack = new ItemStack(Material.BOW, count);
         return itemStack;
     }
 
@@ -41,6 +42,6 @@ public class GoldenApple extends AbstractExtraItem {
 
     @Override
     public String getName(Player player) {
-        return LangUtils.getMessage(player, ItemEnum.GOLDEN_HEAD);
+        return StringUtils.color("&cBow");
     }
 }

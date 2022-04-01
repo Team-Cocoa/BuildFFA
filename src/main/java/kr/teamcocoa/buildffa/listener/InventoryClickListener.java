@@ -49,16 +49,14 @@ public class InventoryClickListener implements Listener {
 
             if (clickedItem.equals(resetItem)) {
                 try {
-                    ItemStack[] inventory = Main.inst().kitData.getDefaultKit();
-//                Main.playerData.get(p).setInventory(inventory);
-                    boolean saved = KitEdit.getInstance().setInventorySetting(p, inventory);
+                    boolean saved = KitEdit.getInstance().resetInventorySetting(p);
                     if (saved) {
-                        Main.playerData.get(p).setInventory(inventory);
+                        Main.playerData.get(p).setInventory(Main.inst().kitData.getDefaultKit());
                         p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
-                    } else {
+                    }
+                    else {
                         p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
                     }
-//                p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
                     p.closeInventory();
                     p.getInventory().clear();
                     Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
@@ -70,7 +68,6 @@ public class InventoryClickListener implements Listener {
             if (clickedItem.equals(saveItem)) {
                 try {
                     ItemStack[] inventory = new ItemStack[9];
-//                ItemStack[] defaultInventory = Main.inst().kitData.getDefaultKit(Main.inst().kitData.getKitByInt(kit));
                     for (int i = 0; i < 9; i++) {
                         inventory[i] = p.getInventory().getContents()[i];
                     }
@@ -91,11 +88,11 @@ public class InventoryClickListener implements Listener {
             }
             return;
         }
-        if (Main.playerData.get(p).isInGame() && (e.getAction().equals(InventoryAction.PICKUP_ALL) && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.VOTE)) || e.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
-            e.setCancelled(true);
-            p.playSound(p.getLocation(), Sound.NOTE_BASS, 100F, 0F);
-            p.sendMessage(LangUtils.getMessage(p, MessageEnum.USE_INVENTORY_SORTING));
-            return;
-        }
+//        if (Main.playerData.get(p).isInGame() && (e.getAction().equals(InventoryAction.PICKUP_ALL) && !e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.VOTE)) || e.getAction().equals(InventoryAction.HOTBAR_SWAP))) {
+//            e.setCancelled(true);
+//            p.playSound(p.getLocation(), Sound.NOTE_BASS, 100F, 0F);
+//            p.sendMessage(LangUtils.getMessage(p, MessageEnum.USE_INVENTORY_SORTING));
+//            return;
+//        }
     }
 }

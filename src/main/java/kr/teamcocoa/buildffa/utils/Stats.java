@@ -26,9 +26,7 @@ public class Stats {
   public void createPlayer(String uuid) {
       if (!playerExists(uuid)) {
         Main.inst().mysql.update("INSERT INTO Stats(UUID, KILLS, DEATHS) VALUES ('" + uuid + "', '0', '0');");
-        Main.inst().mysql.update("INSERT INTO `kit_archer`(`uuid`) VALUES ('" + uuid + "')");
-        Main.inst().mysql.update("INSERT INTO `kit_default`(`uuid`) VALUES ('" + uuid + "')");
-        Main.inst().mysql.update("INSERT INTO `kit_fisher`(`uuid`) VALUES ('" + uuid + "')");
+        Main.inst().mysql.update("INSERT INTO `inventory`(uuid) VALUES(\"" + uuid + "\");");
       }
 
   }

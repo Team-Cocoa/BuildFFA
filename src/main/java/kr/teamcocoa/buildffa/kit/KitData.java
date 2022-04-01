@@ -18,32 +18,22 @@ public class KitData {
 
     public ItemStack[] getPlayerKit(Player player){
         ItemStack[] inventory = new ItemStack[9];
-        String sql = "SELECT * FROM `kit_default` WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
+        String sql = "SELECT * FROM `inventory` WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
         String[] kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
         try(ResultSet rs = Main.inst().mysql.getResult(sql)) {
             if (rs.next()) {
                 for (int i = 0; i < kitString.length; i++) {
-                    try {
-                        inventory[rs.getInt(kitString[i])] = getItemByString(kitString[i]);
-                    }
-                    catch(ArrayIndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                        inventory = getDefaultKit();
-                        break;
-                    }
-                }
-                for(int i = 0; i < 9; i++){
-                    if(inventory[i] == null){
-                        inventory[i] = getNull();
-                    }
+                    inventory[rs.getInt(kitString[i])] = getItemByString(kitString[i]);
                 }
             }
             else {
+                KitEdit.getInstance().resetInventorySetting(player);
                 inventory = getDefaultKit();
             }
         }
         catch(Exception e){
             e.printStackTrace();
+            KitEdit.getInstance().resetInventorySetting(player);
             inventory = getDefaultKit();
         }
         return inventory;
@@ -57,9 +47,6 @@ public class KitData {
         kitList[6] = getLadder();
         kitList[7] = getWeb();
         kitList[8] = getPearl();
-        for (int i = 3; i < 6; i++) {
-            kitList[i] = getNull();
-        }
         return kitList;
     }
 

@@ -1,4 +1,4 @@
-package kr.teamcocoa.buildffa.items;
+package kr.teamcocoa.buildffa.items.shop;
 
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.utils.ItemManager;
@@ -28,7 +28,7 @@ public class ExtraItemInventory {
 
         ItemStack clickedItem = e.getCurrentItem();
 
-        if(clickedItem.getItemMeta() == null) {
+        if(!clickedItem.hasItemMeta()) {
             return;
         }
 
