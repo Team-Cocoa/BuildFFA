@@ -19,11 +19,11 @@ public class DespawnBlock extends BukkitRunnable {
     private final Block block;
     private final int random;
     private final int x, y, z;
-    private final BlockPlaceEvent event;
+    private BlockPlaceEvent event;
     private boolean giveAgain;
     private final World world;
     public DespawnBlock(BlockPlaceEvent event, Block block){
-        this.random = new Random().nextInt(2000);
+        this.random = new Random().nextInt(10000);
         this.block = block;
         this.event = event;
         this.x = block.getX();
@@ -33,16 +33,28 @@ public class DespawnBlock extends BukkitRunnable {
         this.giveAgain = block.getType() == Material.SANDSTONE;
     }
 
+    public DespawnBlock(Block block){
+        this.random = new Random().nextInt(10000);
+        this.block = block;
+        this.x = block.getX();
+        this.y = block.getY();
+        this.z = block.getZ();
+        this.world = block.getWorld();
+        this.giveAgain = false;
+    }
+
     public void run() {
-        try {
-            if (!Main.playerData.get(event.getPlayer()).isInGame()) {
-                this.giveAgain = false;
+        if(event != null) {
+            try {
+                if (!Main.playerData.get(event.getPlayer()).isInGame()) {
+                    this.giveAgain = false;
+                }
             }
-        }
-        catch(Exception e) {
-            new Location(world, x, y, z).getBlock().setType(Material.AIR);
-            this.giveAgain = false;
-            cancel();
+            catch(Exception e) {
+                new Location(world, x, y, z).getBlock().setType(Material.AIR);
+                this.giveAgain = false;
+                cancel();
+            }
         }
         if(i < 10) {
             PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(

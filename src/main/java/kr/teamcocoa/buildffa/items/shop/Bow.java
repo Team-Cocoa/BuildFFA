@@ -1,6 +1,7 @@
 package kr.teamcocoa.buildffa.items.shop;
 
 import kr.teamcocoa.buildffa.enums.OtherEnum;
+import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import org.bukkit.Material;
@@ -10,12 +11,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.text.MessageFormat;
 
-public class Bow extends AbstractExtraItem {
+public class Bow extends AbstractShopItem {
 
     private static Bow instance;
 
     private Bow() {
-        super.price = 500;
+        super.price = 1000;
     }
 
     public static Bow getInstance() {
@@ -35,6 +36,7 @@ public class Bow extends AbstractExtraItem {
     public ItemStack getVoteItemStack(Player player) {
         ItemStack itemStack = getItemStack(player, 1);
         ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(getName(player));
         itemMeta.setLore(getLore(MessageFormat.format(LangUtils.getMessage(player, OtherEnum.LORE_PRICE), price)));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
@@ -43,5 +45,18 @@ public class Bow extends AbstractExtraItem {
     @Override
     public String getName(Player player) {
         return StringUtils.color("&cBow");
+    }
+
+    public BuyStatus purchase(BffaPlayer player) {
+        if(player.isBowBought()) {
+            return BuyStatus.ALREADY_BOUGHT;
+        }
+        if(super.buyItem(player)) {
+            player.setBowBought(true);
+            return BuyStatus.SUCCESS;
+        }
+        else {
+            return BuyStatus.FAILED;
+        }
     }
 }

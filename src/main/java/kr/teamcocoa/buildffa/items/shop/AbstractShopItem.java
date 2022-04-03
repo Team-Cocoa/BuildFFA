@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class AbstractExtraItem {
+public abstract class AbstractShopItem {
     protected int price;
 
     public int getPrice() {

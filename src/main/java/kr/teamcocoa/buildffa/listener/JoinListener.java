@@ -25,23 +25,6 @@ public class JoinListener implements Listener {
         p.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(999999, 1));
         Title.sendTitle(p, "", StringUtils.color("&7Your data is loading..."), 20, 1000, 20);
         e.setJoinMessage(null);
-//    if (Config.config.getBoolean("join-quit-message")) {
-//      if (Config.config.getBoolean("displayname.joinmessage")) {
-//        e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getDisplayName()).replaceAll("&", "§"));
-//      } else {
-//        e.setJoinMessage(String.valueOf(Main.getPrefix()) + Config.messages.getString("joinmessage").replaceAll("%PLAYER%", p.getName()).replaceAll("&", "§"));
-//      }
-//
-//
-//
-//    } else {
-//      e.setJoinMessage(null);
-//    }
-
-
-//    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-//
-//    }, 5L);
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
             String uuid = String.valueOf(p.getUniqueId());
@@ -59,10 +42,7 @@ public class JoinListener implements Listener {
             }
             Main.inst().stats.createPlayer(uuid);
             Main.inst().scoreboardManager.setScoreboard(p);
-            Title.sendTitle(p,
-                    ChatColor.translateAlternateColorCodes('&', "&4/Kits"),
-                    LangUtils.getMessage(p, MessageEnum.JOIN_TITLE),
-                    10, 80, 10);
+            Title.sendTitle(p, "", "", 0, 0, 0);
             for (PotionEffect effect : p.getActivePotionEffects()) {
                 p.removePotionEffect(effect.getType());
             }
@@ -78,7 +58,6 @@ public class JoinListener implements Listener {
                 }
             }, 1L);
         }, 5L);
-//    p.teleport(spawn);
 
     }
 }

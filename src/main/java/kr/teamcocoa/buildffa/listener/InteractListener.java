@@ -2,6 +2,8 @@ package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
+import kr.teamcocoa.buildffa.items.extra.RescuePlatform;
+import kr.teamcocoa.buildffa.items.shop.ShopInventory;
 import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.kit.KitEdit;
 import kr.teamcocoa.buildffa.main.Main;
@@ -27,6 +29,8 @@ public class InteractListener implements Listener {
 
         }
 
+        RescuePlatform.getInstance().onClick(e);
+
         if (p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().getDisplayName() != null) {
             String displayName = p.getItemInHand().getItemMeta().getDisplayName();
             if (displayName.equals(LangUtils.getMessage(p, ItemEnum.INVENTORY_SORTING))) {
@@ -35,6 +39,10 @@ public class InteractListener implements Listener {
             }
             if (displayName.equals(LangUtils.getMessage(p, ItemEnum.LEAVE_ITEM))) {
                 p.kickPlayer("");
+                return;
+            }
+            if (displayName.equals(LangUtils.getMessage(p, ItemEnum.SHOP))) {
+                ShopInventory.openShopInventory(p);
                 return;
             }
             if (displayName.equals("§cKillEffects")){

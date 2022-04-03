@@ -3,6 +3,7 @@ package kr.teamcocoa.buildffa.listener;
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
+import kr.teamcocoa.buildffa.items.shop.ShopInventory;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.kit.KitEdit;
@@ -31,6 +32,7 @@ public class InventoryClickListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         Bukkit.getLogger().info(e.getEventName() + "is executed!");
         MapVoteInventory.getInstance().onClickInventory(e);
+        ShopInventory.onClickShopInventory(e);
         Player p = (Player) e.getWhoClicked();
         if (Main.playerData.get(p).isBuild()) {
             return;

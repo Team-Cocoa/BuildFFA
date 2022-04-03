@@ -26,7 +26,7 @@ public class BffaPlayer {
     private NickedBffaPlayer nickedBffaPlayer;
     private boolean shootAble;
 
-    private boolean gappleBought, rescueBought;
+    private boolean gappleBought, bowBought;
 
     /* Stats */
     private int kills;
@@ -50,7 +50,7 @@ public class BffaPlayer {
         this.bestKillStreaks = Main.inst().stats.getMaxKillStreak(player.getUniqueId().toString());
         this.deaths = Main.inst().stats.getDeaths(player.getUniqueId().toString());
         this.gappleBought = false;
-        this.rescueBought = false;
+        this.bowBought = false;
     }
 
     /*Getter*/
@@ -115,8 +115,8 @@ public class BffaPlayer {
         return gappleBought;
     }
 
-    public boolean isRescueBought() {
-        return rescueBought;
+    public boolean isBowBought() {
+        return bowBought;
     }
 
     /*Setter*/
@@ -188,8 +188,8 @@ public class BffaPlayer {
         this.gappleBought = gappleBought;
     }
 
-    public void setRescueBought(boolean rescueBought) {
-        this.rescueBought = rescueBought;
+    public void setBowBought(boolean bowBought) {
+        this.bowBought = bowBought;
     }
 
     /*Stats Adder*/

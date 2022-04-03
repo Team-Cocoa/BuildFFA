@@ -1,6 +1,7 @@
 package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.enums.MessageEnum;
+import kr.teamcocoa.buildffa.items.extra.ExtraItemManager;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.*;
@@ -37,6 +38,8 @@ public class PlayerDeathListener implements Listener {
         bffaPlayer.setThrewPearlTime(System.currentTimeMillis());
         bffaPlayer.setPlayerKillStreak(0);
         bffaPlayer.addDeaths();
+        bffaPlayer.setBowBought(false);
+        bffaPlayer.setGappleBought(false);
         if(bffaPlayer.isNicked()) {
             bffaPlayer.getNickedBffaPlayer().addDeaths();
         }
@@ -51,12 +54,12 @@ public class PlayerDeathListener implements Listener {
         }
 
         Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
-//            p.spigot().respawn();
             p.setHealth(20);
             p.teleport(spawn);
             p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
             bffaPlayer.setInGame(false);
             bffaPlayer.setLatestDeadTime(System.currentTimeMillis());
+            Main.playerData.get(p).setJoinInventory();
         }, 1L);
 
         if (bffaPlayer.getLastHitPlayer() instanceof Player) {
@@ -93,12 +96,12 @@ public class PlayerDeathListener implements Listener {
 
             if(killerKillstreak % 3 == 0){
                 try {
-                    List<ItemStack> list = Arrays.asList(killerBffaPlayer.getInventory().clone());
-                    int index = list.indexOf(new ItemStack(Material.ENDER_PEARL, 2));
-                    if(index == -1) {
+                    ExtraItemManager.getInstance().giveExtraItem(killer);
+                    List<ItemStack> list = Arrays.asList(killerBffaPlayer.getPlayer().getInventory().getContents());
+                    if(!killer.getInventory().contains(new ItemStack(Material.ENDER_PEARL, 2))) {
                         killer.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
                     }
-                    if(true) { // TODO : 여기에 활 샀을때 조건 추가
+                    if(killerBffaPlayer.isBowBought()) {
                         int arrayIndex = -1;
                         for(int i = 0; i < list.size(); i++) {
                             if(list.get(i).getType() == Material.ARROW) {
@@ -116,16 +119,14 @@ public class PlayerDeathListener implements Listener {
                     }
                     killer.playSound(p.getKiller().getLocation(), Sound.LEVEL_UP, 100.0F, 0.0F);
                 }
-                catch (NullPointerException e1) {
-
+                catch (Exception e1) {
+                    e1.printStackTrace();
                 }
             }
             bffaPlayer.setLastHitPlayer(null);
 
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
-                // 코드 원작자 나가 뒤져라 씨발
-                // 정리가 시급하다 나중에
                 if (deadPlayerKillStreak >= 5) {
                     String killstreakPlayerString = String.valueOf(deadPlayerKillStreak);
                     for(Player player : Bukkit.getOnlinePlayers()) {

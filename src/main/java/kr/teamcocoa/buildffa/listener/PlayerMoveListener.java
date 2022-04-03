@@ -5,6 +5,7 @@ import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,10 +47,12 @@ public class PlayerMoveListener implements Listener {
                         p.getInventory().setContents(inventory);
                         p.getInventory().setArmorContents(armor);
                         p.playSound(p.getLocation(), Sound.ORB_PICKUP, 100.0F, 0.0F);
-                        /*
-                         * 여기에 킷 지급 코드를 작성하세요
-                         * 개같이 짜면 나중에 니가 힘들다 개샛기야^^7
-                         * */
+                        if(bffaPlayer.isBowBought()) {
+                            p.getInventory().addItem(new ItemStack(Material.BOW), new ItemStack(Material.ARROW, 16));
+                        }
+                        if(bffaPlayer.isGappleBought()) {
+                            p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 2));
+                        }
                     }
                 }
             }

@@ -13,7 +13,6 @@ public enum MessageEnum {
     PLAYER_KILL("kill.player"),
     KILL_STREAK("kill.streak"),
     KILL_STREAK_BROKEN("kill.streak_broken"),
-    USE_INVENTORY_SORTING("use_inventory_sorting"),
     VOTE_SUCCESS("vote.success"),
     VOTE_RESET("vote.reset"),
     VOTE_INVALID("vote.invalid"),
@@ -27,7 +26,13 @@ public enum MessageEnum {
     VOTE_END_MINUTES("vote.end_minutes"),
     VOTE_END_MINUTE("vote.end_minute"),
     VOTE_END_SECONDS("vote.end_seconds"),
-    VOTE_END_SECOND("vote.end_second");
+    VOTE_END_SECOND("vote.end_second"),
+    SHOP_CANNOT_BUY("shop.cannot_buy"),
+    SHOP_BOUGHT("shop.bought"),
+    SHOP_ALREADY_BOUGHT("shop.already_bought"),
+    CANNOT_USE_PLATFORM("other.cannot_use_platform"),
+    USED_PLATFORM("other.used_platform"),
+    GIVE_EXTRA_ITEM("other.receive_extra");
 //    BOW_COUNT_SECONDS("message_bow_count_seconds"),
 //    BOW_COUNT_SECOND("message_bow_count_second"),
 //    BOW_CANNOT_USE("message_bow_cannot_use"),
