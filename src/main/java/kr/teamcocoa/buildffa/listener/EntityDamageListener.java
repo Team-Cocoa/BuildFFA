@@ -28,25 +28,31 @@ public class EntityDamageListener implements Listener {
                     e.setCancelled(true);
                 }
                 Main.playerData.get(damagedPlayer).setLastHitPlayer(damager);
+                if (damagedPlayer.getHealth() - e.getFinalDamage() <= 0) {
+                    e.setCancelled(true);
+                    Main.playerData.get(damagedPlayer).death(false);
+                }
             }
         }
     }
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e) {
-        if (!WorldManager.getInstance().isPvpAble()) {
-            e.setCancelled(true);
-            return;
-        }
         if (e.getEntity() instanceof Player) {
+            if (!WorldManager.getInstance().isPvpAble()) {
+                e.setCancelled(true);
+                return;
+            }
+
             if (!Main.playerData.get((Player) e.getEntity()).isInGame()) {
                 e.setCancelled(true);
                 return;
             }
-        }
-        if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
-            e.setCancelled(true);
-            return;
+
+            if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
+                e.setCancelled(true);
+                return;
+            }
         }
     }
 }

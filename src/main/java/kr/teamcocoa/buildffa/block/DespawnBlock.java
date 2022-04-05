@@ -53,6 +53,7 @@ public class DespawnBlock extends BukkitRunnable {
             catch(Exception e) {
                 new Location(world, x, y, z).getBlock().setType(Material.AIR);
                 this.giveAgain = false;
+                Main.worldData.removeBlock(block);
                 cancel();
             }
         }
@@ -78,13 +79,13 @@ public class DespawnBlock extends BukkitRunnable {
                 try {
                     event.getPlayer().getInventory().addItem(new ItemStack(Material.SANDSTONE));
                     event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
-                    cancel();
                 }
                 catch(Exception e){
                     new Location(world, x, y, z).getBlock().setType(Material.AIR);
                     cancel();
                 }
             }
+            cancel();
         }
     }
 }

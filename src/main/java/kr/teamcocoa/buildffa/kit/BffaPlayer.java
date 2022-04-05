@@ -3,15 +3,24 @@ package kr.teamcocoa.buildffa.kit;
 import ch.dkrieger.coinsystem.core.CoinSystem;
 import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
+import kr.teamcocoa.buildffa.enums.MessageEnum;
+import kr.teamcocoa.buildffa.items.extra.ExtraItemManager;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.buildffa.world.WorldManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import kr.teamcocoa.buildffa.utils.ItemManager;
+import org.bukkit.potion.PotionEffect;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.List;
 
 public class BffaPlayer {
     private long threwPearlTime;
@@ -33,7 +42,7 @@ public class BffaPlayer {
     private int deaths;
     private int bestKillStreaks;
 
-    public BffaPlayer(Player player){
+    public BffaPlayer(Player player) {
         this.threwPearlTime = 0L;
         this.playerKillStreak = 0;
         this.latestDeadTime = 0L;
@@ -169,17 +178,16 @@ public class BffaPlayer {
         this.shootAble = shootAble;
     }
 
-    public void setJoinInventory(){
+    public void setJoinInventory() {
         this.player.getInventory().clear();
         this.player.getInventory().setArmorContents(null);
         this.player.getInventory().setItem(0, ItemManager.createItem(Material.BLAZE_ROD, 1, LangUtils.getMessage(this.player, ItemEnum.INVENTORY_SORTING)));
 
         this.player.getInventory().setItem(8, ItemManager.createItem(Material.SLIME_BALL, 1, LangUtils.getMessage(this.player, ItemEnum.LEAVE_ITEM)));
-        if(this.player.hasPermission("killeffect.killeffect") || this.player.hasPermission("*")){
+        if (this.player.hasPermission("killeffect.killeffect") || this.player.hasPermission("*")) {
             this.player.getInventory().setItem(3, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemEnum.SHOP)));
             this.player.getInventory().setItem(5, ItemManager.createItem(Material.GOLD_SWORD, 1, "§cKillEffects"));
-        }
-        else{
+        } else {
             this.player.getInventory().setItem(4, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemEnum.SHOP)));
         }
     }
@@ -205,14 +213,14 @@ public class BffaPlayer {
     }
 
     public NickedBffaPlayer getNickedBffaPlayer() {
-        if(this.nickedBffaPlayer == null) {
+        if (this.nickedBffaPlayer == null) {
             return null;
         }
         return this.nickedBffaPlayer;
     }
 
     public boolean isNicked() {
-        if(this.nickedBffaPlayer == null) {
+        if (this.nickedBffaPlayer == null) {
             return false;
         }
         return true;
@@ -224,6 +232,116 @@ public class BffaPlayer {
 
     public void removeNicked() {
         this.nickedBffaPlayer = null;
+    }
+
+    public void death(boolean quit) {
+        addDeaths();
+        if(!quit) {
+            setThrewPearlTime(System.currentTimeMillis());
+            setPlayerKillStreak(0);
+            setBowBought(false);
+            setGappleBought(false);
+            if (isNicked()) {
+                getNickedBffaPlayer().addDeaths();
+            }
+
+            Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
+
+            for (PotionEffect effect : player.getActivePotionEffects()) {
+                player.removePotionEffect(effect.getType());
+            }
+
+            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+                player.setHealth(20);
+                player.teleport(spawn);
+                player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
+                setInGame(false);
+                setLatestDeadTime(System.currentTimeMillis());
+                Main.playerData.get(player).setJoinInventory();
+            }, 1L);
+
+            if (player.equals(getLastHitPlayer())) {
+                return;
+            }
+        }
+
+        if (getLastHitPlayer() instanceof Player) {
+            try {
+                BffaPlayer killerBffaPlayer = Main.playerData.get(getLastHitPlayer());
+                String killerName = getLastHitPlayer().getName();
+                Player killer = getLastHitPlayer();
+                killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 1, 2);
+                String KillerHealth = (new DecimalFormat("#0.0")).format(killer.getHealth() / 2.0D);
+
+                killerBffaPlayer.addKills();
+                if (killerBffaPlayer.isNicked()) {
+                    killerBffaPlayer.getNickedBffaPlayer().addKills();
+                }
+
+                player.sendMessage(LangUtils.getMessage(player, MessageEnum.PLAYER_KILL).replaceAll("%KILLER%", killerName).replaceAll("%KILLERHEALTH%", KillerHealth));
+
+                int killerKillstreak = killerBffaPlayer.getPlayerKillStreak() + 1;
+                killer.setHealth(20.0D);
+                killer.setLevel(killerKillstreak);
+                killerBffaPlayer.setPlayerKillStreak(killerKillstreak);
+                if (killerKillstreak > killerBffaPlayer.getBestKillStreaks()) {
+                    killerBffaPlayer.setBestKillStreaks(killerKillstreak);
+                }
+
+                if (killerKillstreak % 3 == 0) {
+                    try {
+                        ExtraItemManager.getInstance().giveExtraItem(killer);
+                        List<ItemStack> list = Arrays.asList(killerBffaPlayer.getPlayer().getInventory().getContents());
+                        if (!killer.getInventory().contains(new ItemStack(Material.ENDER_PEARL, 2))) {
+                            killer.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
+                        }
+                        if (killerBffaPlayer.isBowBought()) {
+                            int arrayIndex = -1;
+                            for (int i = 0; i < list.size(); i++) {
+                                if (list.get(i).getType() == Material.ARROW) {
+                                    arrayIndex = i;
+                                    break;
+                                }
+                            }
+                            if (arrayIndex == -1) {
+                                killer.getInventory().addItem(new ItemStack(Material.ARROW, 5));
+                            } else {
+                                int amount = list.get(arrayIndex).getAmount();
+                                killer.getInventory().addItem(new ItemStack(Material.ARROW, amount + 5 < 16 ? 5 : 5 - (amount + 5 - 16)));
+                            }
+                        }
+                        try {
+                            killer.playSound(player.getKiller().getLocation(), Sound.LEVEL_UP, 100.0F, 0.0F);
+                        }
+                        catch (Exception e2) {
+
+                        }
+                        // ^ NPE(NullPointerException)? How?
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                setLastHitPlayer(null);
+
+
+                Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
+                    if (playerKillStreak >= 5) {
+                        String killstreakPlayerString = String.valueOf(playerKillStreak);
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK_BROKEN).replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", killerName).replaceAll("%PLAYER%", player.getName()));
+                        }
+                    }
+                    if (killerKillstreak != 0 && (killerKillstreak % 5 == 0 || killerKillstreak > 15)) {
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK).replaceAll("%KILLSTREAK%", String.valueOf(killerKillstreak)).replaceAll("%PLAYER%", killerName));
+                        }
+                    }
+                }, 3L);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

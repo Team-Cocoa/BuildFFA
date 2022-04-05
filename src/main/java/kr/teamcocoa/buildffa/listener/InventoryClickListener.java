@@ -30,7 +30,6 @@ import java.util.Arrays;
 public class InventoryClickListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        Bukkit.getLogger().info(e.getEventName() + "is executed!");
         MapVoteInventory.getInstance().onClickInventory(e);
         ShopInventory.onClickShopInventory(e);
         Player p = (Player) e.getWhoClicked();
@@ -43,6 +42,10 @@ public class InventoryClickListener implements Listener {
             ItemStack saveItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.SAVE), Material.INK_SACK, (short) 10);
             ItemStack resetItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.RESET), Material.INK_SACK, (short) 1);
             ItemStack clickedItem = e.getCurrentItem();
+            if(clickedItem == null) {
+                e.setCancelled(true);
+                return;
+            }
             ItemStack glassItem = Main.inst().kitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte) 7);
             if (clickedItem.equals(glassItem)) {
                 e.setCancelled(true);

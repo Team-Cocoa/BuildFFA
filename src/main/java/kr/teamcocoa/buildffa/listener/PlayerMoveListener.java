@@ -23,8 +23,8 @@ public class PlayerMoveListener implements Listener {
             if (WorldManager.getInstance().getCurrentMap() != null) {
                 if (loc.getY() <= WorldManager.getInstance().getDeathHeight() && Main.playerData.get(p).isDied() == false)
                     if (!Main.playerData.get(p).isBuild()) {
-                        p.setHealth(0.0D);
                         Main.playerData.get(p).setDied(true);
+                        Main.playerData.get(p).death(false);
                         Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
                             try {
                                 Main.playerData.get(p).setDied(false);

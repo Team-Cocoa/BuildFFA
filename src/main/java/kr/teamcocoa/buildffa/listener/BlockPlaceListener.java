@@ -32,10 +32,8 @@ public class BlockPlaceListener implements Listener {
         if (p.getLocation().getY() <= height) {
             if (!Main.playerData.get(p).isBuild()) {
                 Block b = e.getBlock();
-//                DespawnBlock despawnBlock = new DespawnBlock(e, b);
                 Main.worldData.addBlock(b);
-//                RemoveBlockAnimation.blocks.add(despawnBlock);
-        new DespawnBlock(e, b).runTaskTimer(Main.inst(), 0L, 10L);
+                new DespawnBlock(e, b).runTaskTimer(Main.inst(), 0L, 10L);
             }
         } else if (!Main.playerData.get(p).isBuild()) {
             e.setCancelled(true);

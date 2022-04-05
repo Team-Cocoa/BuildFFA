@@ -90,7 +90,8 @@ public class WorldManager {
                     bffaPlayer.setJoinInventory();
                     bffaPlayer.setInGame(false);
                     bffaPlayer.setLatestDeadTime(deadTime);
-                    Main.playerData.put(player, bffaPlayer);
+                    bffaPlayer.setBowBought(false);
+                    bffaPlayer.setGappleBought(false);
                 }
                 placeAble = true;
             }, 0L);

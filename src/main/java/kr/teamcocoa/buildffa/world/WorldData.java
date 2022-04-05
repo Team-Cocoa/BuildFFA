@@ -1,5 +1,7 @@
 package kr.teamcocoa.buildffa.world;
 
+import kr.teamcocoa.buildffa.main.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -12,10 +14,12 @@ public class WorldData {
     private List<Block> blocks = new ArrayList<>();
 
     public void removeBlocks() {
-        Iterator<Block> it = blocks.iterator();
-        while (it.hasNext()) {
-            it.remove();
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(Main.inst(), () -> {
+            Iterator<Block> it = blocks.iterator();
+            while (it.hasNext()) {
+                it.remove();
+            }
+        });
     }
 
     public void addBlock(Block block){

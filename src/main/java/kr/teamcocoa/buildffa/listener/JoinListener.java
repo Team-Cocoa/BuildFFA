@@ -29,6 +29,9 @@ public class JoinListener implements Listener {
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
             String uuid = String.valueOf(p.getUniqueId());
             boolean nicked = MySQL.containsPlayer(uuid);
+            for (PotionEffect effect : p.getActivePotionEffects()) {
+                p.removePotionEffect(effect.getType());
+            }
             String joinMessage = StringUtils.color("&a[&dBuildFFA&a] &e%name% joined the game!");
             if (nicked) {
                 String nickedName = MySQL.getNick(uuid);
@@ -43,9 +46,6 @@ public class JoinListener implements Listener {
             Main.inst().stats.createPlayer(uuid);
             Main.inst().scoreboardManager.setScoreboard(p);
             Title.sendTitle(p, "", "", 0, 0, 0);
-            for (PotionEffect effect : p.getActivePotionEffects()) {
-                p.removePotionEffect(effect.getType());
-            }
             Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
                 Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
                 p.teleport(spawn);
