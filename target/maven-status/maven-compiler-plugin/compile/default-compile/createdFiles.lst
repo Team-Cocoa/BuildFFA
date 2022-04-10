@@ -11,7 +11,6 @@ kr\teamcocoa\buildffa\commands\Stats$2.class
 kr\teamcocoa\buildffa\enums\MessageEnum.class
 kr\teamcocoa\buildffa\listener\InteractListener.class
 kr\teamcocoa\buildffa\kit\NickedBffaPlayer.class
-kr\teamcocoa\buildffa\items\shop\GoldenApple.class
 kr\teamcocoa\buildffa\listener\BlockBreakListener.class
 kr\teamcocoa\buildffa\utils\Bar.class
 kr\teamcocoa\buildffa\items\extra\RescuePlatform.class
@@ -34,7 +33,6 @@ kr\teamcocoa\buildffa\listener\WeatherChangeListener.class
 kr\teamcocoa\buildffa\utils\ItemManager.class
 kr\teamcocoa\buildffa\utils\Config.class
 kr\teamcocoa\buildffa\enums\InventoryEnum.class
-kr\teamcocoa\buildffa\items\extra\SnowBall.class
 kr\teamcocoa\buildffa\items\extra\ExtraItemManager.class
 kr\teamcocoa\buildffa\commands\Teaming.class
 kr\teamcocoa\buildffa\listener\LanguageListener.class
@@ -47,8 +45,10 @@ kr\teamcocoa\buildffa\kit\KitData.class
 kr\teamcocoa\buildffa\listener\BlockPlaceListener.class
 kr\teamcocoa\buildffa\commands\Vote.class
 kr\teamcocoa\buildffa\utils\Title.class
+kr\teamcocoa\buildffa\items\extra\GoldenApple.class
 kr\teamcocoa\buildffa\world\MapVote.class
 kr\teamcocoa\buildffa\listener\PlayerDeathListener.class
+kr\teamcocoa\buildffa\items\shop\SnowBall.class
 kr\teamcocoa\buildffa\items\shop\AbstractShopItem.class
 kr\teamcocoa\buildffa\listener\ItemDropListener.class
 kr\teamcocoa\buildffa\main\Main.class

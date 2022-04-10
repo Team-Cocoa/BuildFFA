@@ -10,24 +10,24 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import java.text.MessageFormat;
 
-public class GoldenApple extends AbstractShopItem {
+public class SnowBall extends AbstractShopItem {
 
-    private static GoldenApple instance;
+    private static SnowBall instance;
 
-    private GoldenApple() {
-        super.price = 500;
+    private SnowBall() {
+        super.price = 200;
     }
 
-    public static GoldenApple getInstance() {
+    public static SnowBall getInstance() {
         if(instance == null) {
-            instance = new GoldenApple();
+            instance = new SnowBall();
         }
         return instance;
     }
 
     @Override
     public ItemStack getItemStack(Player player, int count) {
-        ItemStack itemStack = new ItemStack(Material.GOLDEN_APPLE, count);
+        ItemStack itemStack = new ItemStack(Material.SNOW_BALL, count);
         return itemStack;
     }
 
@@ -43,15 +43,15 @@ public class GoldenApple extends AbstractShopItem {
 
     @Override
     public String getName(Player player) {
-        return StringUtils.color("&cGolden Apple");
+        return StringUtils.color("&cSnowBall");
     }
 
     public BuyStatus purchase(BffaPlayer player) {
-        if(player.isGappleBought()) {
+        if(player.isSnowBallBought()) {
             return BuyStatus.ALREADY_BOUGHT;
         }
         if(super.buyItem(player)) {
-            player.setGappleBought(true);
+            player.setSnowBallBought(true);
             return BuyStatus.SUCCESS;
         }
         else {

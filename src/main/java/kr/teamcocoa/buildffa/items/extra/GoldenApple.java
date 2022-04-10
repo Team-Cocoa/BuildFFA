@@ -5,28 +5,28 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class SnowBall extends AbstractExtraItem {
-    private static SnowBall instance;
+public class GoldenApple extends AbstractExtraItem {
+    private static GoldenApple instance;
 
-    private SnowBall() {
+    private GoldenApple() {
 
     }
 
-    public static SnowBall getInstance() {
+    public static GoldenApple getInstance() {
         if(instance == null) {
-            instance = new SnowBall();
+            instance = new GoldenApple();
         }
         return instance;
     }
 
     @Override
     public ItemStack getItemStack(Player player, int count) {
-        ItemStack itemStack = new ItemStack(Material.SNOW_BALL, count);
+        ItemStack itemStack = new ItemStack(Material.GOLDEN_APPLE, count);
         return itemStack;
     }
 
     @Override
     public String getName(Player player) {
-        return StringUtils.color("&cSnowBall");
+        return StringUtils.color("&cGolden Apple");
     }
 }

@@ -91,7 +91,8 @@ public class WorldManager {
                     bffaPlayer.setInGame(false);
                     bffaPlayer.setLatestDeadTime(deadTime);
                     bffaPlayer.setBowBought(false);
-                    bffaPlayer.setGappleBought(false);
+                    bffaPlayer.setSnowBallBought(false);
+                    bffaPlayer.setLastHitPlayer(null);
                 }
                 placeAble = true;
             }, 0L);

@@ -2,7 +2,6 @@ package kr.teamcocoa.buildffa.items.shop;
 
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
-import kr.teamcocoa.buildffa.items.extra.RescuePlatform;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.ItemManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
@@ -38,8 +37,8 @@ public class ShopInventory {
         BuyStatus status = null;
         e.setCancelled(true);
 
-        if(clickedItem.getItemMeta().getDisplayName().equals(GoldenApple.getInstance().getName(player))) {
-            status = GoldenApple.getInstance().purchase(Main.playerData.get(player));
+        if(clickedItem.getItemMeta().getDisplayName().equals(SnowBall.getInstance().getName(player))) {
+            status = SnowBall.getInstance().purchase(Main.playerData.get(player));
         }
 
         if(clickedItem.getItemMeta().getDisplayName().equals(Bow.getInstance().getName(player))) {
@@ -67,7 +66,7 @@ public class ShopInventory {
         for (int i = 0; i < 27; i++) {
             inventory.setItem(i, ItemManager.grayGlassPane);
         }
-        inventory.setItem(11, GoldenApple.getInstance().getVoteItemStack(player));
+        inventory.setItem(11, SnowBall.getInstance().getVoteItemStack(player));
         inventory.setItem(15, Bow.getInstance().getVoteItemStack(player));
         player.openInventory(inventory);
     }

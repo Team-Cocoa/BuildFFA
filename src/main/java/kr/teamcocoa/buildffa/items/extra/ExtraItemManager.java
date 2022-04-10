@@ -34,8 +34,8 @@ public class ExtraItemManager {
         int number = getRandomNumber();
         switch (number) {
             case 0:
-                player.getInventory().addItem(SnowBall.getInstance().getItemStack(player, 5));
-                player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), SnowBall.getInstance().getName(player)));
+                player.getInventory().addItem(GoldenApple.getInstance().getItemStack(player, 1));
+                player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), GoldenApple.getInstance().getName(player)));
                 break;
             case 1:
                 player.getInventory().addItem(RescuePlatform.getInstance().getItemStack(player, 1));
@@ -46,8 +46,8 @@ public class ExtraItemManager {
                 player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), StringUtils.color("&cSwiftness for 15 seconds")));
                 break;
             case 3:
-                player.addPotionEffect(PotionEffectType.INCREASE_DAMAGE.createEffect(300, 0));
-                player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), StringUtils.color("&cStrength for 15 seconds")));
+                player.addPotionEffect(PotionEffectType.INCREASE_DAMAGE.createEffect(60, 0));
+                player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), StringUtils.color("&cStrength for 3 seconds")));
                 break;
 
         }

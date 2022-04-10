@@ -50,8 +50,8 @@ public class PlayerMoveListener implements Listener {
                         if(bffaPlayer.isBowBought()) {
                             p.getInventory().addItem(new ItemStack(Material.BOW), new ItemStack(Material.ARROW, 16));
                         }
-                        if(bffaPlayer.isGappleBought()) {
-                            p.getInventory().addItem(new ItemStack(Material.GOLDEN_APPLE, 2));
+                        if(bffaPlayer.isSnowBallBought()) {
+                            p.getInventory().addItem(new ItemStack(Material.SNOW_BALL, 16));
                         }
                     }
                 }

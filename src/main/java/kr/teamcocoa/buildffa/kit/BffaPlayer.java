@@ -35,7 +35,7 @@ public class BffaPlayer {
     private NickedBffaPlayer nickedBffaPlayer;
     private boolean shootAble;
 
-    private boolean gappleBought, bowBought;
+    private boolean snowBallBought, bowBought;
 
     /* Stats */
     private int kills;
@@ -58,7 +58,7 @@ public class BffaPlayer {
         this.kills = Main.inst().stats.getKills(player.getUniqueId().toString());
         this.bestKillStreaks = Main.inst().stats.getMaxKillStreak(player.getUniqueId().toString());
         this.deaths = Main.inst().stats.getDeaths(player.getUniqueId().toString());
-        this.gappleBought = false;
+        this.snowBallBought = false;
         this.bowBought = false;
     }
 
@@ -120,8 +120,8 @@ public class BffaPlayer {
         return shootAble;
     }
 
-    public boolean isGappleBought() {
-        return gappleBought;
+    public boolean isSnowBallBought() {
+        return snowBallBought;
     }
 
     public boolean isBowBought() {
@@ -192,8 +192,8 @@ public class BffaPlayer {
         }
     }
 
-    public void setGappleBought(boolean gappleBought) {
-        this.gappleBought = gappleBought;
+    public void setSnowBallBought(boolean snowBallBought) {
+        this.snowBallBought = snowBallBought;
     }
 
     public void setBowBought(boolean bowBought) {
@@ -240,7 +240,7 @@ public class BffaPlayer {
             setThrewPearlTime(System.currentTimeMillis());
             setPlayerKillStreak(0);
             setBowBought(false);
-            setGappleBought(false);
+            setSnowBallBought(false);
             if (isNicked()) {
                 getNickedBffaPlayer().addDeaths();
             }

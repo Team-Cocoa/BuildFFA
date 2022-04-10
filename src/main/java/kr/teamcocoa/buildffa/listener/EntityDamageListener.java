@@ -27,10 +27,15 @@ public class EntityDamageListener implements Listener {
                 if (!Main.playerData.get(damager).isInGame()) {
                     e.setCancelled(true);
                 }
-                Main.playerData.get(damagedPlayer).setLastHitPlayer(damager);
-                if (damagedPlayer.getHealth() - e.getFinalDamage() <= 0) {
-                    e.setCancelled(true);
-                    Main.playerData.get(damagedPlayer).death(false);
+                else {
+                    Main.playerData.get(damagedPlayer).setLastHitPlayer(damager);
+                }
+                synchronized (damagedPlayer) {
+                    if (damagedPlayer.getHealth() - e.getFinalDamage() <= 0) {
+                        damagedPlayer.setHealth(20.0);
+                        e.setCancelled(true);
+                        Main.playerData.get(damagedPlayer).death(false);
+                    }
                 }
             }
         }
