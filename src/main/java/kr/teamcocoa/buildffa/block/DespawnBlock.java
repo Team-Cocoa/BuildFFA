@@ -11,7 +11,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class DespawnBlock extends BukkitRunnable {
@@ -51,7 +50,7 @@ public class DespawnBlock extends BukkitRunnable {
                 }
             }
             catch(Exception e) {
-                new Location(world, x, y, z).getBlock().setType(Material.AIR);
+                makeAir();
                 this.giveAgain = false;
                 Main.worldData.removeBlock(block);
                 cancel();
@@ -68,7 +67,7 @@ public class DespawnBlock extends BukkitRunnable {
             i++;
         }
         else{
-            block.setType(Material.AIR);
+            makeAir();
             PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(
                     random, new BlockPosition(block.getX(), block.getY(), block.getZ()), 0);
             for(Player player : Bukkit.getOnlinePlayers()){
@@ -81,11 +80,17 @@ public class DespawnBlock extends BukkitRunnable {
                     event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
                 }
                 catch(Exception e){
-                    new Location(world, x, y, z).getBlock().setType(Material.AIR);
+                    makeAir();
                     cancel();
                 }
             }
             cancel();
         }
+    }
+
+    private void makeAir() {
+        Bukkit.getScheduler().runTask(Main.inst(), () -> {
+            new Location(world, x, y, z).getBlock().setType(Material.AIR);
+        });
     }
 }

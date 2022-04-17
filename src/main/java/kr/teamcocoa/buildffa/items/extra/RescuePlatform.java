@@ -66,7 +66,7 @@ public class RescuePlatform extends AbstractExtraItem implements UseAble {
                             Block block = cloned.getBlock();
                             block.setType(Material.SLIME_BLOCK);
                             Main.worldData.addBlock(block);
-                            new DespawnBlock(block).runTaskTimer(Main.inst(), 0L, 10L);
+                            new DespawnBlock(block).runTaskTimerAsynchronously(Main.inst(), 0L, 10L);
                         }
                     }
                     player.sendMessage(LangUtils.getMessage(player, MessageEnum.USED_PLATFORM));

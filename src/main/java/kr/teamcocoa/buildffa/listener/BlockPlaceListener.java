@@ -33,7 +33,7 @@ public class BlockPlaceListener implements Listener {
             if (!Main.playerData.get(p).isBuild()) {
                 Block b = e.getBlock();
                 Main.worldData.addBlock(b);
-                new DespawnBlock(e, b).runTaskTimer(Main.inst(), 0L, 10L);
+                new DespawnBlock(e, b).runTaskTimerAsynchronously(Main.inst(), 0L, 10L);
             }
         } else if (!Main.playerData.get(p).isBuild()) {
             e.setCancelled(true);
