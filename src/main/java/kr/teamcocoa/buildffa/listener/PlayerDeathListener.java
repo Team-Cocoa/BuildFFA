@@ -15,6 +15,5 @@ public class PlayerDeathListener implements Listener {
         if (Main.playerData.containsKey(e.getEntity())) {
             Main.playerData.get(e.getEntity()).death(false);
         }
-
     }
 }
