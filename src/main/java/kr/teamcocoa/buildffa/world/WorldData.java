@@ -17,6 +17,7 @@ public class WorldData {
         Bukkit.getScheduler().runTaskAsynchronously(Main.inst(), () -> {
             Iterator<Block> it = blocks.iterator();
             while (it.hasNext()) {
+                Block block = it.next();
                 it.remove();
             }
         });

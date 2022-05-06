@@ -288,6 +288,18 @@ public class BffaPlayer {
                     killerBffaPlayer.setBestKillStreaks(killerKillstreak);
                 }
 
+                if (playerKillStreak >= 5) {
+                    String killstreakPlayerString = String.valueOf(playerKillStreak);
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK_BROKEN).replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", killerName).replaceAll("%PLAYER%", player.getName()));
+                    }
+                }
+                if (killerKillstreak != 0 && (killerKillstreak % 5 == 0 || killerKillstreak > 15)) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK).replaceAll("%KILLSTREAK%", String.valueOf(killerKillstreak)).replaceAll("%PLAYER%", killerName));
+                    }
+                }
+
                 if (killerKillstreak % 3 == 0) {
                     try {
                         ExtraItemManager.getInstance().giveExtraItem(killer);
@@ -322,21 +334,6 @@ public class BffaPlayer {
                     }
                 }
                 setLastHitPlayer(null);
-
-
-                Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
-                    if (playerKillStreak >= 5) {
-                        String killstreakPlayerString = String.valueOf(playerKillStreak);
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK_BROKEN).replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", killerName).replaceAll("%PLAYER%", player.getName()));
-                        }
-                    }
-                    if (killerKillstreak != 0 && (killerKillstreak % 5 == 0 || killerKillstreak > 15)) {
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK).replaceAll("%KILLSTREAK%", String.valueOf(killerKillstreak)).replaceAll("%PLAYER%", killerName));
-                        }
-                    }
-                }, 3L);
             }
             catch (Exception e) {
                 e.printStackTrace();
