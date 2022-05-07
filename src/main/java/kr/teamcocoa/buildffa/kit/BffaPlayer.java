@@ -238,7 +238,6 @@ public class BffaPlayer {
         addDeaths();
         if(!quit) {
             setThrewPearlTime(System.currentTimeMillis());
-            setPlayerKillStreak(0);
             setBowBought(false);
             setSnowBallBought(false);
             if (isNicked()) {
@@ -339,6 +338,7 @@ public class BffaPlayer {
                 e.printStackTrace();
             }
         }
+        setPlayerKillStreak(0);
     }
 
     @Override

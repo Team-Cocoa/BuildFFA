@@ -86,6 +86,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityShootBowListener(), this);
         getServer().getPluginManager().registerEvents(new NickListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerBedEnterListener(), this);
+        getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(), this);
     }
 
     public void loadCommands() {
