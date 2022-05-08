@@ -1,7 +1,9 @@
 package kr.teamcocoa.buildffa.prestige;
 
+import org.bukkit.Material;
+
 public enum Prestige {
-    UNRANKED(0, 399, "&8Unranked"),
+    BEGINNER(0, 399, "&8Beginner"),
     BRONZE(400, 1999, "&7Bronze"),
     SILVER(2000, 3999, "&fSilver"),
     GOLD(4000, 5999, "&6Gold"),

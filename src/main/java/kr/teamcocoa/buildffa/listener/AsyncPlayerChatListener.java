@@ -17,7 +17,7 @@ import java.text.MessageFormat;
 
 public class AsyncPlayerChatListener implements Listener {
 
-    private String format = "{0} {1}{2}{3} &8> &f{4}";
+    private String format = "{0} {1}{2}{3} §8> §f{4}";
     /**
      * 0 : Prestige
      * 1 : Rank (Includes color code)

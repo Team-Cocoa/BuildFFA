@@ -2,8 +2,10 @@ kr\teamcocoa\buildffa\items\shop\Bow.class
 kr\teamcocoa\buildffa\kit\BffaPlayer.class
 kr\teamcocoa\buildffa\utils\MYSQL.class
 kr\teamcocoa\buildffa\listener\NickListener.class
+kr\teamcocoa\buildffa\listener\AsyncPlayerChatListener.class
 kr\teamcocoa\buildffa\enums\OtherEnum.class
 kr\teamcocoa\buildffa\listener\PlayerBedEnterListener.class
+kr\teamcocoa\buildffa\prestige\PrestigeManager.class
 kr\teamcocoa\buildffa\utils\Stats.class
 kr\teamcocoa\buildffa\world\WorldData.class
 kr\teamcocoa\buildffa\items\extra\AbstractExtraItem.class
@@ -51,6 +53,7 @@ kr\teamcocoa\buildffa\listener\PlayerDeathListener.class
 kr\teamcocoa\buildffa\items\shop\SnowBall.class
 kr\teamcocoa\buildffa\items\shop\AbstractShopItem.class
 kr\teamcocoa\buildffa\listener\ItemDropListener.class
+kr\teamcocoa\buildffa\prestige\Prestige.class
 kr\teamcocoa\buildffa\main\Main.class
 kr\teamcocoa\buildffa\utils\ScoreboardManager.class
 kr\teamcocoa\buildffa\block\RemoveBlockAnimation.class

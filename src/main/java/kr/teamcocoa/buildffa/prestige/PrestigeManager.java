@@ -16,8 +16,8 @@ public class PrestigeManager {
     }
 
     public Prestige getPrestige(int kills) {
-        if(kills <= Prestige.UNRANKED.getMaximumKills()) {
-            return Prestige.UNRANKED;
+        if(kills <= Prestige.BEGINNER.getMaximumKills()) {
+            return Prestige.BEGINNER;
         }
         if(Prestige.BRONZE.getMinimumKills() <= kills && kills <= Prestige.BRONZE.getMaximumKills()) {
             return Prestige.BRONZE;
@@ -43,11 +43,11 @@ public class PrestigeManager {
         if(Prestige.CHALLENGER.getMinimumKills() <= kills && kills <= Prestige.CHALLENGER.getMaximumKills()) {
             return Prestige.CHALLENGER;
         }
-        return Prestige.UNRANKED;
+        return Prestige.BEGINNER;
     }
 
     public int getPrestigeRank(Prestige prestige, int kills) {
-        if(prestige == Prestige.UNRANKED) {
+        if(prestige == Prestige.BEGINNER) {
             return 0;
         }
 
@@ -55,5 +55,6 @@ public class PrestigeManager {
         int maximum = prestige.getMaximumKills();
 
 //        if(m)
+        return 0;
     }
 }

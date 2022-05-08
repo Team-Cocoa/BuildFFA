@@ -290,7 +290,7 @@ public class BffaPlayer {
                 if (playerKillStreak >= 5) {
                     String killstreakPlayerString = String.valueOf(playerKillStreak);
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK_BROKEN).replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", killerName).replaceAll("%PLAYER%", player.getName()));
+                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK_BROKEN).replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", killerName).replaceAll("%PLAYER%", this.player.getName()));
                     }
                 }
                 if (killerKillstreak != 0 && (killerKillstreak % 5 == 0 || killerKillstreak > 15)) {
