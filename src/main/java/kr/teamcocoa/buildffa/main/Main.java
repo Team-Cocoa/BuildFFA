@@ -16,6 +16,8 @@ import kr.teamcocoa.buildffa.world.WorldData;
 import kr.teamcocoa.buildffa.listener.*;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 import org.bukkit.command.CommandExecutor;
@@ -62,6 +64,15 @@ public class Main extends JavaPlugin {
 //        new RemoveBlockAnimation().runTaskTimer(this, 0L, 10L);
         scoreboardManager.ScoreboardUpdater();
 
+        // Task to prevent the connection disconnected
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            try(ResultSet rs = mysql.getResult("select 1")) {
+
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }, 0L, 20 * 60 * 60);
     }
 
     public void loadListeners() {
