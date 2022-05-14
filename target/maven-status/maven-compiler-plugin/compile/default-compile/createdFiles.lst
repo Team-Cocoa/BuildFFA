@@ -22,7 +22,6 @@ kr\teamcocoa\buildffa\utils\LangUtils.class
 kr\teamcocoa\buildffa\utils\StringUtils.class
 kr\teamcocoa\buildffa\listener\PlayerPickupItemListener.class
 kr\teamcocoa\buildffa\listener\QuitListener.class
-kr\teamcocoa\buildffa\listener\EntityShootBowListener.class
 kr\teamcocoa\buildffa\listener\EnderPeralCancelListener.class
 kr\teamcocoa\buildffa\listener\EntityDamageListener.class
 kr\teamcocoa\buildffa\items\shop\BuyStatus.class
@@ -59,7 +58,6 @@ kr\teamcocoa\buildffa\utils\ScoreboardManager.class
 kr\teamcocoa\buildffa\block\RemoveBlockAnimation.class
 kr\teamcocoa\buildffa\commands\Stats$1.class
 kr\teamcocoa\buildffa\listener\InventoryCloseListener.class
-kr\teamcocoa\buildffa\listener\InventoryDragListener.class
 kr\teamcocoa\buildffa\enums\ItemEnum.class
 kr\teamcocoa\buildffa\listener\WorldInitListener.class
 kr\teamcocoa\buildffa\utils\ScoreboardManager$1.class

@@ -20,6 +20,7 @@ import org.bukkit.potion.PotionEffect;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class BffaPlayer {
@@ -36,6 +37,8 @@ public class BffaPlayer {
     private boolean shootAble;
 
     private boolean snowBallBought, bowBought;
+
+    private HashMap<Player, Double> damageTable;
 
     /* Stats */
     private int kills;
@@ -60,6 +63,7 @@ public class BffaPlayer {
         this.deaths = Main.inst().stats.getDeaths(player.getUniqueId().toString());
         this.snowBallBought = false;
         this.bowBought = false;
+        this.damageTable = new HashMap<>();
     }
 
     /*Getter*/
@@ -280,7 +284,7 @@ public class BffaPlayer {
                 player.sendMessage(LangUtils.getMessage(player, MessageEnum.PLAYER_KILL).replaceAll("%KILLER%", killerName).replaceAll("%KILLERHEALTH%", KillerHealth));
 
                 int killerKillstreak = killerBffaPlayer.getPlayerKillStreak() + 1;
-                killer.setHealth(20.0D);
+                resetDamage(true);
                 killer.setLevel(killerKillstreak);
                 killerBffaPlayer.setPlayerKillStreak(killerKillstreak);
                 if (killerKillstreak > killerBffaPlayer.getBestKillStreaks()) {
@@ -339,6 +343,25 @@ public class BffaPlayer {
             }
         }
         setPlayerKillStreak(0);
+    }
+
+    public void addDamage(Player hitter, double damage) {
+        if(this.damageTable.containsKey(hitter)) {
+            damage += this.damageTable.get(hitter);
+        }
+        this.damageTable.put(hitter, damage);
+    }
+
+    public void resetDamage(boolean giveHealth) {
+        if(giveHealth){
+            for (Player player : this.damageTable.keySet()) {
+                if (player.isOnline() && Main.playerData.get(player).isInGame()) {
+                    double totalHealth = player.getHealth() + this.damageTable.get(player);
+                    player.setHealth(totalHealth >= 20.0 ? 20.0 : totalHealth);
+                }
+            }
+        }
+        this.damageTable.clear();
     }
 
     @Override

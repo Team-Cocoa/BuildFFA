@@ -9,6 +9,8 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -23,23 +25,24 @@ public class EntityDamageListener implements Listener {
             return;
         }
         if (e.getEntity() instanceof Player) {
-            if(e.getDamager() instanceof Arrow || e.getDamager() instanceof Player) {
+            if(e.getDamager() instanceof Projectile || e.getDamager() instanceof Player) {
                 Player damagedPlayer = (Player) e.getEntity();
                 Player damager = e.getDamager() instanceof Player
                         ? (Player) e.getDamager()
-                        : (Player) ((Arrow) e.getDamager()).getShooter();
+                        : (Player) ((Projectile) e.getDamager()).getShooter();
                 if (!Main.playerData.get(damager).isInGame()) {
                     e.setCancelled(true);
                 }
                 else {
                     Main.playerData.get(damagedPlayer).setLastHitPlayer(damager);
+                    Main.playerData.get(damagedPlayer).addDamage(damager, e.getFinalDamage());
                 }
                 synchronized (damagedPlayer) {
                     if (damagedPlayer.getHealth() - e.getFinalDamage() <= 0) {
                         Main.inst().getServer().getPluginManager().callEvent(CraftEventFactory.callPlayerDeathEvent(((CraftPlayer) damagedPlayer).getHandle(), null, "", true));
                         damagedPlayer.setHealth(20.0);
                         e.setCancelled(true);
-                        Main.playerData.get(damagedPlayer).death(false);
+                        Main.playerData.get(damagedPlayer).death(false); // TODO : death 함수 synchronized 화 하고, 위에 3줄 로직을 death 함수 안에 우겨넣기
                     }
                 }
             }
