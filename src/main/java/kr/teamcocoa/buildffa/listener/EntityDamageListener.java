@@ -20,6 +20,10 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 public class EntityDamageListener implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
+        if(e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            e.setCancelled(true);
+            return;
+        }
         if (!WorldManager.getInstance().isPvpAble()) {
             e.setCancelled(true);
             return;
@@ -39,9 +43,8 @@ public class EntityDamageListener implements Listener {
                 }
                 synchronized (damagedPlayer) {
                     if (damagedPlayer.getHealth() - e.getFinalDamage() <= 0) {
-                        Main.inst().getServer().getPluginManager().callEvent(CraftEventFactory.callPlayerDeathEvent(((CraftPlayer) damagedPlayer).getHandle(), null, "", true));
-                        damagedPlayer.setHealth(20.0);
                         e.setCancelled(true);
+                        Main.inst().getServer().getPluginManager().callEvent(CraftEventFactory.callPlayerDeathEvent(((CraftPlayer) damagedPlayer).getHandle(), null, "", true));
                         Main.playerData.get(damagedPlayer).death(false); // TODO : death 함수 synchronized 화 하고, 위에 3줄 로직을 death 함수 안에 우겨넣기
                     }
                 }
