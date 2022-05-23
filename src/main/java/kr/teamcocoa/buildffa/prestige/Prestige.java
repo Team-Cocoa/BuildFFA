@@ -1,17 +1,16 @@
 package kr.teamcocoa.buildffa.prestige;
 
-import org.bukkit.Material;
-
 public enum Prestige {
-    BEGINNER(0, 399, "&8Beginner"),
-    BRONZE(400, 1999, "&7Bronze"),
-    SILVER(2000, 3999, "&fSilver"),
-    GOLD(4000, 5999, "&6Gold"),
-    PLATINUM(6000, 7999, "&3Platinum"),
-    DIAMOND(8000, 9999, "&bDiamond"),
-    MASTER(10000, 11999, "&2Master"),
-    GRAND_MASTER(12000, 13999, "&5Grand Master"),
-    CHALLENGER(14000, Integer.MAX_VALUE, "&4Challenger");
+    BEGINNER(0, 99, "&8Beginner"),
+    BRONZE(100, 599, "&7Bronze"),
+    SILVER(600, 1999, "&fSilver"),
+    GOLD(2000, 3999, "&6Gold"),
+    PLATINUM(4000, 5999, "&3Platinum"),
+    DIAMOND(6000, 7999, "&bDiamond"),
+    MASTER(8000, 9999, "&2Master"),
+    GRAND_MASTER(10000, 12999, "&5Grand Master"),
+    LEGEND(13000, 15999, "&cLegend"),
+    CHALLENGER(16000, Integer.MAX_VALUE, "&4Challenger");
 
 
     private int minimumKills;

@@ -40,6 +40,9 @@ public class PrestigeManager {
         if(Prestige.GRAND_MASTER.getMinimumKills() <= kills && kills <= Prestige.GRAND_MASTER.getMaximumKills()) {
             return Prestige.GRAND_MASTER;
         }
+        if(Prestige.LEGEND.getMinimumKills() <= kills && kills <= Prestige.LEGEND.getMaximumKills()) {
+            return Prestige.LEGEND;
+        }
         if(Prestige.CHALLENGER.getMinimumKills() <= kills && kills <= Prestige.CHALLENGER.getMaximumKills()) {
             return Prestige.CHALLENGER;
         }
@@ -50,11 +53,13 @@ public class PrestigeManager {
         if(prestige == Prestige.BEGINNER) {
             return 0;
         }
-
         int minimum = prestige.getMinimumKills();
-        int maximum = prestige.getMaximumKills();
-
-//        if(m)
+        int distance = ((prestige.getMaximumKills() + 1) - prestige.getMinimumKills()) / 5;
+        for(int i = 0; i < 5; i++) {
+            if(minimum + (distance * i) <= kills && kills <= (minimum + (distance * (i + 1))) -1) {
+                return i + 1;
+            }
+        }
         return 0;
     }
 }
