@@ -72,7 +72,7 @@ public class Stats {
         }
       } else {
         createPlayer(uuid);
-        getKills(uuid);
+        i = getKills(uuid);
       }
     return i;
   }

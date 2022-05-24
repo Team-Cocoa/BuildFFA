@@ -6,6 +6,9 @@ import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.items.extra.ExtraItemManager;
 import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.prestige.Prestige;
+import kr.teamcocoa.buildffa.prestige.PrestigeManager;
+import kr.teamcocoa.buildffa.utils.ItemManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import kr.teamcocoa.buildffa.world.WorldManager;
@@ -13,11 +16,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import kr.teamcocoa.buildffa.utils.ItemManager;
 import org.bukkit.potion.PotionEffect;
 
 import java.text.DecimalFormat;
@@ -47,22 +47,22 @@ public class BffaPlayer {
     private int deaths;
     private int bestKillStreaks;
 
+    /* Prestige */
+    private Prestige prestige;
+    private int grade;
+
     public BffaPlayer(Player player) {
         this.threwPearlTime = 0L;
         this.playerKillStreak = 0;
         this.latestDeadTime = 0L;
         this.build = false;
         this.player = player;
-        this.inventory = Main.inst().kitData.getPlayerKit(player);
         this.inGame = false;
         this.died = false;
         this.lastHitPlayer = null;
         this.shootAble = true;
         this.nickedBffaPlayer = null;
 
-        this.kills = Main.inst().stats.getKills(player.getUniqueId().toString());
-        this.bestKillStreaks = Main.inst().stats.getMaxKillStreak(player.getUniqueId().toString());
-        this.deaths = Main.inst().stats.getDeaths(player.getUniqueId().toString());
         this.snowBallBought = false;
         this.bowBought = false;
         this.damageTable = new HashMap<>();
@@ -132,6 +132,14 @@ public class BffaPlayer {
 
     public boolean isBowBought() {
         return bowBought;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public Prestige getPrestige() {
+        return prestige;
     }
 
     /*Setter*/
@@ -206,12 +214,21 @@ public class BffaPlayer {
         this.bowBought = bowBought;
     }
 
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    public void setPrestige(Prestige prestige) {
+        this.prestige = prestige;
+    }
+
     /*Stats Adder*/
     public void addKills() {
         this.kills += 1;
         CoinPlayer coinPlayer = CoinSystem.getInstance().getPlayerManager().getPlayer(this.player.getUniqueId());
         coinPlayer.addCoins(50);
         this.player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &6+50 coins!"));
+        PrestigeManager.getInstance().updatePrestige(this);
     }
 
     public void addDeaths() {
@@ -358,13 +375,22 @@ public class BffaPlayer {
     public void resetDamage(boolean giveHealth) {
         if(giveHealth){
             for (Player player : this.damageTable.keySet()) {
-                if (player.isOnline() && Main.playerData.get(player).isInGame()) {
+                BffaPlayer bffaPlayer = Main.playerData.getOrDefault(player, null);
+                if (bffaPlayer != null && bffaPlayer.isInGame()) {
                     double totalHealth = player.getHealth() + this.damageTable.get(player);
                     player.setHealth(totalHealth >= 20.0 ? 20.0 : totalHealth);
                 }
             }
         }
         this.damageTable.clear();
+    }
+
+    public void loadStats() {
+        this.inventory = Main.inst().kitData.getPlayerKit(player);
+        this.kills = Main.inst().stats.getKills(player.getUniqueId().toString());
+        this.bestKillStreaks = Main.inst().stats.getMaxKillStreak(player.getUniqueId().toString());
+        this.deaths = Main.inst().stats.getDeaths(player.getUniqueId().toString());
+        PrestigeManager.getInstance().loadPrestige(this);
     }
 
     @Override

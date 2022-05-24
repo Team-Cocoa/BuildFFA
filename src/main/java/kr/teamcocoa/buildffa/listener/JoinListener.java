@@ -21,13 +21,15 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         final Player player = e.getPlayer();
-        Main.playerData.put(player, new BffaPlayer(player));
+        BffaPlayer bffaPlayer = new BffaPlayer(player);
+        Main.playerData.put(player, bffaPlayer);
         player.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(999999, 1));
         Title.sendTitle(player, "", StringUtils.color("&7Your data is loading..."), 20, 1000, 20);
         e.setJoinMessage(null);
         player.teleport(new Location(Bukkit.getWorld("BuildFFA_world"), 38.5, 201, 0.5, 0, 90));
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
+            bffaPlayer.loadStats();
             String uuid = String.valueOf(player.getUniqueId());
             boolean nicked = MySQL.containsPlayer(uuid);
             for (PotionEffect effect : player.getActivePotionEffects()) {

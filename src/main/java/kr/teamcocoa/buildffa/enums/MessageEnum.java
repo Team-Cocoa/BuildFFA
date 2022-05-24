@@ -32,7 +32,8 @@ public enum MessageEnum {
     SHOP_ALREADY_BOUGHT("shop.already_bought"),
     CANNOT_USE_PLATFORM("other.cannot_use_platform"),
     USED_PLATFORM("other.used_platform"),
-    GIVE_EXTRA_ITEM("other.receive_extra");
+    GIVE_EXTRA_ITEM("other.receive_extra"),
+    PRESTIGE_PROMOTE_MESSAGE("prestige.rank_up");
 //    BOW_COUNT_SECONDS("message_bow_count_seconds"),
 //    BOW_COUNT_SECOND("message_bow_count_second"),
 //    BOW_CANNOT_USE("message_bow_cannot_use"),
