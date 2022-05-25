@@ -1,14 +1,11 @@
 package kr.teamcocoa.buildffa.listener;
 
 import de.fct.NickSystem.MySQL;
-import de.fct.NickSystem.Nick;
-import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.*;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +25,7 @@ public class JoinListener implements Listener {
         e.setJoinMessage(null);
         player.teleport(new Location(Bukkit.getWorld("BuildFFA_world"), 38.5, 201, 0.5, 0, 90));
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> {
             bffaPlayer.loadStats();
             String uuid = String.valueOf(player.getUniqueId());
             boolean nicked = MySQL.containsPlayer(uuid);
@@ -46,10 +43,10 @@ public class JoinListener implements Listener {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(joinMessage);
             }
-            Main.inst().stats.createPlayer(uuid);
-            Main.inst().scoreboardManager.setScoreboard(player);
+            Main.getInstance().stats.createPlayer(uuid);
+            Main.getInstance().scoreboardManager.setScoreboard(player);
             Title.sendTitle(player, "", "", 0, 0, 0);
-            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                 Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
                 player.teleport(spawn);
                 player.setLevel(0);

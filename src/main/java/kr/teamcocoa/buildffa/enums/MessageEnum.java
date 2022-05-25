@@ -1,8 +1,6 @@
 package kr.teamcocoa.buildffa.enums;
 
 public enum MessageEnum {
-
-    JOIN_TITLE("join_sub_title"),
     MAP_CHANGE_MINUTES("map.change_minutes"),
     MAP_CHANGE_MINUTE("map.change_minute"),
     MAP_CHANGE_SECONDS("map.change_seconds"),
@@ -33,15 +31,9 @@ public enum MessageEnum {
     CANNOT_USE_PLATFORM("other.cannot_use_platform"),
     USED_PLATFORM("other.used_platform"),
     GIVE_EXTRA_ITEM("other.receive_extra"),
-    PRESTIGE_PROMOTE_MESSAGE("prestige.rank_up");
-//    BOW_COUNT_SECONDS("message_bow_count_seconds"),
-//    BOW_COUNT_SECOND("message_bow_count_second"),
-//    BOW_CANNOT_USE("message_bow_cannot_use"),
-//    BOW_CAN_USE("message_bow_can_use");
-
-
-
-
+    PRESTIGE_PROMOTE_MESSAGE("prestige.rank_up"),
+    STATS_MESSAGE("stats.message"),
+    STATS_NOT_FOUND("stats.not_found");
 
     private final String name;
 
@@ -52,6 +44,5 @@ public enum MessageEnum {
     private MessageEnum(String name) {
         this.name = "message." + name;
     }
-
 
 }

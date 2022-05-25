@@ -25,7 +25,7 @@ public class PlayerMoveListener implements Listener {
                     if (!Main.playerData.get(p).isBuild()) {
                         Main.playerData.get(p).setDied(true);
                         Main.playerData.get(p).death(false);
-                        Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+                        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                             try {
                                 Main.playerData.get(p).setDied(false);
                             } catch (Exception e1) {
@@ -44,7 +44,7 @@ public class PlayerMoveListener implements Listener {
                         p.setHealth(20.0D);
                         p.setLevel(0);
                         ItemStack[] inventory = bffaPlayer.getInventory();
-                        ItemStack[] armor = Main.inst().kitData.getArmor();
+                        ItemStack[] armor = Main.getInstance().kitData.getArmor();
                         p.getInventory().setContents(inventory);
                         p.getInventory().setArmorContents(armor);
                         p.playSound(p.getLocation(), Sound.ORB_PICKUP, 100.0F, 0.0F);

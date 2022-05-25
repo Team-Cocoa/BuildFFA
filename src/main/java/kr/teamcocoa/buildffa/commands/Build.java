@@ -1,10 +1,7 @@
 package kr.teamcocoa.buildffa.commands;
 
 import kr.teamcocoa.buildffa.main.Main;
-import kr.teamcocoa.buildffa.utils.Config;
-
 import kr.teamcocoa.buildffa.utils.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;

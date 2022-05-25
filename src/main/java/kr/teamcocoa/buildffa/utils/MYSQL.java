@@ -8,22 +8,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MYSQL {
-    public static String host = Config.config.getString("mysql.host");
+    public static String host = "localhost";
 
-    public static String port = Config.config.getString("mysql.port");
+    public static String port = "3306";
 
-    public static String database = Config.config.getString("mysql.database");
+    public static String database = "teamcocoa_buildffa";
 
-    public static String username = Config.config.getString("mysql.username");
+    public static String username = "root";
 
-    public static String password = Config.config.getString("mysql.password");
+    public static String password = "root";
 
     public Connection con;
 
     public void connect() {
         if (!isConnected()) {
             try {
-                con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?validationQuery=select 1", username, password);
+                con = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
                 System.out.println("| [BuildFFA] Successfully connected to MYSQL!                 |");
             } catch (SQLException e) {
                 System.out.println("| [BuildFFA] Failed to connect to MYSQL server.               |");
@@ -43,10 +43,18 @@ public class MYSQL {
     }
 
     public boolean isConnected() {
-        if (con == null) {
+        try {
+            if (con == null || con.isClosed()) {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
-        return true;
     }
 
     public void update(String qry) {
@@ -57,14 +65,17 @@ public class MYSQL {
         }
     }
 
-    public ResultSet getResult(String qry) {
-        PreparedStatement ps;
-        try {
-            ps = con.prepareStatement(qry);
-            return ps.executeQuery();
+    public PreparedStatement getPreparedStatement(String query) {
+        if(isConnected()) {
+            try {
+                return con.prepareStatement(query);
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
-        catch (SQLException e) {
-            e.printStackTrace();
+        else {
             return null;
         }
     }

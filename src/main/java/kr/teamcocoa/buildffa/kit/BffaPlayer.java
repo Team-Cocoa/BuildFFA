@@ -274,7 +274,7 @@ public class BffaPlayer {
                 player.removePotionEffect(effect.getType());
             }
 
-            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                 player.setHealth(20);
                 player.teleport(spawn);
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
@@ -386,10 +386,10 @@ public class BffaPlayer {
     }
 
     public void loadStats() {
-        this.inventory = Main.inst().kitData.getPlayerKit(player);
-        this.kills = Main.inst().stats.getKills(player.getUniqueId().toString());
-        this.bestKillStreaks = Main.inst().stats.getMaxKillStreak(player.getUniqueId().toString());
-        this.deaths = Main.inst().stats.getDeaths(player.getUniqueId().toString());
+        this.inventory = Main.getInstance().kitData.getPlayerKit(player);
+        this.kills = Main.getInstance().stats.getKills(player.getUniqueId().toString());
+        this.bestKillStreaks = Main.getInstance().stats.getMaxKillStreak(player.getUniqueId().toString());
+        this.deaths = Main.getInstance().stats.getDeaths(player.getUniqueId().toString());
         PrestigeManager.getInstance().loadPrestige(this);
     }
 

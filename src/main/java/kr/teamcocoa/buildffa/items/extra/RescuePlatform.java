@@ -3,22 +3,16 @@ package kr.teamcocoa.buildffa.items.extra;
 import kr.teamcocoa.buildffa.block.DespawnBlock;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
-import kr.teamcocoa.buildffa.enums.OtherEnum;
-import kr.teamcocoa.buildffa.items.shop.AbstractShopItem;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.WorldManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.text.MessageFormat;
 
 public class RescuePlatform extends AbstractExtraItem implements UseAble {
 
@@ -66,7 +60,7 @@ public class RescuePlatform extends AbstractExtraItem implements UseAble {
                             Block block = cloned.getBlock();
                             block.setType(Material.SLIME_BLOCK);
                             Main.worldData.addBlock(block);
-                            new DespawnBlock(block).runTaskTimerAsynchronously(Main.inst(), 0L, 10L);
+                            new DespawnBlock(block).runTaskTimerAsynchronously(Main.getInstance(), 0L, 10L);
                         }
                     }
                     player.sendMessage(LangUtils.getMessage(player, MessageEnum.USED_PLATFORM));

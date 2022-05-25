@@ -9,6 +9,7 @@ import ch.dkrieger.permissionsystem.lib.player.PlayerDesign;
 import de.fct.NickSystem.MySQL;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.prestige.Prestige;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -51,9 +52,9 @@ public class AsyncPlayerChatListener implements Listener {
 
         String prestige = StringUtils.color(PrestigeManager.getInstance().getPrestigeName(bffaPlayer));
 
-        if(MySQL.containsPlayer(player.getUniqueId().toString())) {
+        if(bffaPlayer.isNicked()) {
             e.setFormat(MessageFormat.format("§8[{0}§8] §7{1} §8> §f{2}",
-                    prestige, player.getName(), e.getMessage().replace("%", "%%")));
+                    StringUtils.color(PrestigeManager.getInstance().getPrestigeName(bffaPlayer.getNickedBffaPlayer().getKills())), player.getName(), e.getMessage().replace("%", "%%")));
             return;
         }
 

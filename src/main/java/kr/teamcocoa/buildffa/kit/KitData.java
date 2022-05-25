@@ -10,8 +10,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class KitData {
@@ -20,7 +20,8 @@ public class KitData {
         ItemStack[] inventory = new ItemStack[9];
         String sql = "SELECT * FROM `inventory` WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
         String[] kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
-        try(ResultSet rs = Main.inst().mysql.getResult(sql)) {
+        try(    PreparedStatement preparedStatement = Main.getInstance().mysql.getPreparedStatement(sql);
+                ResultSet rs = preparedStatement.executeQuery()) {
             if (rs.next()) {
                 for (int i = 0; i < kitString.length; i++) {
                     inventory[rs.getInt(kitString[i])] = getItemByString(kitString[i]);

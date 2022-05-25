@@ -131,6 +131,6 @@ public class ScoreboardManager implements Listener {
             setScoreboard(player);
           }
         }
-      }).runTaskTimer(Main.inst(), 0L, 20L);
+      }).runTaskTimer(Main.getInstance(), 0L, 20L);
   }
 }

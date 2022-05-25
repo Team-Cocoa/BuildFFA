@@ -4,28 +4,19 @@ import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.items.shop.ShopInventory;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.kit.KitEdit;
 import kr.teamcocoa.buildffa.main.Main;
-import kr.teamcocoa.buildffa.utils.Bar;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.MapVoteInventory;
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class InventoryClickListener implements Listener {
     @EventHandler
@@ -39,14 +30,14 @@ public class InventoryClickListener implements Listener {
 
 
         if (e.getView().getTitle().equals(LangUtils.getMessage(p, InventoryEnum.INVENTORY_SORTING))) {
-            ItemStack saveItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.SAVE), Material.INK_SACK, (short) 10);
-            ItemStack resetItem = Main.inst().kitData.createDye(LangUtils.getMessage(p, ItemEnum.RESET), Material.INK_SACK, (short) 1);
+            ItemStack saveItem = Main.getInstance().kitData.createDye(LangUtils.getMessage(p, ItemEnum.SAVE), Material.INK_SACK, (short) 10);
+            ItemStack resetItem = Main.getInstance().kitData.createDye(LangUtils.getMessage(p, ItemEnum.RESET), Material.INK_SACK, (short) 1);
             ItemStack clickedItem = e.getCurrentItem();
             if(clickedItem == null) {
                 e.setCancelled(true);
                 return;
             }
-            ItemStack glassItem = Main.inst().kitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte) 7);
+            ItemStack glassItem = Main.getInstance().kitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte) 7);
             if (clickedItem.equals(glassItem)) {
                 e.setCancelled(true);
                 return;
@@ -56,7 +47,7 @@ public class InventoryClickListener implements Listener {
                 try {
                     boolean saved = KitEdit.getInstance().resetInventorySetting(p);
                     if (saved) {
-                        Main.playerData.get(p).setInventory(Main.inst().kitData.getDefaultKit());
+                        Main.playerData.get(p).setInventory(Main.getInstance().kitData.getDefaultKit());
                         p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_RESET));
                     }
                     else {
@@ -64,7 +55,7 @@ public class InventoryClickListener implements Listener {
                     }
                     p.closeInventory();
                     p.getInventory().clear();
-                    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
+                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
                 } catch (Exception e1) {
                     e1.printStackTrace();
                     p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));
@@ -85,7 +76,7 @@ public class InventoryClickListener implements Listener {
                     }
                     p.closeInventory();
                     p.getInventory().clear();
-                    Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
+                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> Main.playerData.get(p).setJoinInventory(), 5L);
                 } catch (Exception e1) {
                     e1.printStackTrace();
                     p.sendMessage(LangUtils.getMessage(p, MessageEnum.SETTING_ERROR));

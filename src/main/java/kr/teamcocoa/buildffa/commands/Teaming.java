@@ -1,8 +1,6 @@
 package kr.teamcocoa.buildffa.commands;
 
 import kr.teamcocoa.buildffa.main.Main;
-import kr.teamcocoa.buildffa.utils.Config;
-import java.io.IOException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -14,7 +12,7 @@ public class Teaming implements CommandExecutor {
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (sender instanceof Player) {
       Player p = (Player)sender;
-      if (p.hasPermission(Config.permissions.getString("teaming"))) {
+      if (p.hasPermission("teamcocoa.moderator")) {
         if(Main.teaming) {
           Main.teaming = false;
           for(Player player : Bukkit.getOnlinePlayers()) {

@@ -83,7 +83,7 @@ public class WorldManager {
             Location spawn = getSpawnByName(name);
             Main.worldData.removeBlocks();
             long deadTime = System.currentTimeMillis();
-            Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.teleport(spawn);
                     BffaPlayer bffaPlayer = Main.playerData.get(player);
@@ -101,7 +101,7 @@ public class WorldManager {
 
     public void mapChangeUpdater() {
 
-        Bukkit.getScheduler().runTaskTimer(Main.inst(), () -> {
+        Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> {
             --sec;
             LocalTime localTime = LocalTime.ofSecondOfDay(sec);
             String time = localTime.toString();
@@ -138,7 +138,7 @@ public class WorldManager {
                 case 10:
                     mapVote.setVoteAble(false);
                     String map = mapVote.getMostVoted();
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> {
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> {
                         loadWorld(map);
                         cloneWorld(map);
                     }, 1L);
@@ -161,7 +161,7 @@ public class WorldManager {
                     pvpAble = true;
                     mapVote.setVoteAble(true);
                     mapVote.resetVotes();
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.inst(), () -> mapChange(temp), 1L);
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> mapChange(temp), 1L);
                     break;
                 default:
                     break;

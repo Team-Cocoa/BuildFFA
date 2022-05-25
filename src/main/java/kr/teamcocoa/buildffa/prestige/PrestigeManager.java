@@ -109,13 +109,21 @@ public class PrestigeManager {
             }
             else {
                 loadPrestige(bffaPlayer);
-                for(Player player : Bukkit.getOnlinePlayers()) {
-                    player.sendMessage(
-                            MessageFormat.format(StringUtils.getListByString(LangUtils.getMessage(player, MessageEnum.PRESTIGE_PROMOTE_MESSAGE)), bffaPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(bffaPlayer)))
-                    );
+                if(!bffaPlayer.isNicked()) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.sendMessage(
+                                MessageFormat.format(StringUtils.getListByString(LangUtils.getMessage(player, MessageEnum.PRESTIGE_PROMOTE_MESSAGE)), bffaPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(bffaPlayer)))
+                        );
+                    }
                 }
             }
         }
+    }
+
+    public String getPrestigeName(int kills) {
+        Prestige prestige = getPrestige(kills);
+        int grade = getPrestigeRank(prestige, kills);
+        return prestige.getName() + (prestige == Prestige.BEGINNER ? "" : " " + arabicToRome(grade));
     }
 
     public String getPrestigeName(BffaPlayer bffaPlayer) {

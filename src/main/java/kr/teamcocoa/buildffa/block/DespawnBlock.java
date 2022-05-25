@@ -89,7 +89,7 @@ public class DespawnBlock extends BukkitRunnable {
     }
 
     private void makeAir() {
-        Bukkit.getScheduler().runTask(Main.inst(), () -> {
+        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
             new Location(world, x, y, z).getBlock().setType(Material.AIR);
         });
     }

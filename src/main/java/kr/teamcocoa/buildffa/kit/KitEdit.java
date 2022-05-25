@@ -2,7 +2,6 @@ package kr.teamcocoa.buildffa.kit;
 
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
-import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import org.bukkit.Bukkit;
@@ -12,7 +11,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,14 +60,14 @@ public class KitEdit {
         String[] kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
         List<ItemStack> inventorySortingList = Arrays.asList(inventorySorting);
         for (int i = 0; i < 6; i++) {
-            int index = inventorySortingList.indexOf(Main.inst().kitData.getItemByString(kitString[i]));
+            int index = inventorySortingList.indexOf(Main.getInstance().kitData.getItemByString(kitString[i]));
             if (index == -1) {
                 return false;
             }
             inventory[i] = index;
             sql = sql.replace("{" + i + "}", String.valueOf(inventory[i]));
         }
-        Main.inst().mysql.update(sql);
+        Main.getInstance().mysql.update(sql);
         return true;
     }
 
@@ -78,7 +76,7 @@ public class KitEdit {
             String sql = "INSERT INTO `inventory`(uuid) VALUES (\"" + player.getUniqueId().toString() + "\")" +
                     " ON DUPLICATE KEY " +
                     "UPDATE sword = 0, stick = 1, block = 2, ladder = 6, web = 7, pearl = 8;";
-            Main.inst().mysql.update(sql);
+            Main.getInstance().mysql.update(sql);
             return true;
         }
         catch(Exception e) {

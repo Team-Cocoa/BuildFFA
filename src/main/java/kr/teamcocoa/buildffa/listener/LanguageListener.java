@@ -15,7 +15,7 @@ public class LanguageListener implements Listener {
             Player player = e.getPlayer();
             if(!Main.playerData.get(player).isInGame()) {
                 player.getInventory().clear();
-                Bukkit.getScheduler().runTaskLater(Main.inst(), () -> Main.playerData.get(player).setJoinInventory(), 5L);
+                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> Main.playerData.get(player).setJoinInventory(), 5L);
             }
         }
         catch(NullPointerException e1) {

@@ -1,21 +1,15 @@
 package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.main.Main;
-import kr.teamcocoa.buildffa.utils.ScoreboardManager;
 import kr.teamcocoa.buildffa.world.WorldManager;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class EntityDamageListener implements Listener {
     @EventHandler
@@ -44,7 +38,7 @@ public class EntityDamageListener implements Listener {
                 synchronized (damagedPlayer) {
                     if (damagedPlayer.getHealth() - e.getFinalDamage() <= 0) {
                         e.setCancelled(true);
-                        Main.inst().getServer().getPluginManager().callEvent(CraftEventFactory.callPlayerDeathEvent(((CraftPlayer) damagedPlayer).getHandle(), null, "", true));
+                        Main.getInstance().getServer().getPluginManager().callEvent(CraftEventFactory.callPlayerDeathEvent(((CraftPlayer) damagedPlayer).getHandle(), null, "", true));
                         Main.playerData.get(damagedPlayer).death(false); // TODO : death 함수 synchronized 화 하고, 위에 3줄 로직을 death 함수 안에 우겨넣기
                     }
                 }

@@ -15,7 +15,7 @@ public class InventoryCloseListener implements Listener {
         Player player = (Player) e.getPlayer();
         if(e.getInventory() != null) {
             if(!Main.playerData.get(player).isInGame() && !Main.playerData.get(player).isBuild() && e.getInventory().getName().equals(LangUtils.getMessage(player, InventoryEnum.INVENTORY_SORTING))) {
-                Bukkit.getScheduler().runTaskLater(Main.inst(), () -> {
+                Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                     if(!Main.playerData.get(player).isInGame() && !Main.playerData.get(player).isBuild() && e.getInventory().getName().equals(LangUtils.getMessage(player, InventoryEnum.INVENTORY_SORTING))) {
                         Main.playerData.get(player).setJoinInventory();
                     }

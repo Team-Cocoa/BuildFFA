@@ -2,7 +2,6 @@ package kr.teamcocoa.buildffa.world;
 
 import kr.teamcocoa.buildffa.main.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class WorldData {
     private List<Block> blocks = new ArrayList<>();
 
     public void removeBlocks() {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.inst(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
             Iterator<Block> it = blocks.iterator();
             while (it.hasNext()) {
                 Block block = it.next();

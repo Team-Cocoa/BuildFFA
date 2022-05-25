@@ -4,167 +4,83 @@ import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
 import org.bukkit.Bukkit;
 
-import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Stats {
-  public boolean playerExists(String uuid) {
-    try(ResultSet rs = Main.inst().mysql.getResult("SELECT `UUID` FROM Stats WHERE UUID= '" + uuid + "'")) {
-      if (rs.next()){
-        boolean returnBoolean = rs.getString("UUID") != null;
-        return returnBoolean;
-      }
-      return false;
+    public boolean playerExists(String uuid) {
+        try (   PreparedStatement preparedStatement = Main.getInstance().mysql.getPreparedStatement("SELECT `UUID` FROM Stats WHERE UUID= '" + uuid + "'");
+                ResultSet rs = preparedStatement.executeQuery()) {
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return true;
+            // 위에 값이 false가 된다면...?
+            // 만약에 단순히 에러이고 커넥션이 살아있다면...?
+            // 모든 플레이어의 스탯은 초기화 될것이다...
+            // 그건 막아야 겠지...? 그래서 에러가 나도 true 값을 return 하는것...
+        }
     }
-    catch (SQLException e) {
-      e.printStackTrace();
-      return false;
+
+    public void createPlayer(String uuid) {
+        if (!playerExists(uuid)) {
+            Main.getInstance().mysql.update("INSERT INTO Stats(UUID, KILLS, DEATHS) VALUES ('" + uuid + "', '0', '0');");
+            Main.getInstance().mysql.update("INSERT INTO `inventory`(uuid) VALUES(\"" + uuid + "\");");
+        }
     }
-  }
-  
-  public void createPlayer(String uuid) {
-      if (!playerExists(uuid)) {
-        Main.inst().mysql.update("INSERT INTO Stats(UUID, KILLS, DEATHS) VALUES ('" + uuid + "', '0', '0');");
-        Main.inst().mysql.update("INSERT INTO `inventory`(uuid) VALUES(\"" + uuid + "\");");
-      }
 
-  }
-
-  public Integer getMaxKillStreak(String uuid) {
-      Integer i = Integer.valueOf(0);
-      if (playerExists(uuid)) {
-          try(ResultSet rs = Main.inst().mysql.getResult("SELECT `max_killstreak` FROM Stats WHERE UUID= '" + uuid + "'")) {
-              if (rs.next());
-              i = Integer.valueOf(rs.getInt("max_killstreak"));
-          }
-          catch (SQLException e) {
-              e.printStackTrace();
-          }
-      }
-      else {
-          createPlayer(uuid);
-          getKills(uuid);
-      }
-      return i;
-  }
-
-  public void setMaxKillStreak(String uuid, int killStreak) {
-      if(playerExists(uuid)) {
-          Main.inst().mysql.update("UPDATE Stats SET `max_killstreak` = '" + killStreak + "' WHERE UUID= '" + uuid + "';");
-      }
-      else {
-          createPlayer(uuid);
-          setMaxKillStreak(uuid, killStreak);
-      }
-  }
-  
-  public Integer getKills(String uuid) {
-      Integer i = Integer.valueOf(0);
-      if (playerExists(uuid)) {
-        try(ResultSet rs = Main.inst().mysql.getResult("SELECT `KILLS` FROM Stats WHERE UUID= '" + uuid + "'")) {
-          if (rs.next()) {
-              i = Integer.valueOf(rs.getInt("KILLS"));
-          }
+    public int getMaxKillStreak(String uuid) {
+        try (   PreparedStatement preparedStatement = Main.getInstance().mysql.getPreparedStatement("SELECT `max_killstreak` FROM Stats WHERE UUID= '" + uuid + "'");
+                ResultSet rs = preparedStatement.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("max_killstreak");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        catch (SQLException e) {
-          e.printStackTrace();
+        return 0;
+    }
+
+    public int getKills(String uuid) {
+        try (   PreparedStatement preparedStatement = Main.getInstance().mysql.getPreparedStatement("SELECT `KILLS` FROM Stats WHERE UUID= '" + uuid + "'");
+                ResultSet rs = preparedStatement.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("KILLS");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-      } else {
-        createPlayer(uuid);
-        i = getKills(uuid);
-      }
-    return i;
-  }
-  
-  public Integer getDeaths(String uuid) {
-    Integer i = Integer.valueOf(0);
-      if (playerExists(uuid)) {
-        try(ResultSet rs = Main.inst().mysql.getResult("SELECT `DEATHS` FROM Stats WHERE UUID= '" + uuid + "'")) {
-          if (rs.next());
-          i = Integer.valueOf(rs.getInt("DEATHS"));
+        return 0;
+    }
+
+    public int getDeaths(String uuid) {
+        try (   PreparedStatement preparedStatement = Main.getInstance().mysql.getPreparedStatement("SELECT `DEATHS` FROM Stats WHERE UUID= '" + uuid + "'");
+                ResultSet rs = preparedStatement.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("DEATHS");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        catch (SQLException e) {
-          e.printStackTrace();
-        }
-      } else {
-        createPlayer(uuid);
-        getDeaths(uuid);
-      }
-    return i;
-  }
-  
-  public void setKills(String uuid, Integer kills) {
-      if (playerExists(uuid)) {
-        Main.inst().mysql.update("UPDATE Stats SET KILLS= '" + kills + "' WHERE UUID= '" + uuid + "';");
-      } else {
-        createPlayer(uuid);
-        setKills(uuid, kills);
-      }
-  }
-  
-  public void setDeaths(String uuid, Integer deaths) {
-      if (playerExists(uuid)) {
-        Main.inst().mysql.update("UPDATE Stats SET DEATHS= '" + deaths + "' WHERE UUID= '" + uuid + "';");
-      } else {
-        createPlayer(uuid);
-        setDeaths(uuid, deaths);
-      } 
+        return 0;
+    }
 
-  }
-  
-  public void addKills(String uuid, Integer kills) {
-      if (playerExists(uuid)) {
-        setKills(uuid, Integer.valueOf(getKills(uuid).intValue() + kills.intValue()));
-      } else {
-        createPlayer(uuid);
-        addKills(uuid, kills);
-      } 
+    public void updatePlayer(BffaPlayer bffaPlayer) {
+        int kills = bffaPlayer.getKills();
+        int deaths = bffaPlayer.getDeaths();
+        int bestKills = bffaPlayer.getBestKillStreaks();
+        Main.getInstance().mysql.update("UPDATE `stats` SET `KILLS` = '" + kills
+                + "', `DEATHS` = '" + deaths
+                + "', `max_killstreak` = '" + bestKills
+                + "' WHERE `UUID` = '" + bffaPlayer.getPlayer().getUniqueId().toString()
+                + "';"
+        );
+    }
 
-  }
-  
-  public void addDeaths(String uuid, Integer deaths) {
-      if (playerExists(uuid)) {
-        setDeaths(uuid, Integer.valueOf(getDeaths(uuid).intValue() + deaths.intValue()));
-      } else {
-        createPlayer(uuid);
-        addDeaths(uuid, deaths);
-      }
-  }
-  
-  public void removeKills(String uuid, Integer kills) {
-      if (playerExists(uuid)) {
-        setKills(uuid, Integer.valueOf(getKills(uuid).intValue() - kills.intValue()));
-      } else {
-        createPlayer(uuid);
-        removeKills(uuid, kills);
-      }
-  }
-  
-  public void removeDeaths(String uuid, Integer deaths) {
-      if (playerExists(uuid)) {
-        setDeaths(uuid, Integer.valueOf(getDeaths(uuid).intValue() - deaths.intValue()));
-      } else {
-        createPlayer(uuid);
-        removeDeaths(uuid, deaths);
-      }
-  }
-
-  public void updatePlayer(BffaPlayer bffaPlayer) {
-      int kills = bffaPlayer.getKills();
-      int deaths = bffaPlayer.getDeaths();
-      int bestKills = bffaPlayer.getBestKillStreaks();
-      Main.inst().mysql.update("UPDATE `stats` SET `KILLS` = '" + kills
-              + "', `DEATHS` = '" + deaths
-              + "', `max_killstreak` = '" +bestKills
-              + "' WHERE `UUID` = '" + bffaPlayer.getPlayer().getUniqueId().toString()
-              + "';"
-      );
-  }
-
-  public void updateRanking() {
-      Bukkit.getScheduler().runTaskTimerAsynchronously(Main.inst(),
-              () -> Main.playerData.forEach(((player, bffaPlayer) -> updatePlayer(bffaPlayer))),
-              0L, 6000L);
-  }
+    public void updateRanking() {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(),
+                () -> Main.playerData.forEach(((player, bffaPlayer) -> updatePlayer(bffaPlayer))),
+                0L, 6000L);
+    }
 }
