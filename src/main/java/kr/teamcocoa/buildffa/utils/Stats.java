@@ -25,7 +25,7 @@ public class Stats {
 
     public void createPlayer(String uuid) {
         if (!playerExists(uuid)) {
-            Main.getInstance().mysql.update("INSERT INTO Stats(UUID, KILLS, DEATHS) VALUES ('" + uuid + "', '0', '0');");
+            Main.getInstance().mysql.update("INSERT INTO stats(UUID) VALUES ('" + uuid + "');");
             Main.getInstance().mysql.update("INSERT INTO `inventory`(uuid) VALUES(\"" + uuid + "\");");
         }
     }
