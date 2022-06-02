@@ -1,7 +1,12 @@
 package kr.teamcocoa.buildffa.listener;
 
+import kr.teamcocoa.buildffa.kit.BffaPlayer;
+import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.utils.Title;
 import kr.teamcocoa.buildffa.world.WorldManager;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.event.CraftEventFactory;
 import org.bukkit.entity.Player;
@@ -10,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class EntityDamageListener implements Listener {
     @EventHandler
@@ -34,12 +40,23 @@ public class EntityDamageListener implements Listener {
                 else {
                     Main.playerData.get(damagedPlayer).setLastHitPlayer(damager);
                     Main.playerData.get(damagedPlayer).addDamage(damager, e.getFinalDamage());
+                    ItemStack itemStack = damager.getItemInHand();
+                    if(itemStack != null && itemStack.getType() == Material.STICK) {
+                        BffaPlayer damagerBffaPlayer = Main.playerData.get(damager);
+                        int durability = damagerBffaPlayer.getKbStickDurability() - 1;
+                        if(durability == 0) {
+                            damager.setItemInHand(new ItemStack(Material.AIR));
+                            damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 100, 0);
+                        }
+                        damagerBffaPlayer.setKbStickDurability(durability);
+                        Title.sendTitle(damager, "", "&c(" + durability + "/15)", 0, 10, 0);
+                    }
                 }
                 synchronized (damagedPlayer) {
                     if (damagedPlayer.getHealth() - e.getFinalDamage() <= 0) {
                         e.setCancelled(true);
                         Main.getInstance().getServer().getPluginManager().callEvent(CraftEventFactory.callPlayerDeathEvent(((CraftPlayer) damagedPlayer).getHandle(), null, "", true));
-                        Main.playerData.get(damagedPlayer).death(false); // TODO : death 함수 synchronized 화 하고, 위에 3줄 로직을 death 함수 안에 우겨넣기
+                        Main.playerData.get(damagedPlayer).death(false);
                     }
                 }
             }

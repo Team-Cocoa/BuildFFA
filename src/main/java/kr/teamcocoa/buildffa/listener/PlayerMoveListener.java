@@ -38,9 +38,10 @@ public class PlayerMoveListener implements Listener {
                         BffaPlayer bffaPlayer = Main.playerData.get(p);
                         p.closeInventory();
                         p.getInventory().clear();
-                        Main.playerData.get(p).setInGame(true);
+                        bffaPlayer.setInGame(true);
                         bffaPlayer.setPlayerKillStreak(0);
                         bffaPlayer.resetDamage(false);
+                        bffaPlayer.resetKBStickDurability();
                         p.setHealth(20.0D);
                         p.setLevel(0);
                         ItemStack[] inventory = bffaPlayer.getInventory();

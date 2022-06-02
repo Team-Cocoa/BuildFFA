@@ -27,7 +27,7 @@ public class JoinListener implements Listener {
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> {
             bffaPlayer.loadStats();
-            String uuid = String.valueOf(player.getUniqueId());
+            String uuid = player.getUniqueId().toString();
             boolean nicked = MySQL.containsPlayer(uuid);
             for (PotionEffect effect : player.getActivePotionEffects()) {
                 player.removePotionEffect(effect.getType());

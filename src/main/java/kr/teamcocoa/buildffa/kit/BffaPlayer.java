@@ -12,6 +12,8 @@ import kr.teamcocoa.buildffa.utils.ItemManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import kr.teamcocoa.buildffa.world.WorldManager;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,7 +27,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+@Getter
+@Setter
 public class BffaPlayer {
+
     private long threwPearlTime;
     private int playerKillStreak;
     private long latestDeadTime;
@@ -51,6 +56,9 @@ public class BffaPlayer {
     private Prestige prestige;
     private int grade;
 
+    /* KB stick */
+    private int kbStickDurability;
+
     public BffaPlayer(Player player) {
         this.threwPearlTime = 0L;
         this.playerKillStreak = 0;
@@ -62,164 +70,21 @@ public class BffaPlayer {
         this.lastHitPlayer = null;
         this.shootAble = true;
         this.nickedBffaPlayer = null;
+        this.kbStickDurability = 15;
 
         this.snowBallBought = false;
         this.bowBought = false;
         this.damageTable = new HashMap<>();
     }
 
-    /*Getter*/
-
-    public ItemStack[] getInventory() {
-        return inventory;
-    }
-
-    public int getPlayerKillStreak() {
-        return playerKillStreak;
-    }
-
-    public long getLatestDeadTime() {
-        return latestDeadTime;
-    }
-
-    public long getThrewPearlTime() {
-        return threwPearlTime;
-    }
-
-    public boolean isBuild() {
-        return build;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setDied(boolean died) {
-        this.died = died;
-    }
-
-    public boolean isDied() {
-        return died;
-    }
-
-    public boolean isInGame() {
-        return inGame;
-    }
-
-    public Player getLastHitPlayer() {
-        return lastHitPlayer;
-    }
-
-    public int getKills() {
-        return kills;
-    }
-
-    public int getDeaths() {
-        return deaths;
-    }
-
-    public int getBestKillStreaks() {
-        return bestKillStreaks;
-    }
-
-    public boolean isShootAble() {
-        return shootAble;
-    }
-
-    public boolean isSnowBallBought() {
-        return snowBallBought;
-    }
-
-    public boolean isBowBought() {
-        return bowBought;
-    }
-
-    public int getGrade() {
-        return grade;
-    }
-
-    public Prestige getPrestige() {
-        return prestige;
-    }
-
-    /*Setter*/
-
-    public void setBuild(boolean build) {
-        this.build = build;
-    }
-
-    public void setLatestDeadTime(long latestDeadTime) {
-        this.latestDeadTime = latestDeadTime;
-    }
-
-    public void setPlayerKillStreak(int playerKillStreak) {
-        this.playerKillStreak = playerKillStreak;
-    }
-
-    public void setThrewPearlTime(long threwPearlTime) {
-        this.threwPearlTime = threwPearlTime;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public void setInventory(ItemStack[] inventory) {
-        this.inventory = inventory;
-    }
-
-    public void setInGame(boolean inGame) {
-        this.inGame = inGame;
-    }
-
-    public void setKills(int kills) {
-        this.kills = kills;
-    }
-
-    public void setDeaths(int deaths) {
-        this.deaths = deaths;
-    }
-
-    public void setBestKillStreaks(int bestKillStreaks) {
-        this.bestKillStreaks = bestKillStreaks;
-    }
-
-    public void setLastHitPlayer(Player lastHitPlayer) {
-        this.lastHitPlayer = lastHitPlayer;
-    }
-
-    public void setShootAble(boolean shootAble) {
-        this.shootAble = shootAble;
-    }
-
     public void setJoinInventory() {
         this.player.getInventory().clear();
         this.player.getInventory().setArmorContents(null);
         this.player.getInventory().setItem(0, ItemManager.createItem(Material.BLAZE_ROD, 1, LangUtils.getMessage(this.player, ItemEnum.INVENTORY_SORTING)));
-
-        this.player.getInventory().setItem(8, ItemManager.createItem(Material.SLIME_BALL, 1, LangUtils.getMessage(this.player, ItemEnum.LEAVE_ITEM)));
-        if (this.player.hasPermission("killeffect.killeffect") || this.player.hasPermission("*")) {
-            this.player.getInventory().setItem(3, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemEnum.SHOP)));
-            this.player.getInventory().setItem(5, ItemManager.createItem(Material.GOLD_SWORD, 1, "§cKillEffects"));
-        } else {
-            this.player.getInventory().setItem(4, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemEnum.SHOP)));
+        this.player.getInventory().setItem(8, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemEnum.SHOP)));
+        if (this.player.hasPermission("killeffect.killeffect")) {
+            this.player.getInventory().setItem(4, ItemManager.createItem(Material.GOLD_SWORD, 1, "§cKillEffects"));
         }
-    }
-
-    public void setSnowBallBought(boolean snowBallBought) {
-        this.snowBallBought = snowBallBought;
-    }
-
-    public void setBowBought(boolean bowBought) {
-        this.bowBought = bowBought;
-    }
-
-    public void setGrade(int grade) {
-        this.grade = grade;
-    }
-
-    public void setPrestige(Prestige prestige) {
-        this.prestige = prestige;
     }
 
     /*Stats Adder*/
@@ -260,7 +125,7 @@ public class BffaPlayer {
     public synchronized void death(boolean quit) {
         this.player.setHealth(20.0);
         addDeaths();
-        if(!quit) {
+        if (!quit) {
             setThrewPearlTime(System.currentTimeMillis());
             setBowBought(false);
             setSnowBallBought(false);
@@ -291,8 +156,8 @@ public class BffaPlayer {
         if (getLastHitPlayer() instanceof Player) {
             try {
                 BffaPlayer killerBffaPlayer = Main.playerData.get(getLastHitPlayer());
-                String killerName = getLastHitPlayer().getName();
-                Player killer = getLastHitPlayer();
+                String killerName = killerBffaPlayer.getPlayer().getName();
+                Player killer = killerBffaPlayer.getPlayer();
                 killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 1, 2);
                 String KillerHealth = (new DecimalFormat("#0.0")).format(killer.getHealth() / 2.0D);
 
@@ -304,7 +169,6 @@ public class BffaPlayer {
                 player.sendMessage(LangUtils.getMessage(player, MessageEnum.PLAYER_KILL).replaceAll("%KILLER%", killerName).replaceAll("%KILLERHEALTH%", KillerHealth));
 
                 int killerKillstreak = killerBffaPlayer.getPlayerKillStreak() + 1;
-                resetDamage(true);
                 killer.setLevel(killerKillstreak);
                 killerBffaPlayer.setPlayerKillStreak(killerKillstreak);
                 if (killerKillstreak > killerBffaPlayer.getBestKillStreaks()) {
@@ -324,56 +188,54 @@ public class BffaPlayer {
                 }
 
                 if (killerKillstreak % 3 == 0) {
-                    try {
-                        ExtraItemManager.getInstance().giveExtraItem(killer);
-                        List<ItemStack> list = Arrays.asList(killerBffaPlayer.getPlayer().getInventory().getContents());
-                        if (!killer.getInventory().contains(new ItemStack(Material.ENDER_PEARL, 2))) {
-                            killer.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
-                        }
-                        if (killerBffaPlayer.isBowBought()) {
-                            int arrayIndex = -1;
-                            for (int i = 0; i < list.size(); i++) {
-                                if (list.get(i).getType() == Material.ARROW) {
-                                    arrayIndex = i;
-                                    break;
-                                }
-                            }
-                            if (arrayIndex == -1) {
-                                killer.getInventory().addItem(new ItemStack(Material.ARROW, 5));
-                            } else {
-                                int amount = list.get(arrayIndex).getAmount();
-                                killer.getInventory().addItem(new ItemStack(Material.ARROW, amount + 5 < 16 ? 5 : 5 - (amount + 5 - 16)));
-                            }
-                        }
-                        try {
-                            killer.playSound(player.getKiller().getLocation(), Sound.LEVEL_UP, 100.0F, 0.0F);
-                        }
-                        catch (Exception e2) {
-
-                        }
-                        // ^ NPE(NullPointerException)? How?
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
+                    if (!killer.getInventory().contains(new ItemStack(Material.ENDER_PEARL, 2))) {
+                        killer.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
                     }
+                    ExtraItemManager.getInstance().giveExtraItem(killer);
+                    List<ItemStack> list = Arrays.asList(killerBffaPlayer.getPlayer().getInventory().getContents());
+                    if (killerBffaPlayer.isBowBought()) {
+                        int arrayIndex = -1;
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i).getType() == Material.ARROW) {
+                                arrayIndex = i;
+                                break;
+                            }
+                        }
+                        if (arrayIndex == -1) {
+                            killer.getInventory().addItem(new ItemStack(Material.ARROW, 5));
+                        } else {
+                            int amount = list.get(arrayIndex).getAmount();
+                            killer.getInventory().addItem(new ItemStack(Material.ARROW, amount + 5 < 16 ? 5 : 5 - (amount + 5 - 16)));
+                        }
+                    }
+                    killer.playSound(killer.getLocation(), Sound.LEVEL_UP, 100.0F, 0.0F);
                 }
-                setLastHitPlayer(null);
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
+            finally {
+                resetDamage(true);
+                setLastHitPlayer(null);
+                setPlayerKillStreak(0);
+                resetKBStickDurability();
+            }
         }
-        setPlayerKillStreak(0);
     }
 
+// java.lang.NullPointerException
+// at kr.teamcocoa.buildffa.kit.BffaPlayer.death(BffaPlayer.java:211)
+// at kr.teamcocoa.buildffa.listener.PlayerMoveListener.onPlayerMove(PlayerMoveListener.java:27)
+
     public void addDamage(Player hitter, double damage) {
-        if(this.damageTable.containsKey(hitter)) {
+        if (this.damageTable.containsKey(hitter)) {
             damage += this.damageTable.get(hitter);
         }
         this.damageTable.put(hitter, damage);
     }
 
     public void resetDamage(boolean giveHealth) {
-        if(giveHealth){
+        if (giveHealth) {
             for (Player player : this.damageTable.keySet()) {
                 BffaPlayer bffaPlayer = Main.playerData.getOrDefault(player, null);
                 if (bffaPlayer != null && bffaPlayer.isInGame()) {
@@ -391,6 +253,10 @@ public class BffaPlayer {
         this.bestKillStreaks = Main.getInstance().stats.getMaxKillStreak(player.getUniqueId().toString());
         this.deaths = Main.getInstance().stats.getDeaths(player.getUniqueId().toString());
         PrestigeManager.getInstance().loadPrestige(this);
+    }
+
+    public void resetKBStickDurability() {
+        this.kbStickDurability = 15;
     }
 
     @Override

@@ -140,7 +140,7 @@ public class KitData {
     }
 
     private ItemStack getWeb(){
-        ItemStack web = new ItemStack(Material.WEB, 3);
+        ItemStack web = new ItemStack(Material.WEB, 5);
         return web;
     }
 
