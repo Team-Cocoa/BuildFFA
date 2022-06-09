@@ -1,10 +1,10 @@
 package kr.teamcocoa.buildffa.listener;
 
-import de.fct.NickSystem.MySQL;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import kr.teamcocoa.buildffa.world.MapVote;
+import kr.teamcocoa.nick.model.NickManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,10 +29,10 @@ public class QuitListener implements Listener {
             Main.playerData.remove(p);
 
             String uuid = p.getUniqueId().toString();
-            boolean nicked = MySQL.containsPlayer(uuid);
+            boolean nicked = NickManager.getInstance().isNicked(p.getUniqueId());
             String joinMessage = StringUtils.color("&a[&dBuildFFA&a] &e%name% left the game!");
             if (nicked) {
-                String nickedName = MySQL.getNick(uuid);
+                String nickedName = NickManager.getInstance().getNickPlayer(p.getUniqueId()).getFakeNick();
                 joinMessage = joinMessage.replace("%name%", nickedName);
             } else {
                 joinMessage = joinMessage.replace("%name%", p.getName());

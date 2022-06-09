@@ -107,6 +107,7 @@ public class Stats implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        Bukkit.getLogger().info(s);
         if(command.getName().equals("stats")) {
             Bukkit.getLogger().info(s);
             Bukkit.getLogger().info(Arrays.toString(strings));

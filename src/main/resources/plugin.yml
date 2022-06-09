@@ -1,17 +1,10 @@
 name: BuildFFA
 version: 1.0
 main: kr.teamcocoa.buildffa.main.Main
-depend: [Language, NickSystem, SlimeWorldManager]
+depend: [Language, Nick, SlimeWorldManager]
 commands:
   build:
-    description: Dieser Kommand setzt Spieler in den Buildmode.
   stats:
-    description: Dieser Kommand enthaelt das Stats-Setup.
   teaming:
-    description: Dieser setzt Teaming auf erlaubt oder verboten.
-  item:
-    description: Dieser Kommand enthaelt das Item-Setup.
-  kits:
-    description: get kits inventory
   vote:
 

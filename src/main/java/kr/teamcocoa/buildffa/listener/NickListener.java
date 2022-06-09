@@ -1,9 +1,9 @@
 package kr.teamcocoa.buildffa.listener;
 
-import de.fct.NickSystem.events.PlayerNickEvent;
-import de.fct.NickSystem.events.PlayerUnNickEvent;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.nick.bukkit.events.PlayerNickEvent;
+import kr.teamcocoa.nick.bukkit.events.PlayerUnNickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

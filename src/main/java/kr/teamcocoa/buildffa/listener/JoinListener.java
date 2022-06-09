@@ -1,10 +1,10 @@
 package kr.teamcocoa.buildffa.listener;
 
-import de.fct.NickSystem.MySQL;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.*;
 import kr.teamcocoa.buildffa.world.WorldManager;
+import kr.teamcocoa.nick.model.NickManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -28,13 +28,13 @@ public class JoinListener implements Listener {
         Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> {
             bffaPlayer.loadStats();
             String uuid = player.getUniqueId().toString();
-            boolean nicked = MySQL.containsPlayer(uuid);
+            boolean nicked = NickManager.getInstance().isNicked(player.getUniqueId());
             for (PotionEffect effect : player.getActivePotionEffects()) {
                 player.removePotionEffect(effect.getType());
             }
             String joinMessage = StringUtils.color("&a[&dBuildFFA&a] &e%name% joined the game!");
             if (nicked) {
-                String nickedName = MySQL.getNick(uuid);
+                String nickedName = NickManager.getInstance().getNickPlayer(player.getUniqueId()).getFakeNick();
                 joinMessage = joinMessage.replace("%name%", nickedName);
             } else {
                 joinMessage = joinMessage.replace("%name%", player.getName());
