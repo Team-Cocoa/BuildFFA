@@ -4,7 +4,7 @@ import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.*;
 import kr.teamcocoa.buildffa.world.WorldManager;
-import kr.teamcocoa.nick.model.NickManager;
+import kr.teamcocoa.nick.core.model.NickManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

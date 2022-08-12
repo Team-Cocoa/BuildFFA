@@ -4,7 +4,7 @@ import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import kr.teamcocoa.buildffa.world.MapVote;
-import kr.teamcocoa.nick.model.NickManager;
+import kr.teamcocoa.nick.core.model.NickManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

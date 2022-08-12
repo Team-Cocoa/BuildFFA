@@ -13,12 +13,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Stats implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -111,10 +110,8 @@ public class Stats implements CommandExecutor, TabCompleter {
         if(command.getName().equals("stats")) {
             Bukkit.getLogger().info(s);
             Bukkit.getLogger().info(Arrays.toString(strings));
-            List<String> nameList = new ArrayList<>(Bukkit.getOnlinePlayers().size());
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                nameList.add(onlinePlayer.getName());
-            }
+            List<String> nameList = new LinkedList<>();
+            StringUtil.copyPartialMatches(strings[0], Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()), nameList);
             return nameList;
         }
         return null;
