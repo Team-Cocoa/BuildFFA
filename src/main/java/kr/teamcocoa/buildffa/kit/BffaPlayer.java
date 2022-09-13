@@ -196,6 +196,9 @@ public class BffaPlayer {
                     if (killerBffaPlayer.isBowBought()) {
                         int arrayIndex = -1;
                         for (int i = 0; i < list.size(); i++) {
+                            if(list.get(i) == null) {
+                                continue;
+                            }
                             if (list.get(i).getType() == Material.ARROW) {
                                 arrayIndex = i;
                                 break;

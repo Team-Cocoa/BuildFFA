@@ -42,11 +42,11 @@ public class ExtraItemManager {
                 player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), RescuePlatform.getInstance().getName(player)));
                 break;
             case 2:
-                player.addPotionEffect(PotionEffectType.SPEED.createEffect(300, 0));
+                player.addPotionEffect(PotionEffectType.SPEED.createEffect(300, 1));
                 player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), StringUtils.color("&cSwiftness for 15 seconds")));
                 break;
             case 3:
-                player.addPotionEffect(PotionEffectType.INCREASE_DAMAGE.createEffect(60, 0));
+                player.addPotionEffect(PotionEffectType.INCREASE_DAMAGE.createEffect(100, 0));
                 player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), StringUtils.color("&cStrength for 3 seconds")));
                 break;
 

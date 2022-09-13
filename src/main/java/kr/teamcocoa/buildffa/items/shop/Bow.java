@@ -5,6 +5,7 @@ import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -29,6 +30,7 @@ public class Bow extends AbstractShopItem {
     @Override
     public ItemStack getItemStack(Player player, int count) {
         ItemStack itemStack = new ItemStack(Material.BOW, count);
+        itemStack.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
         return itemStack;
     }
 

@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,7 +51,9 @@ public class PlayerMoveListener implements Listener {
                         p.getInventory().setArmorContents(armor);
                         p.playSound(p.getLocation(), Sound.ORB_PICKUP, 100.0F, 0.0F);
                         if(bffaPlayer.isBowBought()) {
-                            p.getInventory().addItem(new ItemStack(Material.BOW), new ItemStack(Material.ARROW, 16));
+                            ItemStack itemStack = new ItemStack(Material.BOW);
+//                            itemStack.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
+                            p.getInventory().addItem(itemStack, new ItemStack(Material.ARROW, 16));
                         }
                         if(bffaPlayer.isSnowBallBought()) {
                             p.getInventory().addItem(new ItemStack(Material.SNOW_BALL, 16));
