@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,7 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
+import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
 
 public class EnderPeralCancelListener implements Listener {
 
@@ -25,10 +25,10 @@ public class EnderPeralCancelListener implements Listener {
                     e.setCancelled(true);
                     return;
                 }
-                BffaPlayer bffaPlayer = Main.playerData.get(player);
+                BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(player);
                 long now = System.currentTimeMillis();
-                bffaPlayer.setThrewPearlTime(now);
-                Main.playerData.put(player, bffaPlayer);
+                buildFFAPlayer.setThrewPearlTime(now);
+                BuildFFA.playerData.put(player, buildFFAPlayer);
                 return;
             }
         }
@@ -41,9 +41,9 @@ public class EnderPeralCancelListener implements Listener {
             return;
         }
         final Player player = e.getPlayer();
-        BffaPlayer bffaPlayer = Main.playerData.get(player);
-        long threwTime = bffaPlayer.getThrewPearlTime();
-        long latestDeadTime = bffaPlayer.getLatestDeadTime();
+        BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(player);
+        long threwTime = buildFFAPlayer.getThrewPearlTime();
+        long latestDeadTime = buildFFAPlayer.getLatestDeadTime();
         long now = System.currentTimeMillis();
         if(latestDeadTime < threwTime && threwTime < now){
             Location spawnLocation = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());

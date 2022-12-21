@@ -1,6 +1,6 @@
-package kr.teamcocoa.buildffa.enums;
+package kr.teamcocoa.buildffa.translate;
 
-public enum OtherEnum {
+public enum OtherNode {
 
     BAR_MAP("bar.map"),
     BAR_KIT("bar.kit"),
@@ -18,7 +18,7 @@ public enum OtherEnum {
         return name;
     }
 
-    private OtherEnum(String name) {
+    private OtherNode(String name) {
         this.name = name;
     }
 }

@@ -1,8 +1,8 @@
 package kr.teamcocoa.buildffa.items.shop;
 
-import kr.teamcocoa.buildffa.enums.InventoryEnum;
-import kr.teamcocoa.buildffa.enums.MessageEnum;
-import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.translate.InventortNode;
+import kr.teamcocoa.buildffa.translate.MessageNode;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.utils.ItemManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import org.bukkit.Bukkit;
@@ -20,7 +20,7 @@ public class ShopInventory {
 
         Player player = (Player) e.getWhoClicked();
 
-        if (!e.getView().getTitle().equals(LangUtils.getMessage(player, InventoryEnum.EXTRA_ITEM))) {
+        if (!e.getView().getTitle().equals(LangUtils.getMessage(player, InventortNode.EXTRA_ITEM))) {
             return;
         }
 
@@ -38,23 +38,23 @@ public class ShopInventory {
         e.setCancelled(true);
 
         if(clickedItem.getItemMeta().getDisplayName().equals(SnowBall.getInstance().getName(player))) {
-            status = SnowBall.getInstance().purchase(Main.playerData.get(player));
+            status = SnowBall.getInstance().purchase(BuildFFA.playerData.get(player));
         }
 
         if(clickedItem.getItemMeta().getDisplayName().equals(Bow.getInstance().getName(player))) {
-            status = Bow.getInstance().purchase(Main.playerData.get(player));
+            status = Bow.getInstance().purchase(BuildFFA.playerData.get(player));
         }
 
         if(status != null) {
             switch(status) {
                 case FAILED:
-                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.SHOP_CANNOT_BUY));
+                    player.sendMessage(LangUtils.getMessage(player, MessageNode.SHOP_CANNOT_BUY));
                     break;
                 case SUCCESS:
-                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.SHOP_BOUGHT));
+                    player.sendMessage(LangUtils.getMessage(player, MessageNode.SHOP_BOUGHT));
                     break;
                 case ALREADY_BOUGHT:
-                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.SHOP_ALREADY_BOUGHT));
+                    player.sendMessage(LangUtils.getMessage(player, MessageNode.SHOP_ALREADY_BOUGHT));
                     break;
             }
         }
@@ -62,7 +62,7 @@ public class ShopInventory {
     }
 
     public static void openShopInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 3 * 9, LangUtils.getMessage(player, InventoryEnum.EXTRA_ITEM));
+        Inventory inventory = Bukkit.createInventory(null, 3 * 9, LangUtils.getMessage(player, InventortNode.EXTRA_ITEM));
         for (int i = 0; i < 27; i++) {
             inventory.setItem(i, ItemManager.grayGlassPane);
         }

@@ -1,7 +1,7 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.main.Main;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
+import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.utils.*;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import kr.teamcocoa.nick.core.model.NickManager;
@@ -18,15 +18,15 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         final Player player = e.getPlayer();
-        BffaPlayer bffaPlayer = new BffaPlayer(player);
-        Main.playerData.put(player, bffaPlayer);
+        BuildFFAPlayer buildFFAPlayer = new BuildFFAPlayer(player);
+        BuildFFA.playerData.put(player, buildFFAPlayer);
         player.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(999999, 1));
         Title.sendTitle(player, "", StringUtils.color("&7Your data is loading..."), 20, 1000, 20);
         e.setJoinMessage(null);
         player.teleport(new Location(Bukkit.getWorld("BuildFFA_world"), 38.5, 201, 0.5, 0, 90));
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> {
-            bffaPlayer.loadStats();
+        Bukkit.getScheduler().runTaskLaterAsynchronously(BuildFFA.getInstance(), () -> {
+            buildFFAPlayer.loadStats();
             String uuid = player.getUniqueId().toString();
             boolean nicked = NickManager.getInstance().isNicked(player.getUniqueId());
             for (PotionEffect effect : player.getActivePotionEffects()) {
@@ -43,18 +43,18 @@ public class JoinListener implements Listener {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(joinMessage);
             }
-            Main.getInstance().stats.createPlayer(uuid);
-            Main.getInstance().scoreboardManager.setScoreboard(player);
+            BuildFFA.getInstance().statsDatabase.initNewPlayer(uuid);
+            BuildFFA.getInstance().scoreboardManager.setScoreboard(player);
             Title.sendTitle(player, "", "", 0, 0, 0);
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(BuildFFA.getInstance(), () -> {
                 Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
                 player.teleport(spawn);
                 player.setLevel(0);
                 player.setHealth(1.0D);
                 player.setFoodLevel(20);
-                if (!Main.playerData.get(player).isBuild()) {
-                    Main.playerData.get(player).setInGame(false);
-                    Main.playerData.get(player).setJoinInventory();
+                if (!BuildFFA.playerData.get(player).isBuild()) {
+                    BuildFFA.playerData.get(player).setInGame(false);
+                    BuildFFA.playerData.get(player).setJoinInventory();
                 }
             }, 1L);
         }, 5L);

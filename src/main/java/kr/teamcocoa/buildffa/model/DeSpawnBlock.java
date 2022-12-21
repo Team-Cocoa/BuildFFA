@@ -1,6 +1,6 @@
-package kr.teamcocoa.buildffa.block;
+package kr.teamcocoa.buildffa.model;
 
-import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.PacketPlayOutBlockBreakAnimation;
 import org.bukkit.*;
@@ -13,18 +13,20 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Random;
 
-public class DespawnBlock extends BukkitRunnable {
-    int i = 0;
-    private final Block block;
-    private final int random;
-    private final int x, y, z;
-    private BlockPlaceEvent event;
+public class DeSpawnBlock extends BukkitRunnable {
+
+    private int i = 0;
+    private Block block;
+    private int random;
+    private int x, y, z;
+    private Player whoPlaced;
     private boolean giveAgain;
     private final World world;
-    public DespawnBlock(BlockPlaceEvent event, Block block){
+
+    public DeSpawnBlock(Player whoPlaced, Block block){
         this.random = new Random().nextInt(10000);
         this.block = block;
-        this.event = event;
+        this.whoPlaced = whoPlaced;
         this.x = block.getX();
         this.y = block.getY();
         this.z = block.getZ();
@@ -32,7 +34,7 @@ public class DespawnBlock extends BukkitRunnable {
         this.giveAgain = block.getType() == Material.SANDSTONE;
     }
 
-    public DespawnBlock(Block block){
+    public DeSpawnBlock(Block block){
         this.random = new Random().nextInt(10000);
         this.block = block;
         this.x = block.getX();
@@ -45,14 +47,14 @@ public class DespawnBlock extends BukkitRunnable {
     public void run() {
         if(event != null) {
             try {
-                if (!Main.playerData.get(event.getPlayer()).isInGame()) {
+                if (!BuildFFA.playerData.get(event.getPlayer()).isInGame()) {
                     this.giveAgain = false;
                 }
             }
             catch(Exception e) {
                 makeAir();
                 this.giveAgain = false;
-                Main.worldData.removeBlock(block);
+                BuildFFA.worldData.removeBlock(block);
                 cancel();
             }
         }
@@ -73,7 +75,7 @@ public class DespawnBlock extends BukkitRunnable {
             for(Player player : Bukkit.getOnlinePlayers()){
                 ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
             }
-            Main.worldData.removeBlock(block);
+            BuildFFA.worldData.removeBlock(block);
             if(this.giveAgain){
                 try {
                     event.getPlayer().getInventory().addItem(new ItemStack(Material.SANDSTONE));
@@ -89,7 +91,7 @@ public class DespawnBlock extends BukkitRunnable {
     }
 
     private void makeAir() {
-        Bukkit.getScheduler().runTask(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> {
             new Location(world, x, y, z).getBlock().setType(Material.AIR);
         });
     }
