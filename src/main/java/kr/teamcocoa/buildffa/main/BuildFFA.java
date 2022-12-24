@@ -11,6 +11,7 @@ import kr.teamcocoa.buildffa.utils.StringUtils;
 import kr.teamcocoa.buildffa.world.MapVote;
 import kr.teamcocoa.buildffa.world.WorldData;
 import kr.teamcocoa.buildffa.world.WorldManager;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +19,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 
 public class BuildFFA extends JavaPlugin {
+
+    public static final String PREFIX = StringUtils.color("&a[&dBuildFFA&a] ");
+
+    @Getter
     private static BuildFFA instance;
+
     public static HashMap<Player, BuildFFAPlayer> playerData = new HashMap<>();
     public static WorldData worldData = new WorldData();
     public StatsDatabase statsDatabase;
@@ -28,16 +34,19 @@ public class BuildFFA extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        System.out.println(" _____________________________________________________________");
-        System.out.println("|                                                             |");
-        System.out.println("| [BuildFFA] Plugin is Loading...                             |");
         instance = this;
+
+        Bukkit.getLogger().info("_______________________________________________________________");
+        Bukkit.getLogger().info("|                                                             |");
+        Bukkit.getLogger().info("| [BuildFFA] Plugin is Loading...                             |");
+        Bukkit.getLogger().info("|                                                             |");
+        Bukkit.getLogger().info("|_____________________________________________________________|");
+
         BuildFFADatabase.init();
         statsDatabase = new StatsDatabase();
         kitData = new KitData();
         teaming = false;
         scoreboardManager = new ScoreboardManager();
-        System.out.println("|_____________________________________________________________|");
         loadListeners();
         loadCommands();
 
@@ -54,7 +63,13 @@ public class BuildFFA extends JavaPlugin {
 
     }
 
-    public void loadListeners() {
+    private void init() {
+        loadListeners();
+        loadCommands();
+        BuildFFADatabase.init();
+    }
+
+    private void loadListeners() {
         getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
         getServer().getPluginManager().registerEvents(new EnderPeralCancelListener(), this);
@@ -78,7 +93,7 @@ public class BuildFFA extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new AsyncPlayerChatListener(), this);
     }
 
-    public void loadCommands() {
+    private void loadCommands() {
         getCommand("build").setExecutor(new Build());
         getCommand("stats").setExecutor(new kr.teamcocoa.buildffa.commands.Stats());
         getCommand("teaming").setExecutor(new Teaming());
@@ -93,13 +108,5 @@ public class BuildFFA extends JavaPlugin {
         System.out.println("|                                                             |");
         System.out.println("| [BuildFFA] Plugin is stopping...                            |");
         System.out.println("|_____________________________________________________________|");
-    }
-
-    public static BuildFFA getInstance() {
-        return instance;
-    }
-
-    public static String getPrefix() {
-        return StringUtils.color("&a[&dBuildFFA&a] ");
     }
 }

@@ -22,6 +22,7 @@ public class BuildFFADatabase {
             return;
         }
         mySQL = MySQLManager.createConnection(database);
+        mySQL.connect();
         statsDatabase = new StatsDatabase(mySQL);
         inventoryDatabase = new InventoryDatabase(mySQL);
     }
