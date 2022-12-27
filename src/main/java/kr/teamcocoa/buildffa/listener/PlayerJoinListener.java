@@ -15,13 +15,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.text.MessageFormat;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class JoinListener implements Listener {
+public class PlayerJoinListener implements Listener {
 
-    private final ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(20));
+    private ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 20, 1, TimeUnit.SECONDS, new LinkedBlockingQueue<>(20));
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
@@ -37,17 +38,13 @@ public class JoinListener implements Listener {
             buildFFAPlayer.loadStats();
             boolean nicked = NickManager.getInstance().isNicked(player.getUniqueId());
 
-            String joinMessage = StringUtils.color("&a[&dBuildFFA&a] &e%name% joined the game!");
-            if (nicked) {
-                String nickedName = NickManager.getInstance().getNickPlayer(player.getUniqueId()).getFakeNick();
-                joinMessage = joinMessage.replace("%name%", nickedName);
-            } else {
-                joinMessage = joinMessage.replace("%name%", player.getName());
-            }
+            String joinMessage = MessageFormat.format(BuildFFA.PREFIX + StringUtils.color("&e{0} &ajoined the game!"),
+                    nicked ? NickManager.getInstance().getNickPlayer(player.getUniqueId()).getFakeNick() : player.getName());
 
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(joinMessage);
             }
+
             BuildFFA.getInstance().statsDatabase.initNewPlayer(player.getUniqueId());
             BuildFFA.getInstance().scoreboardManager.setScoreboard(player);
             Title.sendTitle(player, "", "", 0, 0, 0);
@@ -60,9 +57,9 @@ public class JoinListener implements Listener {
                 player.setLevel(0);
                 player.setHealth(20.0D);
                 player.setFoodLevel(20);
-                if (!BuildFFA.playerData.get(player).isBuild()) {
-                    BuildFFA.playerData.get(player).setInGame(false);
-                    BuildFFA.playerData.get(player).setJoinInventory();
+                if (!buildFFAPlayer.isBuild()) {
+                    buildFFAPlayer.setInGame(false);
+                    buildFFAPlayer.setJoinInventory();
                 }
             });
         });
