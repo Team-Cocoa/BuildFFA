@@ -19,7 +19,7 @@ import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class StatsCommand implements CommandExecutor, TabCompleter {
+public class Stats implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;

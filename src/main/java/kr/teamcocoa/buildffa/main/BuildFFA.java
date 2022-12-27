@@ -94,12 +94,12 @@ public class BuildFFA extends JavaPlugin {
     }
 
     private void loadCommands() {
-        getCommand("build").setExecutor(new BuildCommand());
-        getCommand("stats").setExecutor(new StatsCommand());
-        getCommand("teaming").setExecutor(new TeamingCommand());
-        getCommand("vote").setExecutor(new VoteCommand());
+        getCommand("build").setExecutor(new Build());
+        getCommand("stats").setExecutor(new kr.teamcocoa.buildffa.commands.Stats());
+        getCommand("teaming").setExecutor(new Teaming());
+        getCommand("vote").setExecutor(new Vote());
 
-        getCommand("stats").setTabCompleter(new StatsCommand());
+        getCommand("stats").setTabCompleter(new kr.teamcocoa.buildffa.commands.Stats());
     }
 
     @Override
