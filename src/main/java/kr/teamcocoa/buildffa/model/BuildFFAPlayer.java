@@ -51,9 +51,8 @@ public class BuildFFAPlayer {
     private HashMap<Player, Double> damageTable;
 
     /* Stats */
-    private int kills;
-    private int deaths;
-    private int bestKillStreaks;
+    private BuildFFAStats stats;
+    private BuildFFAStats nickedStats;
 
     /* Prestige */
     private Prestige prestige;
