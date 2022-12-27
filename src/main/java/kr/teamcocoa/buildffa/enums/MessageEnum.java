@@ -1,6 +1,6 @@
-package kr.teamcocoa.buildffa.translate;
+package kr.teamcocoa.buildffa.enums;
 
-public enum MessageNode {
+public enum MessageEnum {
     MAP_CHANGE_MINUTES("map.change_minutes"),
     MAP_CHANGE_MINUTE("map.change_minute"),
     MAP_CHANGE_SECONDS("map.change_seconds"),
@@ -41,7 +41,7 @@ public enum MessageNode {
         return name;
     }
 
-    private MessageNode(String name) {
+    private MessageEnum(String name) {
         this.name = "message." + name;
     }
 

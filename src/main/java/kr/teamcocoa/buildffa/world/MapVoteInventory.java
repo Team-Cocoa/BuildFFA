@@ -1,14 +1,12 @@
 package kr.teamcocoa.buildffa.world;
 
-import kr.teamcocoa.buildffa.translate.InventortNode;
-import kr.teamcocoa.buildffa.translate.ItemNode;
-import kr.teamcocoa.buildffa.translate.MessageNode;
-import kr.teamcocoa.buildffa.translate.OtherNode;
+import kr.teamcocoa.buildffa.enums.InventoryEnum;
+import kr.teamcocoa.buildffa.enums.ItemEnum;
+import kr.teamcocoa.buildffa.enums.MessageEnum;
+import kr.teamcocoa.buildffa.enums.OtherEnum;
 import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.utils.StringUtils;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -21,10 +19,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MapVoteInventory {
+    private static MapVoteInventory instance = null;
 
-    private static MapVoteInventory instance;
 
     public static MapVoteInventory getInstance() {
         if(instance == null) {
@@ -34,8 +31,12 @@ public class MapVoteInventory {
         return instance;
     }
 
+    public MapVoteInventory() {
+
+    }
+
     public Inventory getInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 3 * 9, LangUtils.getMessage(player, InventortNode.VOTE));
+        Inventory inventory = Bukkit.createInventory(null, 3 * 9, LangUtils.getMessage(player, InventoryEnum.VOTE));
         fillItemInInventory(inventory);
         MapVote mapVote = MapVote.getInstance();
         int i = 10;
@@ -54,7 +55,7 @@ public class MapVoteInventory {
             ItemStack itemStack = new ItemStack(Material.PAPER);
             ItemMeta itemMeta = itemStack.getItemMeta();
             List<String> lore = new ArrayList<>();
-            lore.add(LangUtils.getMessage(player, OtherNode.LORE_VOTE_COUNT).replace("%int%", votes));
+            lore.add(LangUtils.getMessage(player, OtherEnum.LORE_VOTE_COUNT).replace("%int%", votes));
             itemMeta.setLore(lore);
             itemMeta.setDisplayName(StringUtils.color("&e&l" + name));
             itemStack.setItemMeta(itemMeta);
@@ -66,7 +67,7 @@ public class MapVoteInventory {
     private ItemStack getCancelItem(Player player) {
         ItemStack itemStack = new ItemStack(Material.BARRIER);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(LangUtils.getMessage(player, ItemNode.CANCEL_VOTE));
+        itemMeta.setDisplayName(LangUtils.getMessage(player, ItemEnum.CANCEL_VOTE));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -86,7 +87,7 @@ public class MapVoteInventory {
                 return;
             }
             Player player = (Player) e.getWhoClicked();
-            if(!inventory.getName().equals(LangUtils.getMessage(player, InventortNode.VOTE))) {
+            if(!inventory.getName().equals(LangUtils.getMessage(player, InventoryEnum.VOTE))) {
                 return;
             }
             MapVote mapVote = MapVote.getInstance();
@@ -96,26 +97,26 @@ public class MapVoteInventory {
                 player.closeInventory();
 
                 player.playSound(player.getLocation(), Sound.NOTE_BASS, 100F, 0F);
-                player.sendMessage(LangUtils.getMessage(player, MessageNode.VOTE_CANNOT_VOTE));
+                player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_CANNOT_VOTE));
                 return;
             }
             if(mapVote.getMapList().contains(clicked)) {
                 if(WorldManager.getInstance().getCurrentMap().equals(clicked)) {
-                    player.sendMessage(LangUtils.getMessage(player, MessageNode.VOTE_CANNOT_VOTE_MAP));
+                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_CANNOT_VOTE_MAP));
                     return;
                 }
                 mapVote.addVote(player, clicked);
                 player.closeInventory();
-                player.sendMessage(LangUtils.getMessage(player, MessageNode.VOTE_SUCCESS).replace("%map%", clicked));
+                player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_SUCCESS).replace("%map%", clicked));
             }
-            if(itemMeta.getDisplayName().equals(LangUtils.getMessage(player, ItemNode.CANCEL_VOTE))) {
+            if(itemMeta.getDisplayName().equals(LangUtils.getMessage(player, ItemEnum.CANCEL_VOTE))) {
                 if(mapVote.getWherePlayerVoted(player) != null) {
                     mapVote.removeVote(player, mapVote.getWherePlayerVoted(player));
                     player.closeInventory();
-                    player.sendMessage(LangUtils.getMessage(player, MessageNode.VOTE_RESET));
+                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_RESET));
                 }
                 else {
-                    player.sendMessage(LangUtils.getMessage(player, MessageNode.VOTE_INVALID));
+                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_INVALID));
                 }
             }
         }

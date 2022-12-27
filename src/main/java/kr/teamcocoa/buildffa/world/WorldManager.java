@@ -5,9 +5,9 @@ import com.grinderwolf.swm.api.loaders.SlimeLoader;
 import com.grinderwolf.swm.api.world.SlimeWorld;
 import com.grinderwolf.swm.api.world.properties.SlimeProperties;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
-import kr.teamcocoa.buildffa.translate.MessageNode;
-import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.enums.MessageEnum;
+import kr.teamcocoa.buildffa.kit.BffaPlayer;
+import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.Bar;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import org.bukkit.Bukkit;
@@ -81,18 +81,18 @@ public class WorldManager {
             String t = currentMapName;
             currentMapName = temp;
             Location spawn = getSpawnByName(name);
-            BuildFFA.worldData.removeBlocks();
+            Main.worldData.removeBlocks();
             long deadTime = System.currentTimeMillis();
-            Bukkit.getScheduler().runTaskLater(BuildFFA.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.teleport(spawn);
-                    BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(player);
-                    buildFFAPlayer.setJoinInventory();
-                    buildFFAPlayer.setInGame(false);
-                    buildFFAPlayer.setLatestDeadTime(deadTime);
-                    buildFFAPlayer.setBowBought(false);
-                    buildFFAPlayer.setSnowBallBought(false);
-                    buildFFAPlayer.setLastHitPlayer(null);
+                    BffaPlayer bffaPlayer = Main.playerData.get(player);
+                    bffaPlayer.setJoinInventory();
+                    bffaPlayer.setInGame(false);
+                    bffaPlayer.setLatestDeadTime(deadTime);
+                    bffaPlayer.setBowBought(false);
+                    bffaPlayer.setSnowBallBought(false);
+                    bffaPlayer.setLastHitPlayer(null);
                 }
                 placeAble = true;
             }, 0L);
@@ -101,7 +101,7 @@ public class WorldManager {
 
     public void mapChangeUpdater() {
 
-        Bukkit.getScheduler().runTaskTimer(BuildFFA.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> {
             --sec;
             LocalTime localTime = LocalTime.ofSecondOfDay(sec);
             String time = localTime.toString();
@@ -138,13 +138,13 @@ public class WorldManager {
                 case 10:
                     mapVote.setVoteAble(false);
                     String map = mapVote.getMostVoted();
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(BuildFFA.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> {
                         loadWorld(map);
                         cloneWorld(map);
                     }, 1L);
                     for(Player player : Bukkit.getOnlinePlayers()) {
-                        player.sendMessage(LangUtils.getMessage(player, MessageNode.VOTE_ENDED));
-                        player.sendMessage(LangUtils.getMessage(player, MessageNode.VOTE_MAP_SELECTED).replace("%map%", map));
+                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_ENDED));
+                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_MAP_SELECTED).replace("%map%", map));
                     }
                 case 5:
                 case 4:
@@ -154,14 +154,14 @@ public class WorldManager {
                     break;
                 case 1:
                     sendCountdownMessage();
-                    BuildFFA.worldData.removeBlocks();
+                    Main.worldData.removeBlocks();
                     break;
                 case 0:
                     sec = 600;
                     pvpAble = true;
                     mapVote.setVoteAble(true);
                     mapVote.resetVotes();
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(BuildFFA.getInstance(), () -> mapChange(temp), 1L);
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> mapChange(temp), 1L);
                     break;
                 default:
                     break;
@@ -169,13 +169,13 @@ public class WorldManager {
         }, 0L, 20L);
     }
 
-    public void sendAllPlayer(MessageNode node, int sec) {
+    public void sendAllPlayer(MessageEnum node, int sec) {
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(LangUtils.getMessage(player, node).replace("%time%", String.valueOf(sec)));
         }
     }
 
-    public void sendAllVotePlayer(MessageNode node, int sec) {
+    public void sendAllVotePlayer(MessageEnum node, int sec) {
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(LangUtils.getMessage(player, node).replace("%time%", String.valueOf(sec)));
         }
@@ -183,19 +183,19 @@ public class WorldManager {
 
     public void sendCountdownMessage() {
         if(sec >= 60) {
-            sendAllPlayer(sec / 60 == 1 ? MessageNode.MAP_CHANGE_MINUTE : MessageNode.MAP_CHANGE_MINUTES, sec / 60);
+            sendAllPlayer(sec / 60 == 1 ? MessageEnum.MAP_CHANGE_MINUTE : MessageEnum.MAP_CHANGE_MINUTES, sec / 60);
         }
         else {
-            sendAllPlayer(sec != 1 ? MessageNode.MAP_CHANGE_SECONDS : MessageNode.MAP_CHANGE_SECOND, sec);
+            sendAllPlayer(sec != 1 ? MessageEnum.MAP_CHANGE_SECONDS : MessageEnum.MAP_CHANGE_SECOND, sec);
         }
     }
 
     public void sendVoteEndMessage() {
         if(sec - 10 >= 60) {
-            sendAllVotePlayer((sec - 10) / 60 == 1 ? MessageNode.VOTE_END_MINUTE : MessageNode.VOTE_END_MINUTES, (sec - 10) / 60);
+            sendAllVotePlayer((sec - 10) / 60 == 1 ? MessageEnum.VOTE_END_MINUTE : MessageEnum.VOTE_END_MINUTES, (sec - 10) / 60);
         }
         else {
-            sendAllVotePlayer((sec - 10) != 1 ? MessageNode.VOTE_END_SECONDS : MessageNode.VOTE_END_SECOND, sec - 10);
+            sendAllVotePlayer((sec - 10) != 1 ? MessageEnum.VOTE_END_SECONDS : MessageEnum.VOTE_END_SECOND, sec - 10);
         }
     }
 

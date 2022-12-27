@@ -1,7 +1,7 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.model.DeSpawnBlock;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.block.DespawnBlock;
+import kr.teamcocoa.buildffa.main.Main;
 
 
 import kr.teamcocoa.buildffa.world.WorldManager;
@@ -22,12 +22,12 @@ public class BlockPlaceListener implements Listener {
         Player p = e.getPlayer();
         double height = 207;
         if (p.getLocation().getY() <= height) {
-            if (!BuildFFA.playerData.get(p).isBuild()) {
+            if (!Main.playerData.get(p).isBuild()) {
                 Block b = e.getBlock();
-                BuildFFA.worldData.addBlock(b);
-                new DeSpawnBlock(e, b).runTaskTimerAsynchronously(BuildFFA.getInstance(), 0L, 10L);
+                Main.worldData.addBlock(b);
+                new DespawnBlock(e, b).runTaskTimerAsynchronously(Main.getInstance(), 0L, 10L);
             }
-        } else if (!BuildFFA.playerData.get(p).isBuild()) {
+        } else if (!Main.playerData.get(p).isBuild()) {
             e.setCancelled(true);
         }
     }

@@ -1,7 +1,7 @@
 package kr.teamcocoa.buildffa.items.shop;
 
-import kr.teamcocoa.buildffa.translate.OtherNode;
-import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.enums.OtherEnum;
+import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import org.bukkit.Material;
@@ -39,7 +39,7 @@ public class Bow extends AbstractShopItem {
         ItemStack itemStack = getItemStack(player, 1);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(getName(player));
-        itemMeta.setLore(getLore(MessageFormat.format(LangUtils.getMessage(player, OtherNode.LORE_PRICE), price)));
+        itemMeta.setLore(getLore(MessageFormat.format(LangUtils.getMessage(player, OtherEnum.LORE_PRICE), price)));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -49,7 +49,7 @@ public class Bow extends AbstractShopItem {
         return StringUtils.color("&cBow");
     }
 
-    public BuyStatus purchase(BuildFFAPlayer player) {
+    public BuyStatus purchase(BffaPlayer player) {
         if(player.isBowBought()) {
             return BuyStatus.ALREADY_BOUGHT;
         }

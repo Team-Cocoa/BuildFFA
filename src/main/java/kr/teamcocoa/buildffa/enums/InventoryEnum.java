@@ -1,6 +1,6 @@
-package kr.teamcocoa.buildffa.translate;
+package kr.teamcocoa.buildffa.enums;
 
-public enum InventortNode {
+public enum InventoryEnum {
 
     KIT_SELECT("kit_selection"),
     INVENTORY_SORTING("inventory_sorting"),
@@ -13,7 +13,7 @@ public enum InventortNode {
         return name;
     }
 
-    private InventortNode(String name) {
+    private InventoryEnum(String name) {
         this.name = "inventory." + name;
     }
 }

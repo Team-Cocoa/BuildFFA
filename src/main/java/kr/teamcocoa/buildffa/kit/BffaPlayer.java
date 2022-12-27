@@ -1,12 +1,11 @@
-package kr.teamcocoa.buildffa.model;
+package kr.teamcocoa.buildffa.kit;
 
 import ch.dkrieger.coinsystem.core.CoinSystem;
 import ch.dkrieger.coinsystem.core.player.CoinPlayer;
-import kr.teamcocoa.buildffa.translate.ItemNode;
-import kr.teamcocoa.buildffa.translate.MessageNode;
+import kr.teamcocoa.buildffa.enums.ItemEnum;
+import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.items.extra.ExtraItemManager;
-import kr.teamcocoa.buildffa.kit.NickedBffaPlayer;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.prestige.Prestige;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.utils.ItemManager;
@@ -15,7 +14,6 @@ import kr.teamcocoa.buildffa.utils.StringUtils;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,11 +29,10 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
-public class BuildFFAPlayer {
+public class BffaPlayer {
 
     private long threwPearlTime;
-    private int currentKillStreak;
+    private int playerKillStreak;
     private long latestDeadTime;
     private boolean build;
     private Player player;
@@ -62,9 +59,9 @@ public class BuildFFAPlayer {
     /* KB stick */
     private int kbStickDurability;
 
-    public BuildFFAPlayer(Player player) {
+    public BffaPlayer(Player player) {
         this.threwPearlTime = 0L;
-        this.currentKillStreak = 0;
+        this.playerKillStreak = 0;
         this.latestDeadTime = 0L;
         this.build = false;
         this.player = player;
@@ -83,8 +80,8 @@ public class BuildFFAPlayer {
     public void setJoinInventory() {
         this.player.getInventory().clear();
         this.player.getInventory().setArmorContents(null);
-        this.player.getInventory().setItem(0, ItemManager.createItem(Material.BLAZE_ROD, 1, LangUtils.getMessage(this.player, ItemNode.INVENTORY_SORTING)));
-        this.player.getInventory().setItem(8, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemNode.SHOP)));
+        this.player.getInventory().setItem(0, ItemManager.createItem(Material.BLAZE_ROD, 1, LangUtils.getMessage(this.player, ItemEnum.INVENTORY_SORTING)));
+        this.player.getInventory().setItem(8, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemEnum.SHOP)));
         if (this.player.hasPermission("killeffect.killeffect")) {
             this.player.getInventory().setItem(4, ItemManager.createItem(Material.GOLD_SWORD, 1, "§cKillEffects"));
         }
@@ -142,13 +139,13 @@ public class BuildFFAPlayer {
                 player.removePotionEffect(effect.getType());
             }
 
-            Bukkit.getScheduler().runTaskLater(BuildFFA.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
                 player.setHealth(20);
                 player.teleport(spawn);
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
                 setInGame(false);
                 setLatestDeadTime(System.currentTimeMillis());
-                BuildFFA.playerData.get(player).setJoinInventory();
+                Main.playerData.get(player).setJoinInventory();
             }, 1L);
 
             if (player.equals(getLastHitPlayer())) {
@@ -158,35 +155,35 @@ public class BuildFFAPlayer {
 
         if (getLastHitPlayer() instanceof Player) {
             try {
-                BuildFFAPlayer killerBuildFFAPlayer = BuildFFA.playerData.get(getLastHitPlayer());
-                String killerName = killerBuildFFAPlayer.getPlayer().getName();
-                Player killer = killerBuildFFAPlayer.getPlayer();
+                BffaPlayer killerBffaPlayer = Main.playerData.get(getLastHitPlayer());
+                String killerName = killerBffaPlayer.getPlayer().getName();
+                Player killer = killerBffaPlayer.getPlayer();
                 killer.playSound(killer.getLocation(), Sound.ORB_PICKUP, 1, 2);
                 String KillerHealth = (new DecimalFormat("#0.0")).format(killer.getHealth() / 2.0D);
 
-                killerBuildFFAPlayer.addKills();
-                if (killerBuildFFAPlayer.isNicked()) {
-                    killerBuildFFAPlayer.getNickedBffaPlayer().addKills();
+                killerBffaPlayer.addKills();
+                if (killerBffaPlayer.isNicked()) {
+                    killerBffaPlayer.getNickedBffaPlayer().addKills();
                 }
 
-                player.sendMessage(LangUtils.getMessage(player, MessageNode.PLAYER_KILL).replaceAll("%KILLER%", killerName).replaceAll("%KILLERHEALTH%", KillerHealth));
+                player.sendMessage(LangUtils.getMessage(player, MessageEnum.PLAYER_KILL).replaceAll("%KILLER%", killerName).replaceAll("%KILLERHEALTH%", KillerHealth));
 
-                int killerKillstreak = killerBuildFFAPlayer.getCurrentKillStreak() + 1;
+                int killerKillstreak = killerBffaPlayer.getPlayerKillStreak() + 1;
                 killer.setLevel(killerKillstreak);
-                killerBuildFFAPlayer.setCurrentKillStreak(killerKillstreak);
-                if (killerKillstreak > killerBuildFFAPlayer.getBestKillStreaks()) {
-                    killerBuildFFAPlayer.setBestKillStreaks(killerKillstreak);
+                killerBffaPlayer.setPlayerKillStreak(killerKillstreak);
+                if (killerKillstreak > killerBffaPlayer.getBestKillStreaks()) {
+                    killerBffaPlayer.setBestKillStreaks(killerKillstreak);
                 }
 
-                if (currentKillStreak >= 5) {
-                    String killstreakPlayerString = String.valueOf(currentKillStreak);
+                if (playerKillStreak >= 5) {
+                    String killstreakPlayerString = String.valueOf(playerKillStreak);
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.sendMessage(LangUtils.getMessage(player, MessageNode.KILL_STREAK_BROKEN).replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", killerName).replaceAll("%PLAYER%", this.player.getName()));
+                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK_BROKEN).replaceAll("%KILLSTREAK%", killstreakPlayerString).replaceAll("%KILLER%", killerName).replaceAll("%PLAYER%", this.player.getName()));
                     }
                 }
                 if (killerKillstreak != 0 && (killerKillstreak % 5 == 0 || killerKillstreak > 15)) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.sendMessage(LangUtils.getMessage(player, MessageNode.KILL_STREAK).replaceAll("%KILLSTREAK%", String.valueOf(killerKillstreak)).replaceAll("%PLAYER%", killerName));
+                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.KILL_STREAK).replaceAll("%KILLSTREAK%", String.valueOf(killerKillstreak)).replaceAll("%PLAYER%", killerName));
                     }
                 }
 
@@ -195,8 +192,8 @@ public class BuildFFAPlayer {
                         killer.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
                     }
                     ExtraItemManager.getInstance().giveExtraItem(killer);
-                    List<ItemStack> list = Arrays.asList(killerBuildFFAPlayer.getPlayer().getInventory().getContents());
-                    if (killerBuildFFAPlayer.isBowBought()) {
+                    List<ItemStack> list = Arrays.asList(killerBffaPlayer.getPlayer().getInventory().getContents());
+                    if (killerBffaPlayer.isBowBought()) {
                         int arrayIndex = -1;
                         for (int i = 0; i < list.size(); i++) {
                             if(list.get(i) == null) {
@@ -223,14 +220,14 @@ public class BuildFFAPlayer {
             finally {
                 resetDamage(true);
                 setLastHitPlayer(null);
-                setCurrentKillStreak(0);
+                setPlayerKillStreak(0);
                 resetKBStickDurability();
             }
         }
     }
 
 // java.lang.NullPointerException
-// at kr.teamcocoa.buildffa.model.BffaPlayer.death(BffaPlayer.java:211)
+// at kr.teamcocoa.buildffa.kit.BffaPlayer.death(BffaPlayer.java:211)
 // at kr.teamcocoa.buildffa.listener.PlayerMoveListener.onPlayerMove(PlayerMoveListener.java:27)
 
     public void addDamage(Player hitter, double damage) {
@@ -243,8 +240,8 @@ public class BuildFFAPlayer {
     public void resetDamage(boolean giveHealth) {
         if (giveHealth) {
             for (Player player : this.damageTable.keySet()) {
-                BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.getOrDefault(player, null);
-                if (buildFFAPlayer != null && buildFFAPlayer.isInGame()) {
+                BffaPlayer bffaPlayer = Main.playerData.getOrDefault(player, null);
+                if (bffaPlayer != null && bffaPlayer.isInGame()) {
                     double totalHealth = player.getHealth() + this.damageTable.get(player);
                     player.setHealth(totalHealth >= 20.0 ? 20.0 : totalHealth);
                 }
@@ -254,10 +251,10 @@ public class BuildFFAPlayer {
     }
 
     public void loadStats() {
-        this.inventory = BuildFFA.getInstance().kitData.getPlayerKit(player);
-        this.kills = BuildFFA.getInstance().statsDatabase.getKills(player.getUniqueId().toString());
-        this.bestKillStreaks = BuildFFA.getInstance().statsDatabase.getMaxKillStreak(player.getUniqueId().toString());
-        this.deaths = BuildFFA.getInstance().statsDatabase.getDeaths(player.getUniqueId().toString());
+        this.inventory = Main.getInstance().kitData.getPlayerKit(player);
+        this.kills = Main.getInstance().stats.getKills(player.getUniqueId().toString());
+        this.bestKillStreaks = Main.getInstance().stats.getMaxKillStreak(player.getUniqueId().toString());
+        this.deaths = Main.getInstance().stats.getDeaths(player.getUniqueId().toString());
         PrestigeManager.getInstance().loadPrestige(this);
     }
 
@@ -265,4 +262,23 @@ public class BuildFFAPlayer {
         this.kbStickDurability = 15;
     }
 
+    @Override
+    public String toString() {
+        return "BffaPlayer{" +
+                "threwPearlTime=" + threwPearlTime +
+                ", playerKillStreak=" + playerKillStreak +
+                ", latestDeadTime=" + latestDeadTime +
+                ", build=" + build +
+                ", player=" + player +
+                ", inventory=" + Arrays.toString(inventory) +
+                ", inGame=" + inGame +
+                ", died=" + died +
+                ", lastHitPlayer=" + lastHitPlayer +
+                ", nickedBffaPlayer=" + nickedBffaPlayer +
+                ", shootAble=" + shootAble +
+                ", kills=" + kills +
+                ", deaths=" + deaths +
+                ", bestKillStreaks=" + bestKillStreaks +
+                '}';
+    }
 }

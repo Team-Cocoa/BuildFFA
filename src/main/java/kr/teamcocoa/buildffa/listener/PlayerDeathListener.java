@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.main.Main;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -12,8 +12,8 @@ public class PlayerDeathListener implements Listener {
         e.setDeathMessage(null);
         e.setKeepInventory(true);
         e.setKeepLevel(true);
-        if (BuildFFA.playerData.containsKey(e.getEntity())) {
-            BuildFFA.playerData.get(e.getEntity()).death(false);
+        if (Main.playerData.containsKey(e.getEntity())) {
+            Main.playerData.get(e.getEntity()).death(false);
         }
     }
 }

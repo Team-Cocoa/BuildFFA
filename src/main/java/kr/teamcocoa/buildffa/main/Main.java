@@ -1,27 +1,30 @@
 package kr.teamcocoa.buildffa.main;
 
 import kr.teamcocoa.buildffa.commands.*;
-import kr.teamcocoa.buildffa.listener.*;
-import kr.teamcocoa.buildffa.database.BuildFFADatabase;
-import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.kit.KitData;
-import kr.teamcocoa.buildffa.utils.ScoreboardManager;
-import kr.teamcocoa.buildffa.database.StatsDatabase;
-import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.buildffa.utils.*;
+import kr.teamcocoa.buildffa.utils.Stats;
 import kr.teamcocoa.buildffa.world.MapVote;
-import kr.teamcocoa.buildffa.world.WorldData;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import kr.teamcocoa.buildffa.kit.BffaPlayer;
+import kr.teamcocoa.buildffa.world.WorldData;
+import kr.teamcocoa.buildffa.listener.*;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
-public class BuildFFA extends JavaPlugin {
-    private static BuildFFA instance;
-    public static HashMap<Player, BuildFFAPlayer> playerData = new HashMap<>();
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class Main extends JavaPlugin {
+    private static Main instance;
+    public static HashMap<Player, BffaPlayer> playerData = new HashMap<>();
     public static WorldData worldData = new WorldData();
-    public StatsDatabase statsDatabase;
+    public MYSQL mysql;
+    public Stats stats;
     public KitData kitData;
     public ScoreboardManager scoreboardManager;
     public static boolean teaming;
@@ -32,11 +35,12 @@ public class BuildFFA extends JavaPlugin {
         System.out.println("|                                                             |");
         System.out.println("| [BuildFFA] Plugin is Loading...                             |");
         instance = this;
-        BuildFFADatabase.init();
-        statsDatabase = new StatsDatabase();
+        mysql = new MYSQL();
+        stats = new Stats();
         kitData = new KitData();
         teaming = false;
         scoreboardManager = new ScoreboardManager();
+        mysql.connect();
         System.out.println("|_____________________________________________________________|");
         loadListeners();
         loadCommands();
@@ -49,9 +53,19 @@ public class BuildFFA extends JavaPlugin {
         Bukkit.getWorld(map).loadChunk(worldManager.getSpawnByName(map).getChunk());
         WorldManager.getInstance().mapChangeUpdater();
 
-        statsDatabase.updateRanking();
+        stats.updateRanking();
         scoreboardManager.ScoreboardUpdater();
 
+        // Task to prevent from the connection disconnected
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            try(    PreparedStatement preparedStatement = mysql.getPreparedStatement("select 1");
+                    ResultSet rs = preparedStatement.executeQuery()) {
+
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }, 0L, 20 * 60 * 60);
     }
 
     public void loadListeners() {
@@ -60,7 +74,7 @@ public class BuildFFA extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EnderPeralCancelListener(), this);
         getServer().getPluginManager().registerEvents(new EntityDamageListener(), this);
         getServer().getPluginManager().registerEvents(new FoodLevelChangeListener(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);
+        getServer().getPluginManager().registerEvents(new InteractListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
         getServer().getPluginManager().registerEvents(new ItemDropListener(), this);
@@ -92,10 +106,12 @@ public class BuildFFA extends JavaPlugin {
         System.out.println(" _____________________________________________________________");
         System.out.println("|                                                             |");
         System.out.println("| [BuildFFA] Plugin is stopping...                            |");
+        mysql.disconnect();
         System.out.println("|_____________________________________________________________|");
+        Main.worldData.removeBlocks();
     }
 
-    public static BuildFFA getInstance() {
+    public static Main getInstance() {
         return instance;
     }
 

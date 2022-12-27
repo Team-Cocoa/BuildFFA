@@ -6,8 +6,8 @@ import ch.dkrieger.permissionsystem.lib.group.PermissionGroupManager;
 import ch.dkrieger.permissionsystem.lib.player.PermissionPlayer;
 import ch.dkrieger.permissionsystem.lib.player.PermissionPlayerManager;
 import ch.dkrieger.permissionsystem.lib.player.PlayerDesign;
-import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.kit.BffaPlayer;
+import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import org.bukkit.entity.Player;
@@ -33,7 +33,7 @@ public class AsyncPlayerChatListener implements Listener {
 //        Bukkit.getLogger().info(e.getFormat());
         Player player = e.getPlayer();
         String message = e.getMessage();
-        BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(player);
+        BffaPlayer bffaPlayer = Main.playerData.get(player);
 
         PermissionGroup group = PermissionPlayerManager.getInstance().getPermissionPlayer(player.getUniqueId()).getHighestGroup();
         if (group == null) {
@@ -47,11 +47,11 @@ public class AsyncPlayerChatListener implements Listener {
 
         PermissionPlayer permplayer = PermissionPlayerManager.getInstance().getPermissionPlayer(player.getUniqueId());
 
-        String prestige = StringUtils.color(PrestigeManager.getInstance().getPrestigeName(buildFFAPlayer));
+        String prestige = StringUtils.color(PrestigeManager.getInstance().getPrestigeName(bffaPlayer));
 
-        if(buildFFAPlayer.isNicked()) {
+        if(bffaPlayer.isNicked()) {
             e.setFormat(MessageFormat.format("§8[{0}§8] §7{1} §8> §f{2}",
-                    StringUtils.color(PrestigeManager.getInstance().getPrestigeName(buildFFAPlayer.getNickedBffaPlayer().getKills())), player.getName(), e.getMessage().replace("%", "%%")));
+                    StringUtils.color(PrestigeManager.getInstance().getPrestigeName(bffaPlayer.getNickedBffaPlayer().getKills())), player.getName(), e.getMessage().replace("%", "%%")));
             return;
         }
 

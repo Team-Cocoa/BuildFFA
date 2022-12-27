@@ -1,7 +1,7 @@
 package kr.teamcocoa.buildffa.prestige;
 
-import kr.teamcocoa.buildffa.translate.MessageNode;
-import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.enums.MessageEnum;
+import kr.teamcocoa.buildffa.kit.BffaPlayer;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -72,21 +72,21 @@ public class PrestigeManager {
         return 0;
     }
 
-    public void loadPrestige(BuildFFAPlayer buildFFAPlayer) {
-        Prestige prestige = getPrestige(buildFFAPlayer.getKills());
-        int grade = getPrestigeRank(prestige, buildFFAPlayer.getKills());
-        buildFFAPlayer.setPrestige(prestige);
-        buildFFAPlayer.setGrade(grade);
+    public void loadPrestige(BffaPlayer bffaPlayer) {
+        Prestige prestige = getPrestige(bffaPlayer.getKills());
+        int grade = getPrestigeRank(prestige, bffaPlayer.getKills());
+        bffaPlayer.setPrestige(prestige);
+        bffaPlayer.setGrade(grade);
     }
 
-    public void updatePrestige(BuildFFAPlayer buildFFAPlayer) {
-        Prestige prestige = buildFFAPlayer.getPrestige();
-        int grade = buildFFAPlayer.getGrade();
+    public void updatePrestige(BffaPlayer bffaPlayer) {
+        Prestige prestige = bffaPlayer.getPrestige();
+        int grade = bffaPlayer.getGrade();
 
         int minimum = prestige.getMinimumKills();
         int distance = ((prestige.getMaximumKills() + 1) - prestige.getMinimumKills()) / 5;
 
-        int kills = buildFFAPlayer.getKills();
+        int kills = bffaPlayer.getKills();
         Bukkit.getLogger().info(
                 (minimum + (distance * (grade - 1))) + " <= " + kills + " <= " + ((minimum + (distance * grade)) -1)
         );
@@ -95,10 +95,10 @@ public class PrestigeManager {
                 return;
             }
             else {
-                loadPrestige(buildFFAPlayer);
+                loadPrestige(bffaPlayer);
                 for(Player player : Bukkit.getOnlinePlayers()) {
                     player.sendMessage(
-                            MessageFormat.format(StringUtils.getListByString(LangUtils.getMessage(player, MessageNode.PRESTIGE_PROMOTE_MESSAGE)), buildFFAPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(buildFFAPlayer)))
+                            MessageFormat.format(StringUtils.getListByString(LangUtils.getMessage(player, MessageEnum.PRESTIGE_PROMOTE_MESSAGE)), bffaPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(bffaPlayer)))
                     );
                 }
             }
@@ -108,11 +108,11 @@ public class PrestigeManager {
                 return;
             }
             else {
-                loadPrestige(buildFFAPlayer);
-                if(!buildFFAPlayer.isNicked()) {
+                loadPrestige(bffaPlayer);
+                if(!bffaPlayer.isNicked()) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.sendMessage(
-                                MessageFormat.format(StringUtils.getListByString(LangUtils.getMessage(player, MessageNode.PRESTIGE_PROMOTE_MESSAGE)), buildFFAPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(buildFFAPlayer)))
+                                MessageFormat.format(StringUtils.getListByString(LangUtils.getMessage(player, MessageEnum.PRESTIGE_PROMOTE_MESSAGE)), bffaPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(bffaPlayer)))
                         );
                     }
                 }
@@ -126,8 +126,8 @@ public class PrestigeManager {
         return prestige.getName() + (prestige == Prestige.BEGINNER ? "" : " " + arabicToRome(grade));
     }
 
-    public String getPrestigeName(BuildFFAPlayer buildFFAPlayer) {
-        return buildFFAPlayer.getPrestige().getName() + (buildFFAPlayer.getPrestige() == Prestige.BEGINNER ? "" : " " + arabicToRome(buildFFAPlayer.getGrade()));
+    public String getPrestigeName(BffaPlayer bffaPlayer) {
+        return bffaPlayer.getPrestige().getName() + (bffaPlayer.getPrestige() == Prestige.BEGINNER ? "" : " " + arabicToRome(bffaPlayer.getGrade()));
     }
 
     private String arabicToRome(int num) {
@@ -156,5 +156,6 @@ public class PrestigeManager {
                 return "";
         }
     }
+
 
 }

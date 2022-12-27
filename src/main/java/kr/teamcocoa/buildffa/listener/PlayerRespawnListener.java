@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.main.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +10,6 @@ public class PlayerRespawnListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent e) {
         Player p = e.getPlayer();
-        BuildFFA.playerData.get(p).setJoinInventory();
+        Main.playerData.get(p).setJoinInventory();
     }
 }

@@ -1,9 +1,9 @@
 package kr.teamcocoa.buildffa.items.extra;
 
-import kr.teamcocoa.buildffa.model.DeSpawnBlock;
-import kr.teamcocoa.buildffa.translate.ItemNode;
-import kr.teamcocoa.buildffa.translate.MessageNode;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.block.DespawnBlock;
+import kr.teamcocoa.buildffa.enums.ItemEnum;
+import kr.teamcocoa.buildffa.enums.MessageEnum;
+import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Location;
@@ -33,14 +33,14 @@ public class RescuePlatform extends AbstractExtraItem implements UseAble {
     public ItemStack getItemStack(Player player, int count) {
         ItemStack itemStack = new ItemStack(Material.BLAZE_ROD, count);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(LangUtils.getMessage(player, ItemNode.RESCUE_PLATFORM));
+        itemMeta.setDisplayName(LangUtils.getMessage(player, ItemEnum.RESCUE_PLATFORM));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
 
     @Override
     public String getName(Player player) {
-        return LangUtils.getMessage(player, ItemNode.RESCUE_PLATFORM);
+        return LangUtils.getMessage(player, ItemEnum.RESCUE_PLATFORM);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class RescuePlatform extends AbstractExtraItem implements UseAble {
         Player player = e.getPlayer();
         if (player.getItemInHand().hasItemMeta() && player.getItemInHand().getItemMeta().getDisplayName() != null) {
             String displayName = player.getItemInHand().getItemMeta().getDisplayName();
-            if(displayName.equals(LangUtils.getMessage(player, ItemNode.RESCUE_PLATFORM))) {
+            if(displayName.equals(LangUtils.getMessage(player, ItemEnum.RESCUE_PLATFORM))) {
                 if (WorldManager.getInstance().getDeathHeight() + 100 > player.getLocation().getY()) {
                     player.getInventory().setItem(player.getInventory().getHeldItemSlot(),
                             player.getItemInHand().getAmount() - 1 == 0 ? null : RescuePlatform.getInstance().getItemStack(player, player.getItemInHand().getAmount() - 1));
@@ -59,13 +59,13 @@ public class RescuePlatform extends AbstractExtraItem implements UseAble {
                             Location cloned = location.clone().add(i, 0, j);
                             Block block = cloned.getBlock();
                             block.setType(Material.SLIME_BLOCK);
-                            BuildFFA.worldData.addBlock(block);
-                            new DeSpawnBlock(block).runTaskTimerAsynchronously(BuildFFA.getInstance(), 0L, 10L);
+                            Main.worldData.addBlock(block);
+                            new DespawnBlock(block).runTaskTimerAsynchronously(Main.getInstance(), 0L, 10L);
                         }
                     }
-                    player.sendMessage(LangUtils.getMessage(player, MessageNode.USED_PLATFORM));
+                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.USED_PLATFORM));
                 } else {
-                    player.sendMessage(LangUtils.getMessage(player, MessageNode.CANNOT_USE_PLATFORM));
+                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.CANNOT_USE_PLATFORM));
                 }
             }
 

@@ -1,9 +1,8 @@
 package kr.teamcocoa.buildffa.kit;
 
-import kr.teamcocoa.buildffa.translate.InventortNode;
-import kr.teamcocoa.buildffa.translate.ItemNode;
-import kr.teamcocoa.buildffa.main.BuildFFA;
-import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.enums.InventoryEnum;
+import kr.teamcocoa.buildffa.enums.ItemEnum;
+import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -34,20 +33,20 @@ public class KitEdit {
 
     }
 
-    public void openInventorySorting(BuildFFAPlayer buildFFAPlayer) {
-        if(buildFFAPlayer.isInGame()) {
+    public void openInventorySorting(BffaPlayer bffaPlayer) {
+        if(bffaPlayer.isInGame()) {
             return;
         }
-        Player player = buildFFAPlayer.getPlayer();
-        ItemStack[] kitSorting = buildFFAPlayer.getInventory();
+        Player player = bffaPlayer.getPlayer();
+        ItemStack[] kitSorting = bffaPlayer.getInventory();
         ItemStack[] inventories = new ItemStack[36];
-        Inventory inventorySorting = Bukkit.createInventory(null, 9, LangUtils.getMessage(player, InventortNode.INVENTORY_SORTING));
+        Inventory inventorySorting = Bukkit.createInventory(null, 9, LangUtils.getMessage(player, InventoryEnum.INVENTORY_SORTING));
         for(int i = 0; i < 9; i++){
             inventorySorting.setItem(i, createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
             inventories[i] = kitSorting[i];
         }
-        inventorySorting.setItem(3, createDye(LangUtils.getMessage(player, ItemNode.SAVE), Material.INK_SACK, (short)10));
-        inventorySorting.setItem(5, createDye(LangUtils.getMessage(player, ItemNode.RESET), Material.INK_SACK, (short)1));
+        inventorySorting.setItem(3, createDye(LangUtils.getMessage(player, ItemEnum.SAVE), Material.INK_SACK, (short)10));
+        inventorySorting.setItem(5, createDye(LangUtils.getMessage(player, ItemEnum.RESET), Material.INK_SACK, (short)1));
         for(int i = 9; i < 36; i++) {
             inventories[i] = createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7);
         }
@@ -61,14 +60,14 @@ public class KitEdit {
         String[] kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
         List<ItemStack> inventorySortingList = Arrays.asList(inventorySorting);
         for (int i = 0; i < 6; i++) {
-            int index = inventorySortingList.indexOf(BuildFFA.getInstance().kitData.getItemByString(kitString[i]));
+            int index = inventorySortingList.indexOf(Main.getInstance().kitData.getItemByString(kitString[i]));
             if (index == -1) {
                 return false;
             }
             inventory[i] = index;
             sql = sql.replace("{" + i + "}", String.valueOf(inventory[i]));
         }
-        BuildFFA.getInstance().buildFFADatabase.update(sql);
+        Main.getInstance().mysql.update(sql);
         return true;
     }
 
@@ -77,7 +76,7 @@ public class KitEdit {
             String sql = "INSERT INTO `inventory`(uuid) VALUES (\"" + player.getUniqueId().toString() + "\")" +
                     " ON DUPLICATE KEY " +
                     "UPDATE sword = 0, stick = 1, block = 2, ladder = 6, web = 7, pearl = 8;";
-            BuildFFA.getInstance().buildFFADatabase.update(sql);
+            Main.getInstance().mysql.update(sql);
             return true;
         }
         catch(Exception e) {

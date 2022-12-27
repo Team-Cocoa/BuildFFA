@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.commands;
 
-import kr.teamcocoa.buildffa.translate.MessageNode;
+import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.MapVote;
 import kr.teamcocoa.buildffa.world.MapVoteInventory;
@@ -19,7 +19,7 @@ public class Vote implements CommandExecutor {
                 player.openInventory(inventory.getInventory(player));
             }
             else {
-                player.sendMessage(LangUtils.getMessage(player, MessageNode.VOTE_CANNOT_VOTE));
+                player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_CANNOT_VOTE));
             }
             return true;
         }

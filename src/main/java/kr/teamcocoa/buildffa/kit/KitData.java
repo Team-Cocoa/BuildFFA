@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.kit;
 
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.main.Main;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
@@ -20,8 +20,8 @@ public class KitData {
         ItemStack[] inventory = new ItemStack[9];
         String sql = "SELECT * FROM `inventory` WHERE `uuid` = \"" + player.getUniqueId().toString() + "\";";
         String[] kitString = new String[]{"sword", "stick", "block", "web", "pearl", "ladder"};
-        try(PreparedStatement preparedStatement = BuildFFA.getInstance().buildFFADatabase.getPreparedStatement(sql);
-            ResultSet rs = preparedStatement.executeQuery()) {
+        try(    PreparedStatement preparedStatement = Main.getInstance().mysql.getPreparedStatement(sql);
+                ResultSet rs = preparedStatement.executeQuery()) {
             if (rs.next()) {
                 for (int i = 0; i < kitString.length; i++) {
                     inventory[rs.getInt(kitString[i])] = getItemByString(kitString[i]);

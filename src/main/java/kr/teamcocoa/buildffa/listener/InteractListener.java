@@ -1,10 +1,10 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.translate.ItemNode;
+import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.items.extra.RescuePlatform;
 import kr.teamcocoa.buildffa.items.shop.ShopInventory;
 import kr.teamcocoa.buildffa.kit.KitEdit;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.main.Main;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,8 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class PlayerInteractListener implements Listener {
-
+public class InteractListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
@@ -31,15 +30,15 @@ public class PlayerInteractListener implements Listener {
 
         if (p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().getDisplayName() != null) {
             String displayName = p.getItemInHand().getItemMeta().getDisplayName();
-            if (displayName.equals(LangUtils.getMessage(p, ItemNode.INVENTORY_SORTING))) {
-                KitEdit.getInstance().openInventorySorting(BuildFFA.playerData.get(p));
+            if (displayName.equals(LangUtils.getMessage(p, ItemEnum.INVENTORY_SORTING))) {
+                KitEdit.getInstance().openInventorySorting(Main.playerData.get(p));
                 return;
             }
-            if (displayName.equals(LangUtils.getMessage(p, ItemNode.LEAVE_ITEM))) {
+            if (displayName.equals(LangUtils.getMessage(p, ItemEnum.LEAVE_ITEM))) {
                 p.kickPlayer("");
                 return;
             }
-            if (displayName.equals(LangUtils.getMessage(p, ItemNode.SHOP))) {
+            if (displayName.equals(LangUtils.getMessage(p, ItemEnum.SHOP))) {
                 ShopInventory.openShopInventory(p);
                 return;
             }
