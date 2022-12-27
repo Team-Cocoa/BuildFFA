@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -30,6 +31,10 @@ public class PlayerManager {
             return;
         }
         map.remove(player);
+    }
+
+    public static Collection<BuildFFAPlayer> getAllPlayers() {
+        return map.values();
     }
 
 }
