@@ -79,11 +79,11 @@ public class BuildFFA extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryCloseListener(), this);
         getServer().getPluginManager().registerEvents(new ItemDropListener(), this);
-        getServer().getPluginManager().registerEvents(new JoinListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerRespawnListener(), this);
-        getServer().getPluginManager().registerEvents(new QuitListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
         getServer().getPluginManager().registerEvents(new WeatherChangeListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerPickupItemListener(), this);
         getServer().getPluginManager().registerEvents(new LanguageListener(), this);
