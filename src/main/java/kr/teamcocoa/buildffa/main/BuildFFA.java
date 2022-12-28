@@ -3,20 +3,25 @@ package kr.teamcocoa.buildffa.main;
 import kr.teamcocoa.buildffa.commands.*;
 import kr.teamcocoa.buildffa.listener.*;
 import kr.teamcocoa.buildffa.database.BuildFFADatabase;
+import kr.teamcocoa.buildffa.managers.PlayerManager;
 import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.kit.KitData;
-import kr.teamcocoa.buildffa.utils.ScoreboardManager;
+import kr.teamcocoa.buildffa.utils.ScoreboardExecutor;
 import kr.teamcocoa.buildffa.database.StatsDatabase;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import kr.teamcocoa.buildffa.world.MapVote;
 import kr.teamcocoa.buildffa.world.WorldData;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class BuildFFA extends JavaPlugin {
 
@@ -25,12 +30,19 @@ public class BuildFFA extends JavaPlugin {
     @Getter
     private static BuildFFA instance;
 
+    private ScheduledExecutorService rankingUpdater = Executors.newSingleThreadScheduledExecutor();
+
+
+
     public static HashMap<Player, BuildFFAPlayer> playerData = new HashMap<>();
     public static WorldData worldData = new WorldData();
     public StatsDatabase statsDatabase;
     public KitData kitData;
-    public ScoreboardManager scoreboardManager;
-    public static boolean teaming;
+    public ScoreboardExecutor scoreboardManager;
+
+    @Getter
+    @Setter
+    private static boolean teaming = false;
 
     @Override
     public void onEnable() {
@@ -40,13 +52,11 @@ public class BuildFFA extends JavaPlugin {
         Bukkit.getLogger().info("|                                                             |");
         Bukkit.getLogger().info("| [BuildFFA] Plugin is Loading...                             |");
         Bukkit.getLogger().info("|                                                             |");
-        Bukkit.getLogger().info("|_____________________________________________________________|");
+        Bukkit.getLogger().info("_______________________________________________________________");
 
-        BuildFFADatabase.init();
-        statsDatabase = new StatsDatabase();
         kitData = new KitData();
         teaming = false;
-        scoreboardManager = new ScoreboardManager();
+        scoreboardManager = new ScoreboardExecutor();
         loadListeners();
         loadCommands();
 
@@ -98,15 +108,28 @@ public class BuildFFA extends JavaPlugin {
         getCommand("stats").setExecutor(new StatsCommand());
         getCommand("teaming").setExecutor(new TeamingCommand());
         getCommand("vote").setExecutor(new VoteCommand());
-
         getCommand("stats").setTabCompleter(new StatsCommand());
+    }
+
+    private void loadUpdater() {
+        rankingUpdater.scheduleAtFixedRate(() -> {
+            for (BuildFFAPlayer buildFFAPlayer : PlayerManager.getAllPlayers()) {
+                statsDatabase.updatePlayer(buildFFAPlayer);
+            }
+        }, 0, 1, TimeUnit.HOURS);
+
+        scoreboardUpdater.scheduleAtFixedRate()
     }
 
     @Override
     public void onDisable() {
-        System.out.println(" _____________________________________________________________");
-        System.out.println("|                                                             |");
-        System.out.println("| [BuildFFA] Plugin is stopping...                            |");
-        System.out.println("|_____________________________________________________________|");
+        Bukkit.getLogger().info("_______________________________________________________________");
+        Bukkit.getLogger().info("|                                                             |");
+        Bukkit.getLogger().info("| [BuildFFA] Plugin is stoping...                             |");
+        Bukkit.getLogger().info("|                                                             |");
+        Bukkit.getLogger().info("_______________________________________________________________");
+
+        rankingUpdater.shutdown();
+        scoreboardUpdater.shutdown();
     }
 }
