@@ -4,7 +4,7 @@ import kr.teamcocoa.buildffa.translate.InventortNode;
 import kr.teamcocoa.buildffa.translate.ItemNode;
 import kr.teamcocoa.buildffa.translate.MessageNode;
 import kr.teamcocoa.buildffa.translate.OtherNode;
-import kr.teamcocoa.buildffa.kit.KitData;
+import kr.teamcocoa.buildffa.model.BuildFFAInventory;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import lombok.AccessLevel;
@@ -73,7 +73,7 @@ public class MapVoteInventory {
 
     private void fillItemInInventory(Inventory inventory) {
         for(int i = 0; i < 27; i++) {
-            inventory.setItem(i, KitData.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
+            inventory.setItem(i, BuildFFAInventory.createItemStack(Material.STAINED_GLASS_PANE, " ", 1, new ArrayList(), (byte)7));
         }
     }
 

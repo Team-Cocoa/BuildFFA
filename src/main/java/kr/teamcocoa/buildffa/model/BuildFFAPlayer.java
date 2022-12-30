@@ -5,7 +5,6 @@ import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 import kr.teamcocoa.buildffa.translate.ItemNode;
 import kr.teamcocoa.buildffa.translate.MessageNode;
 import kr.teamcocoa.buildffa.items.extra.ExtraItemManager;
-import kr.teamcocoa.buildffa.kit.NickedBffaPlayer;
 import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.prestige.Prestige;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;

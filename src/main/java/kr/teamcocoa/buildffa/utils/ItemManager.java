@@ -8,7 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-import static kr.teamcocoa.buildffa.kit.KitData.createItemStack;
+import static kr.teamcocoa.buildffa.model.BuildFFAInventory.createItemStack;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemManager {

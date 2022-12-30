@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static kr.teamcocoa.buildffa.kit.KitData.createItemStack;
+import static kr.teamcocoa.buildffa.model.BuildFFAInventory.createItemStack;
 
 public class KitEdit {
 

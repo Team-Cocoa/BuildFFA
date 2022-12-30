@@ -5,9 +5,7 @@ import kr.teamcocoa.buildffa.listener.*;
 import kr.teamcocoa.buildffa.database.BuildFFADatabase;
 import kr.teamcocoa.buildffa.managers.PlayerManager;
 import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
-import kr.teamcocoa.buildffa.kit.KitData;
 import kr.teamcocoa.buildffa.utils.ScoreboardExecutor;
-import kr.teamcocoa.buildffa.database.StatsDatabase;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import kr.teamcocoa.buildffa.world.MapVote;
 import kr.teamcocoa.buildffa.world.WorldData;
@@ -32,13 +30,8 @@ public class BuildFFA extends JavaPlugin {
 
     private ScheduledExecutorService rankingUpdater = Executors.newSingleThreadScheduledExecutor();
 
-
-
     public static HashMap<Player, BuildFFAPlayer> playerData = new HashMap<>();
     public static WorldData worldData = new WorldData();
-    public StatsDatabase statsDatabase;
-    public KitData kitData;
-    public ScoreboardExecutor scoreboardManager;
 
     @Getter
     @Setter
@@ -54,11 +47,7 @@ public class BuildFFA extends JavaPlugin {
         Bukkit.getLogger().info("|                                                             |");
         Bukkit.getLogger().info("_______________________________________________________________");
 
-        kitData = new KitData();
-        teaming = false;
-        scoreboardManager = new ScoreboardExecutor();
-        loadListeners();
-        loadCommands();
+        init();
 
         WorldManager worldManager = WorldManager.getInstance();
         String map = MapVote.getInstance().getRandomMap();
@@ -68,15 +57,13 @@ public class BuildFFA extends JavaPlugin {
         Bukkit.getWorld(map).loadChunk(worldManager.getSpawnByName(map).getChunk());
         WorldManager.getInstance().mapChangeUpdater();
 
-        statsDatabase.updateRanking();
-        scoreboardManager.ScoreboardUpdater();
-
     }
 
     private void init() {
         loadListeners();
         loadCommands();
         BuildFFADatabase.init();
+        loadUpdater();
     }
 
     private void loadListeners() {
@@ -118,18 +105,18 @@ public class BuildFFA extends JavaPlugin {
             }
         }, 0, 1, TimeUnit.HOURS);
 
-        scoreboardUpdater.scheduleAtFixedRate()
+        ScoreboardExecutor.startUpdater();
     }
 
     @Override
     public void onDisable() {
         Bukkit.getLogger().info("_______________________________________________________________");
         Bukkit.getLogger().info("|                                                             |");
-        Bukkit.getLogger().info("| [BuildFFA] Plugin is stoping...                             |");
+        Bukkit.getLogger().info("| [BuildFFA] Plugin is stopping...                            |");
         Bukkit.getLogger().info("|                                                             |");
         Bukkit.getLogger().info("_______________________________________________________________");
 
         rankingUpdater.shutdown();
-        scoreboardUpdater.shutdown();
+        ScoreboardExecutor.stopUpdater();
     }
 }

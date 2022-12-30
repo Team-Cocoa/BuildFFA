@@ -21,7 +21,7 @@ public class DeSpawnBlock extends BukkitRunnable {
     private int x, y, z;
     private Player whoPlaced;
     private boolean giveAgain;
-    private final World world;
+    private World world;
 
     public DeSpawnBlock(Player whoPlaced, Block block){
         this.random = new Random().nextInt(10000);
@@ -45,9 +45,9 @@ public class DeSpawnBlock extends BukkitRunnable {
     }
 
     public void run() {
-        if(event != null) {
+        if(whoPlaced != null) {
             try {
-                if (!BuildFFA.playerData.get(event.getPlayer()).isInGame()) {
+                if (!BuildFFA.playerData.get(whoPlaced).isInGame()) {
                     this.giveAgain = false;
                 }
             }
@@ -63,7 +63,6 @@ public class DeSpawnBlock extends BukkitRunnable {
                     random,
                     new BlockPosition(block.getX(), block.getY(), block.getZ()),
                     i);
-            for(Player player : Bukkit.getOnlinePlayers()){
                 ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
             }
             i++;
