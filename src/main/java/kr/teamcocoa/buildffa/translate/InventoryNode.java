@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.translate;
 
-public enum InventortNode {
+public enum InventoryNode implements Translatable {
 
     KIT_SELECT("kit_selection"),
     INVENTORY_SORTING("inventory_sorting"),
@@ -9,11 +9,12 @@ public enum InventortNode {
 
     private final String name;
 
+    @Override
     public String getName() {
         return name;
     }
 
-    private InventortNode(String name) {
+    private InventoryNode(String name) {
         this.name = "inventory." + name;
     }
 }

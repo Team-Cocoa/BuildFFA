@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.translate;
 
-public enum ItemNode {
+public enum ItemNode implements Translatable {
 
     INVENTORY_SORTING("inventory_sorting"),
     LEAVE_ITEM("leave_item"),
@@ -15,9 +15,9 @@ public enum ItemNode {
     GOLDEN_HEAD("golden_head"),
     SHOP("shop");
 
-
     private final String name;
 
+    @Override
     public String getName() {
         return name;
     }

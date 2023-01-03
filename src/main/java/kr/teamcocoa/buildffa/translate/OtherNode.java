@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.translate;
 
-public enum OtherNode {
+public enum OtherNode implements Translatable {
 
     BAR_MAP("bar.map"),
     BAR_KIT("bar.kit"),
@@ -14,6 +14,7 @@ public enum OtherNode {
 
     private final String name;
 
+    @Override
     public String getName() {
         return name;
     }

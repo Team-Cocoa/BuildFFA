@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.translate;
 
-public enum MessageNode {
+public enum MessageNode implements Translatable {
     MAP_CHANGE_MINUTES("map.change_minutes"),
     MAP_CHANGE_MINUTE("map.change_minute"),
     MAP_CHANGE_SECONDS("map.change_seconds"),
@@ -37,6 +37,7 @@ public enum MessageNode {
 
     private final String name;
 
+    @Override
     public String getName() {
         return name;
     }

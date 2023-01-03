@@ -14,19 +14,8 @@ public class LangUtils {
         return StringUtils.color(LanguageManager.getMessage(player, TypeEnum.BUILDFFA, node));
     }
 
-    public static String getMessage(Player player, OtherNode node) {
-        return StringUtils.color(LanguageManager.getMessage(player, TypeEnum.BUILDFFA, node.getName()));
+    public static String getMessage(Player player, Translatable translatable) {
+        return LanguageManager.getMessage(player, TypeEnum.BUILDFFA, translatable.getName());
     }
 
-    public static String getMessage(Player player, MessageNode node) {
-        return StringUtils.color(LanguageManager.getMessage(player, TypeEnum.BUILDFFA, node.getName()));
-    }
-
-    public static String getMessage(Player player, InventortNode node) {
-        return StringUtils.color(LanguageManager.getMessage(player, TypeEnum.BUILDFFA, node.getName()));
-    }
-
-    public static String getMessage(Player player, ItemNode node) {
-        return StringUtils.color(LanguageManager.getMessage(player, TypeEnum.BUILDFFA, node.getName()));
-    }
 }
