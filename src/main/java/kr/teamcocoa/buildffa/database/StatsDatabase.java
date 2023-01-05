@@ -25,7 +25,7 @@ public class StatsDatabase {
         mySQL.update(invInitSql);
     }
 
-    public BuildFFAStats getStats(UUID uuid) {
+    public BuildFFAStats loadStats(UUID uuid) {
         String sql = "SELECT * FROM stats WHERE uuid = ?";
         try(    PreparedStatement preparedStatement = mySQL.getPreparedStatement(sql, uuid.toString());
                 ResultSet rs = preparedStatement.executeQuery()) {

@@ -2,6 +2,7 @@ package kr.teamcocoa.buildffa.model;
 
 import ch.dkrieger.coinsystem.core.CoinSystem;
 import ch.dkrieger.coinsystem.core.player.CoinPlayer;
+import kr.teamcocoa.buildffa.database.BuildFFADatabase;
 import kr.teamcocoa.buildffa.translate.ItemNode;
 import kr.teamcocoa.buildffa.translate.MessageNode;
 import kr.teamcocoa.buildffa.items.extra.ExtraItemManager;
@@ -61,7 +62,9 @@ public class BuildFFAPlayer {
     /* Stats */
     private BuildFFAStats stats;
 
+    @Setter
     private boolean nicked;
+
     private BuildFFAStats nickedStats;
 
     /* Prestige */
@@ -112,24 +115,28 @@ public class BuildFFAPlayer {
 
     /*Stats Adder*/
     public void addKills() {
-        this.kills += 1;
+        stats.addKills();
         CoinPlayer coinPlayer = CoinSystem.getInstance().getPlayerManager().getPlayer(this.player.getUniqueId());
         coinPlayer.addCoins(50);
-        this.player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &6+50 coins!"));
+        player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &6+50 coins!"));
         PrestigeManager.getInstance().updatePrestige(this);
     }
 
     public void addDeaths() {
-        this.deaths += 1;
+        stats.addDeaths();
+    }
+
+    public void resetExtraItems() {
+        this.bowBought = false;
+        this.snowBallBought = false;
     }
 
     public synchronized void death(boolean quit) {
-        this.player.setHealth(20.0);
-        addDeaths();
+        player.setHealth(20.0);
+        stats.addDeaths();
         if (!quit) {
             setThrewPearlTime(System.currentTimeMillis());
-            setBowBought(false);
-            setSnowBallBought(false);
+            resetExtraItems();
             if (isNicked()) {
                 getNickedBffaPlayer().addDeaths();
             }
@@ -248,10 +255,8 @@ public class BuildFFAPlayer {
     }
 
     public void loadStats() {
-        this.inventory = BuildFFA.getInstance().kitData.getPlayerKit(player);
-        this.kills = BuildFFA.getInstance().statsDatabase.getKills(player.getUniqueId().toString());
-        this.bestKillStreaks = BuildFFA.getInstance().statsDatabase.getMaxKillStreak(player.getUniqueId().toString());
-        this.deaths = BuildFFA.getInstance().statsDatabase.getDeaths(player.getUniqueId().toString());
+        BuildFFADatabase.getInventoryDatabase().loadInventory(player.getUniqueId(), inventory);
+        BuildFFADatabase.getStatsDatabase().loadStats(player.getUniqueId());
         PrestigeManager.getInstance().loadPrestige(this);
     }
 

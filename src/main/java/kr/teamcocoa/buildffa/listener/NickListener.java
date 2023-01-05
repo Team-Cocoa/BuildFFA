@@ -20,7 +20,7 @@ public class NickListener implements Listener {
         }
 
         if(!buildFFAPlayer.isNicked()) {
-            buildFFAPlayer.addNicked();
+            buildFFAPlayer.setNicked(true);
         }
     }
 
@@ -34,7 +34,7 @@ public class NickListener implements Listener {
         }
 
         if(buildFFAPlayer.isNicked()) {
-            buildFFAPlayer.removeNicked();
+            buildFFAPlayer.setNicked(false);
         }
     }
 }
