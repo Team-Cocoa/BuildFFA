@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.translate.InventortNode;
+import kr.teamcocoa.buildffa.translate.InventoryNode;
 import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import org.bukkit.Bukkit;
@@ -14,9 +14,9 @@ public class InventoryCloseListener implements Listener {
     public void onClose(InventoryCloseEvent e) {
         Player player = (Player) e.getPlayer();
         if(e.getInventory() != null) {
-            if(!BuildFFA.playerData.get(player).isInGame() && !BuildFFA.playerData.get(player).isBuild() && e.getInventory().getName().equals(LangUtils.getMessage(player, InventortNode.INVENTORY_SORTING))) {
+            if(!BuildFFA.playerData.get(player).isInGame() && !BuildFFA.playerData.get(player).isBuild() && e.getInventory().getName().equals(LangUtils.getMessage(player, InventoryNode.INVENTORY_SORTING))) {
                 Bukkit.getScheduler().runTaskLater(BuildFFA.getInstance(), () -> {
-                    if(!BuildFFA.playerData.get(player).isInGame() && !BuildFFA.playerData.get(player).isBuild() && e.getInventory().getName().equals(LangUtils.getMessage(player, InventortNode.INVENTORY_SORTING))) {
+                    if(!BuildFFA.playerData.get(player).isInGame() && !BuildFFA.playerData.get(player).isBuild() && e.getInventory().getName().equals(LangUtils.getMessage(player, InventoryNode.INVENTORY_SORTING))) {
                         BuildFFA.playerData.get(player).setJoinInventory();
                     }
                 }, 5L);

@@ -29,20 +29,29 @@ import java.util.HashMap;
 import java.util.List;
 
 @Getter
-@Setter
 @ToString
 public class BuildFFAPlayer {
 
+    @Setter
     private long threwPearlTime;
+
+    @Setter
     private int currentKillStreak;
+
     private long latestDeadTime;
+
+    @Setter
     private boolean build;
     private Player player;
-    private ItemStack[] inventory;
+    private BuildFFAInventory inventory;
+
+    @Setter
     private boolean inGame;
+
+    @Setter
     private boolean died;
+
     private Player lastHitPlayer;
-    private NickedBffaPlayer nickedBffaPlayer;
     private boolean shootAble;
 
     private boolean snowBallBought, bowBought;
@@ -51,6 +60,8 @@ public class BuildFFAPlayer {
 
     /* Stats */
     private BuildFFAStats stats;
+
+    private boolean nicked;
     private BuildFFAStats nickedStats;
 
     /* Prestige */
@@ -70,9 +81,8 @@ public class BuildFFAPlayer {
         this.died = false;
         this.lastHitPlayer = null;
         this.shootAble = true;
-        this.nickedBffaPlayer = null;
+        this.nicked = false;
         this.kbStickDurability = 15;
-
         this.snowBallBought = false;
         this.bowBought = false;
         this.damageTable = new HashMap<>();
@@ -81,11 +91,23 @@ public class BuildFFAPlayer {
     public void setJoinInventory() {
         this.player.getInventory().clear();
         this.player.getInventory().setArmorContents(null);
-        this.player.getInventory().setItem(0, ItemManager.createItem(Material.BLAZE_ROD, 1, LangUtils.getMessage(this.player, ItemNode.INVENTORY_SORTING)));
-        this.player.getInventory().setItem(8, ItemManager.createItem(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemNode.SHOP)));
+        this.player.getInventory().setItem(0, ItemManager.createItemStack(Material.BLAZE_ROD, 1, LangUtils.getMessage(this.player, ItemNode.INVENTORY_SORTING)));
+        this.player.getInventory().setItem(8, ItemManager.createItemStack(Material.CHEST, 1, LangUtils.getMessage(this.player, ItemNode.SHOP)));
         if (this.player.hasPermission("killeffect.killeffect")) {
-            this.player.getInventory().setItem(4, ItemManager.createItem(Material.GOLD_SWORD, 1, "§cKillEffects"));
+            this.player.getInventory().setItem(4, ItemManager.createItemStack(Material.GOLD_SWORD, 1, "§cKillEffects"));
         }
+    }
+
+    public void setInGameInventory(boolean loadArmor) {
+        player.getInventory().clear();
+        if(loadArmor) {
+            player.getInventory().setArmorContents(BuildFFAInventory.getArmors());
+        }
+        player.getInventory().setItem(inventory.getSwordIndex(), BuildFFAInventory.getGoldenSword());
+        player.getInventory().setItem(inventory.getStickIndex(), BuildFFAInventory.getKbStick());
+        player.getInventory().setItem(inventory.getPearlIndex(), BuildFFAInventory.getPearl());
+        player.getInventory().setItem(inventory.getWebIndex(), BuildFFAInventory.getWeb());
+        player.getInventory().setItem(inventory.getBlockIndex(), BuildFFAInventory.getBlock());
     }
 
     /*Stats Adder*/
@@ -99,28 +121,6 @@ public class BuildFFAPlayer {
 
     public void addDeaths() {
         this.deaths += 1;
-    }
-
-    public NickedBffaPlayer getNickedBffaPlayer() {
-        if (this.nickedBffaPlayer == null) {
-            return null;
-        }
-        return this.nickedBffaPlayer;
-    }
-
-    public boolean isNicked() {
-        if (this.nickedBffaPlayer == null) {
-            return false;
-        }
-        return true;
-    }
-
-    public void addNicked() {
-        this.nickedBffaPlayer = new NickedBffaPlayer(this.player);
-    }
-
-    public void removeNicked() {
-        this.nickedBffaPlayer = null;
     }
 
     public synchronized void death(boolean quit) {

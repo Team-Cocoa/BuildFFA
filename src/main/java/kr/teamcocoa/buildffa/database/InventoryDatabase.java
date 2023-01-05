@@ -7,6 +7,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.UUID;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,21 +20,42 @@ public class InventoryDatabase {
     public boolean setInventory(UUID uuid, BuildFFAInventory buildFFAInventory) {
         String sql = "UPDATE inventory SET sword = ?, stick = ?, block = ?, web = ?, pearl = ? WHERE uuid = ?";
         PlaceHolder placeHolder = new PlaceHolder(6);
-        placeHolder.addPlaceHolder(buildFFAInventory.getSwordIndex());
-        placeHolder.addPlaceHolder(buildFFAInventory.getStickIndex());
-        placeHolder.addPlaceHolder(buildFFAInventory.getBlockIndex());
-        placeHolder.addPlaceHolder(buildFFAInventory.getWebIndex());
-        placeHolder.addPlaceHolder(buildFFAInventory.getPearlIndex());
+
+        synchronized (buildFFAInventory) {
+            placeHolder.addPlaceHolder(buildFFAInventory.getSwordIndex());
+            placeHolder.addPlaceHolder(buildFFAInventory.getStickIndex());
+            placeHolder.addPlaceHolder(buildFFAInventory.getBlockIndex());
+            placeHolder.addPlaceHolder(buildFFAInventory.getWebIndex());
+            placeHolder.addPlaceHolder(buildFFAInventory.getPearlIndex());
+        }
         placeHolder.addPlaceHolder(uuid);
-        mySQL.update(sql, placeHolder);
+
+        return mySQL.update(sql, placeHolder);
     }
 
     public boolean resetInventory(UUID uuid) {
         String sql = "INSERT INTO inventory(uuid) VALUES(?) " +
                 "ON DUPLICATE KEY UPDATE sword = 0, stick = 1, block = 2, web = 7, pearl = 8;";
-        mySQL.update(sql, uuid.toString());
+        return mySQL.update(sql, uuid.toString());
     }
 
-
+    public boolean loadInventory(UUID uuid, BuildFFAInventory buildFFAInventory) {
+        String sql = "SELECT * FROM inventory WHERE uuid = ?";
+        try(    PreparedStatement preparedStatement = mySQL.getPreparedStatement(sql, uuid.toString());
+                ResultSet rs = preparedStatement.executeQuery()) {
+            if(rs.next()) {
+                buildFFAInventory.setSwordIndex(rs.getInt("sword"));
+                buildFFAInventory.setStickIndex(rs.getInt("stick"));
+                buildFFAInventory.setBlockIndex(rs.getInt("block"));
+                buildFFAInventory.setWebIndex(rs.getInt("web"));
+                buildFFAInventory.setPearlIndex(rs.getInt("pearl"));
+                return true;
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
