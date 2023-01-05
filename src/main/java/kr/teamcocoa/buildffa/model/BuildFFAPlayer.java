@@ -227,10 +227,6 @@ public class BuildFFAPlayer {
         }
     }
 
-// java.lang.NullPointerException
-// at kr.teamcocoa.buildffa.model.BffaPlayer.death(BffaPlayer.java:211)
-// at kr.teamcocoa.buildffa.listener.PlayerMoveListener.onPlayerMove(PlayerMoveListener.java:27)
-
     public void addDamage(Player hitter, double damage) {
         if (this.damageTable.containsKey(hitter)) {
             damage += this.damageTable.get(hitter);

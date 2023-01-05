@@ -1,6 +1,5 @@
 package kr.teamcocoa.buildffa.commands;
 
-import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.managers.PlayerManager;
 import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.utils.StringUtils;
