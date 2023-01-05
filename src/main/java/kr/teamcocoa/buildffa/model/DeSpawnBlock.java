@@ -1,97 +1,88 @@
 package kr.teamcocoa.buildffa.model;
 
 import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.managers.PlayerManager;
+import kr.teamcocoa.buildffa.utils.PlayerUtils;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.PacketPlayOutBlockBreakAnimation;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-public class DeSpawnBlock extends BukkitRunnable {
+public class DeSpawnBlock {
+
+    private static int count = 0;
+    private static final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(100);
+    private static final ConcurrentHashMap<Integer, ScheduledFuture> map = new ConcurrentHashMap<>();
 
     private int i = 0;
     private Block block;
-    private int random;
-    private int x, y, z;
+    private int index;
     private Player whoPlaced;
     private boolean giveAgain;
-    private World world;
 
-    public DeSpawnBlock(Player whoPlaced, Block block){
-        this.random = new Random().nextInt(10000);
+    public DeSpawnBlock(Player whoPlaced, Block block) {
         this.block = block;
         this.whoPlaced = whoPlaced;
-        this.x = block.getX();
-        this.y = block.getY();
-        this.z = block.getZ();
-        this.world = block.getWorld();
         this.giveAgain = block.getType() == Material.SANDSTONE;
     }
 
-    public DeSpawnBlock(Block block){
-        this.random = new Random().nextInt(10000);
+    public DeSpawnBlock(Block block) {
         this.block = block;
-        this.x = block.getX();
-        this.y = block.getY();
-        this.z = block.getZ();
-        this.world = block.getWorld();
         this.giveAgain = false;
     }
 
-    public void run() {
-        if(whoPlaced != null) {
-            try {
-                if (!BuildFFA.playerData.get(whoPlaced).isInGame()) {
-                    this.giveAgain = false;
+    public synchronized void initIndex() {
+        this.index = count;
+        count++;
+    }
+
+    public void start() {
+        ScheduledFuture future = executor.scheduleAtFixedRate(() -> {
+            if (i < 10) {
+                PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(
+                        index,
+                        new BlockPosition(block.getX(), block.getY(), block.getZ()),
+                        i);
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    PlayerUtils.sendPackets(player, packet);
                 }
+                i++;
             }
-            catch(Exception e) {
+            else {
                 makeAir();
-                this.giveAgain = false;
-                BuildFFA.worldData.removeBlock(block);
-                cancel();
-            }
-        }
-        if(i < 10) {
-            PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(
-                    random,
-                    new BlockPosition(block.getX(), block.getY(), block.getZ()),
-                    i);
-                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-            }
-            i++;
-        }
-        else{
-            makeAir();
-            PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(
-                    random, new BlockPosition(block.getX(), block.getY(), block.getZ()), 0);
-            for(Player player : Bukkit.getOnlinePlayers()){
-                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-            }
-            BuildFFA.worldData.removeBlock(block);
-            if(this.giveAgain){
-                try {
-                    event.getPlayer().getInventory().addItem(new ItemStack(Material.SANDSTONE));
-                    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
+                PacketPlayOutBlockBreakAnimation packet = new PacketPlayOutBlockBreakAnimation(
+                        index, new BlockPosition(block.getX(), block.getY(), block.getZ()), 0);
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    PlayerUtils.sendPackets(player, packet);
                 }
-                catch(Exception e){
-                    makeAir();
-                    cancel();
-                }
+                stop();
             }
-            cancel();
+        }, 0, 500, TimeUnit.MILLISECONDS);
+        map.put(index, future);
+    }
+
+    private void stop() {
+        ScheduledFuture future = map.getOrDefault(index, null);
+        if(future == null) {
+            return;
         }
+        future.cancel(true);
+        map.remove(index);
     }
 
     private void makeAir() {
         Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> {
-            new Location(world, x, y, z).getBlock().setType(Material.AIR);
+            new Location(block.getWorld(), block.getX(), block.getY(), block.getZ()).getBlock().setType(Material.AIR);
         });
     }
 }

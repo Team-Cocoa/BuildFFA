@@ -1,12 +1,11 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.translate.ItemNode;
+import kr.teamcocoa.buildffa.gui.KitEditInventory;
+import kr.teamcocoa.buildffa.gui.ShopInventory;
 import kr.teamcocoa.buildffa.items.extra.RescuePlatform;
-import kr.teamcocoa.buildffa.items.shop.ShopInventory;
-import kr.teamcocoa.buildffa.kit.KitEdit;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.managers.GUIManager;
+import kr.teamcocoa.buildffa.translate.ItemNode;
 import kr.teamcocoa.buildffa.utils.LangUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,7 +16,7 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
+        Player player = e.getPlayer();
         try {
             if (e.getClickedBlock().getType() == Material.STONE_PLATE) {
                 return;
@@ -29,26 +28,25 @@ public class PlayerInteractListener implements Listener {
 
         RescuePlatform.getInstance().onClick(e);
 
-        if (p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().getDisplayName() != null) {
-            String displayName = p.getItemInHand().getItemMeta().getDisplayName();
-            if (displayName.equals(LangUtils.getMessage(p, ItemNode.INVENTORY_SORTING))) {
-                KitEdit.getInstance().openInventorySorting(BuildFFA.playerData.get(p));
+        if (player.getItemInHand().hasItemMeta() && player.getItemInHand().getItemMeta().getDisplayName() != null) {
+            String displayName = player.getItemInHand().getItemMeta().getDisplayName();
+            if (displayName.equals(LangUtils.getMessage(player, ItemNode.INVENTORY_SORTING))) {
+                GUIManager.getGUI(KitEditInventory.class).openInventory(player);
                 return;
             }
-            if (displayName.equals(LangUtils.getMessage(p, ItemNode.LEAVE_ITEM))) {
-                p.kickPlayer("");
+            if (displayName.equals(LangUtils.getMessage(player, ItemNode.LEAVE_ITEM))) {
+                player.kickPlayer("");
                 return;
             }
-            if (displayName.equals(LangUtils.getMessage(p, ItemNode.SHOP))) {
-                ShopInventory.openShopInventory(p);
+            if (displayName.equals(LangUtils.getMessage(player, ItemNode.SHOP))) {
+                GUIManager.getGUI(ShopInventory.class).openInventory(player);
                 return;
             }
             if (displayName.equals("§cKillEffects")){
-                p.performCommand("killeffect");
+                player.performCommand("killeffect");
                 return;
             }
-            if (p.getLocation().getY() >= 207) {
-                Bukkit.getLogger().info("a");
+            if (player.getLocation().getY() >= 207) {
                 e.setCancelled(true);
                 return;
             }

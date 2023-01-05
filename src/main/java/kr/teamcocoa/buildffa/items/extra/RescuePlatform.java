@@ -59,8 +59,11 @@ public class RescuePlatform extends AbstractExtraItem implements UseAble {
                             Location cloned = location.clone().add(i, 0, j);
                             Block block = cloned.getBlock();
                             block.setType(Material.SLIME_BLOCK);
-                            BuildFFA.worldData.addBlock(block);
-                            new DeSpawnBlock(block).runTaskTimerAsynchronously(BuildFFA.getInstance(), 0L, 10L);
+
+                            // 사라지는 블록 추가
+                            DeSpawnBlock deSpawnBlock = new DeSpawnBlock(block);
+                            deSpawnBlock.initIndex();
+                            deSpawnBlock.start();
                         }
                     }
                     player.sendMessage(LangUtils.getMessage(player, MessageNode.USED_PLATFORM));

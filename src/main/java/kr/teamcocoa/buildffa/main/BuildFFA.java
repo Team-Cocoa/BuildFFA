@@ -3,6 +3,7 @@ package kr.teamcocoa.buildffa.main;
 import kr.teamcocoa.buildffa.commands.*;
 import kr.teamcocoa.buildffa.listener.*;
 import kr.teamcocoa.buildffa.database.BuildFFADatabase;
+import kr.teamcocoa.buildffa.managers.GUIManager;
 import kr.teamcocoa.buildffa.managers.PlayerManager;
 import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.utils.ScoreboardExecutor;
@@ -31,7 +32,6 @@ public class BuildFFA extends JavaPlugin {
     private ScheduledExecutorService rankingUpdater = Executors.newSingleThreadScheduledExecutor();
 
     public static HashMap<Player, BuildFFAPlayer> playerData = new HashMap<>();
-    public static WorldData worldData = new WorldData();
 
     @Getter
     @Setter
@@ -63,6 +63,7 @@ public class BuildFFA extends JavaPlugin {
         loadListeners();
         loadCommands();
         BuildFFADatabase.init();
+        GUIManager.init();
         loadUpdater();
     }
 

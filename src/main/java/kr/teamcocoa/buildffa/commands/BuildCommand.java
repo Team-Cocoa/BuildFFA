@@ -1,6 +1,8 @@
 package kr.teamcocoa.buildffa.commands;
 
 import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.managers.PlayerManager;
+import kr.teamcocoa.buildffa.model.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.utils.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -16,21 +18,27 @@ public class BuildCommand implements CommandExecutor {
             return false;
         }
         Player player = (Player) sender;
+        BuildFFAPlayer buildFFAPlayer = PlayerManager.getPlayer(player);
+
+        if(buildFFAPlayer == null) {
+            return false;
+        }
+
         if(player.hasPermission("teamcocoa.moderator")) {
             if(args.length == 0) {
-                if(!BuildFFA.playerData.get(player).isBuild()) {
+                if(!buildFFAPlayer.isBuild()) {
                     player.sendMessage(StringUtils.color("&a[&dBuildFFA&a] &aThe Build mode has been activated."));
                     player.setGameMode(GameMode.CREATIVE);
                     player.getInventory().clear();
                     player.getInventory().setArmorContents(null);
-                    BuildFFA.playerData.get(player).setInGame(false);
-                    BuildFFA.playerData.get(player).setBuild(true);
+                    buildFFAPlayer.setInGame(false);
+                    buildFFAPlayer.setBuild(true);
                 }
                 else {
                     player.sendMessage(StringUtils.color("&a[&dBuildFFA&a] &cThe Build mode has been deactivated."));
-                    BuildFFA.playerData.get(player).setJoinInventory();
+                    buildFFAPlayer.setJoinInventory();
                     player.setGameMode(GameMode.SURVIVAL);
-                    BuildFFA.playerData.get(player).setBuild(false);
+                    buildFFAPlayer.setBuild(false);
                 }
             }
         }

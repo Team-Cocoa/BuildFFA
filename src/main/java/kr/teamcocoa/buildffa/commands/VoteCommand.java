@@ -3,7 +3,7 @@ package kr.teamcocoa.buildffa.commands;
 import kr.teamcocoa.buildffa.translate.MessageNode;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.MapVote;
-import kr.teamcocoa.buildffa.world.MapVoteInventory;
+import kr.teamcocoa.buildffa.gui.MapVoteInventory;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
