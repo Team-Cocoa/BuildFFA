@@ -6,10 +6,13 @@ import ch.dkrieger.permissionsystem.lib.group.PermissionGroupManager;
 import ch.dkrieger.permissionsystem.lib.player.PermissionPlayer;
 import ch.dkrieger.permissionsystem.lib.player.PermissionPlayerManager;
 import ch.dkrieger.permissionsystem.lib.player.PlayerDesign;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.main.Main;
+import eu.cloudnetservice.driver.permission.PermissionGroup;
+import eu.cloudnetservice.driver.permission.PermissionManagement;
+import eu.cloudnetservice.driver.permission.PermissionUser;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;
-import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,32 +36,19 @@ public class AsyncPlayerChatListener implements Listener {
 //        Bukkit.getLogger().info(e.getFormat());
         Player player = e.getPlayer();
         String message = e.getMessage();
-        BffaPlayer bffaPlayer = Main.playerData.get(player);
+        BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(player);
 
-        PermissionGroup group = PermissionPlayerManager.getInstance().getPermissionPlayer(player.getUniqueId()).getHighestGroup();
-        if (group == null) {
-            return;
-        }
+        PermissionManagement permissionManagement = BuildFFA.getPermissionManagement();
 
-        PlayerDesign design = group.getPlayerDesign();
-        if (design == null) {
-            return;
-        }
+        PermissionUser permissionUser = permissionManagement.user(player.getUniqueId());
+        PermissionGroup permissionGroup = permissionManagement.highestPermissionGroup(permissionManagement.user(player.getUniqueId()));
 
-        PermissionPlayer permplayer = PermissionPlayerManager.getInstance().getPermissionPlayer(player.getUniqueId());
-
-        String prestige = StringUtils.color(PrestigeManager.getInstance().getPrestigeName(bffaPlayer));
-
-        if(bffaPlayer.isNicked()) {
-            e.setFormat(MessageFormat.format("§8[{0}§8] §7{1} §8> §f{2}",
-                    StringUtils.color(PrestigeManager.getInstance().getPrestigeName(bffaPlayer.getNickedBffaPlayer().getKills())), player.getName(), e.getMessage().replace("%", "%%")));
-            return;
-        }
+        String prestige = StringUtils.color(PrestigeManager.getInstance().getPrestigeName(buildFFAPlayer));
 
         String prefix = StringUtils.color(design.getPrefix()).replace("_", " ");
         String display = StringUtils.color(design.getDisplay()).replace("_", " ");
         StringBuilder suffix = new StringBuilder();
-        if(permplayer.isInGroup("verified") && !group.getName().equals("Verified")) {
+        if(permplayer.isInGroup("verified") && !permissionGroup.getName().equals("Verified")) {
             suffix.append(StringUtils.color(PermissionGroupManager.getInstance().getGroup("Verified").getPlayerDesign().getSuffix().trim()).replace("_", " "));
         }
         suffix.append(StringUtils.color(design.getSuffix().replace("-1", "")));
@@ -72,10 +62,7 @@ public class AsyncPlayerChatListener implements Listener {
         if (display.equalsIgnoreCase("-1")) {
             display = "";
         }
-        if (BukkitBootstrap.getInstance().getPlaceHolderAPI() != null) {
-            BukkitBootstrap.getInstance().getPlaceHolderAPI().set(player, prefix);
-        }
-        if (e.getPlayer().hasPermission("dkperms.chat.color")) {
+        if (player.hasPermission("teamcocoa.premium")) {
             message = (StringUtils.color(message));
         }
         e.setFormat(MessageFormat.format(format, prestige, (display.equals("-1") || display.equals("") ? "&7" : display + " "), player.getName(), suffix));

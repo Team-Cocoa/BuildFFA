@@ -1,21 +1,21 @@
 package kr.teamcocoa.buildffa.prestige;
 
 import kr.teamcocoa.buildffa.enums.MessageEnum;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.utils.LangUtils;
-import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
+import kr.teamcocoa.language.languages.LanguageController;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.text.MessageFormat;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PrestigeManager {
 
     private static PrestigeManager instance;
-
-    private PrestigeManager() {
-
-    }
 
     public static PrestigeManager getInstance() {
         if(instance == null) {
@@ -72,21 +72,21 @@ public class PrestigeManager {
         return 0;
     }
 
-    public void loadPrestige(BffaPlayer bffaPlayer) {
-        Prestige prestige = getPrestige(bffaPlayer.getKills());
-        int grade = getPrestigeRank(prestige, bffaPlayer.getKills());
-        bffaPlayer.setPrestige(prestige);
-        bffaPlayer.setGrade(grade);
+    public void loadPrestige(BuildFFAPlayer buildFFAPlayer) {
+        Prestige prestige = getPrestige(buildFFAPlayer.getBuildFFAStats().getKills());
+        int grade = getPrestigeRank(prestige, buildFFAPlayer.getBuildFFAStats().getKills());
+        buildFFAPlayer.setPrestige(prestige);
+        buildFFAPlayer.setGrade(grade);
     }
 
-    public void updatePrestige(BffaPlayer bffaPlayer) {
-        Prestige prestige = bffaPlayer.getPrestige();
-        int grade = bffaPlayer.getGrade();
+    public void updatePrestige(BuildFFAPlayer buildFFAPlayer) {
+        Prestige prestige = buildFFAPlayer.getPrestige();
+        int grade = buildFFAPlayer.getGrade();
 
         int minimum = prestige.getMinimumKills();
         int distance = ((prestige.getMaximumKills() + 1) - prestige.getMinimumKills()) / 5;
 
-        int kills = bffaPlayer.getKills();
+        int kills = buildFFAPlayer.getBuildFFAStats().getKills();
         Bukkit.getLogger().info(
                 (minimum + (distance * (grade - 1))) + " <= " + kills + " <= " + ((minimum + (distance * grade)) -1)
         );
@@ -95,11 +95,15 @@ public class PrestigeManager {
                 return;
             }
             else {
-                loadPrestige(bffaPlayer);
+                loadPrestige(buildFFAPlayer);
                 for(Player player : Bukkit.getOnlinePlayers()) {
                     player.sendMessage(
-                            MessageFormat.format(StringUtils.getListByString(LangUtils.getMessage(player, MessageEnum.PRESTIGE_PROMOTE_MESSAGE)), bffaPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(bffaPlayer)))
-                    );
+                            MessageFormat.format(String.join(",",
+                                            LangUtils.getMessage(player, MessageEnum.PRESTIGE_PROMOTE_MESSAGE)
+                                                    .replace("[", "")
+                                                    .replace("]", "")
+                                                    .split(",")),
+                                    buildFFAPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(buildFFAPlayer))));
                 }
             }
         }
@@ -108,13 +112,15 @@ public class PrestigeManager {
                 return;
             }
             else {
-                loadPrestige(bffaPlayer);
-                if(!bffaPlayer.isNicked()) {
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.sendMessage(
-                                MessageFormat.format(StringUtils.getListByString(LangUtils.getMessage(player, MessageEnum.PRESTIGE_PROMOTE_MESSAGE)), bffaPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(bffaPlayer)))
-                        );
-                    }
+                loadPrestige(buildFFAPlayer);
+                for(Player player : Bukkit.getOnlinePlayers()) {
+                    player.sendMessage(
+                            MessageFormat.format(String.join(",",
+                                            LangUtils.getMessage(player, MessageEnum.PRESTIGE_PROMOTE_MESSAGE)
+                                                    .replace("[", "")
+                                                    .replace("]", "")
+                                                    .split(",")),
+                                    buildFFAPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(buildFFAPlayer))));
                 }
             }
         }
@@ -126,35 +132,24 @@ public class PrestigeManager {
         return prestige.getName() + (prestige == Prestige.BEGINNER ? "" : " " + arabicToRome(grade));
     }
 
-    public String getPrestigeName(BffaPlayer bffaPlayer) {
-        return bffaPlayer.getPrestige().getName() + (bffaPlayer.getPrestige() == Prestige.BEGINNER ? "" : " " + arabicToRome(bffaPlayer.getGrade()));
+    public String getPrestigeName(BuildFFAPlayer buildFFAPlayer) {
+        return buildFFAPlayer.getPrestige().getName() + (buildFFAPlayer.getPrestige() == Prestige.BEGINNER ? "" : " " + arabicToRome(buildFFAPlayer.getGrade()));
     }
 
     private String arabicToRome(int num) {
-        switch (num) {
-            case 1:
-                return "I";
-            case 2:
-                return "II";
-            case 3:
-                return "III";
-            case 4:
-                return "IV";
-            case 5:
-                return "V";
-            case 6:
-                return "VI";
-            case 7:
-                return "VII";
-            case 8:
-                return "VIII";
-            case 9:
-                return "IX";
-            case 10:
-                return "X";
-            default:
-                return "";
-        }
+        return switch(num) {
+            case 1 -> "I";
+            case 2 -> "II";
+            case 3 -> "III";
+            case 4 -> "IV";
+            case 5 -> "V";
+            case 6 -> "VI";
+            case 7 -> "VII";
+            case 8 -> "VIII";
+            case 9 -> "IX";
+            case 10 -> "X";
+            default -> "";
+        };
     }
 
 

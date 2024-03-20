@@ -1,9 +1,9 @@
 package kr.teamcocoa.buildffa.items.shop;
 
 import kr.teamcocoa.buildffa.enums.OtherEnum;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.utils.LangUtils;
-import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -46,7 +46,7 @@ public class SnowBall extends AbstractShopItem {
         return StringUtils.color("&cSnowBall");
     }
 
-    public BuyStatus purchase(BffaPlayer player) {
+    public BuyStatus purchase(BuildFFAPlayer player) {
         if(player.isSnowBallBought()) {
             return BuyStatus.ALREADY_BOUGHT;
         }

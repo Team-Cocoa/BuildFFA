@@ -1,136 +1,87 @@
 package kr.teamcocoa.buildffa.utils;
 
-import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.enums.OtherEnum;
-import kr.teamcocoa.buildffa.main.Main;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.core.bukkit.utils.PacketUtils;
+import kr.teamcocoa.core.utils.StringUtils;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSetDisplayObjectivePacket;
+import net.minecraft.network.protocol.game.ClientboundSetObjectivePacket;
+import net.minecraft.network.protocol.game.ClientboundSetScorePacket;
+import net.minecraft.server.ServerScoreboard;
+import net.minecraft.world.scores.Objective;
+import net.minecraft.world.scores.Scoreboard;
+import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
-import net.minecraft.server.v1_8_R3.IScoreboardCriteria;
-import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardDisplayObjective;
-import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardObjective;
-import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardScore;
-import net.minecraft.server.v1_8_R3.PlayerConnection;
-import net.minecraft.server.v1_8_R3.Scoreboard;
-import net.minecraft.server.v1_8_R3.ScoreboardObjective;
-import net.minecraft.server.v1_8_R3.ScoreboardScore;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ScoreboardManager implements Listener {
-  
-  public void setScoreboard(Player player) {
-      try {
-          int kills = Main.playerData.get(player).getKills();
-          int killstreak = Main.playerData.get(player).getBestKillStreaks();
 
-          Scoreboard scoreboard = new Scoreboard();
-          ScoreboardObjective objective = scoreboard.registerObjective("buildffa", IScoreboardCriteria.b);
-          objective.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&dBuildFFA"));
+    private static void setScoreboard(Player player, List<String> lines) {
+        Scoreboard scoreboard = new Scoreboard();
+        Objective objective = scoreboard.addObjective("BuildFFASB",
+                ObjectiveCriteria.DUMMY,
+                Component.Serializer.fromJson("{\n" +
+                        "  \"text\": \"" + StringUtils.color("&dBuildFFA") + "\"\n" +
+                        "}"),
+                ObjectiveCriteria.RenderType.INTEGER);
 
-          PacketPlayOutScoreboardObjective removeObjective = new PacketPlayOutScoreboardObjective(objective, 1);
+        ClientboundSetObjectivePacket removeObjective = new ClientboundSetObjectivePacket(objective, 1);
 
-          PacketPlayOutScoreboardObjective createObjective = new PacketPlayOutScoreboardObjective(objective, 0);
-          PacketPlayOutScoreboardDisplayObjective displayObjective = new PacketPlayOutScoreboardDisplayObjective(1, objective);
+        ClientboundSetObjectivePacket createObjective = new ClientboundSetObjectivePacket(objective, 0);
 
-          List<PacketPlayOutScoreboardScore> scores = new ArrayList<>();
-          scores.add(getScorePacket(scoreboard, objective, color("&aTeamCocoa.kr"), 8));
-          scores.add(getScorePacket(scoreboard, objective, "", 7));
-          scores.add(getScorePacket(scoreboard, objective, LangUtils.getMessage(player, OtherEnum.SCOREBOARD_KILLS), 6));
-          scores.add(getScorePacket(scoreboard, objective, color("&8» &e" + kills), 5));
-          scores.add(getScorePacket(scoreboard, objective, " ", 4));
-          scores.add(getScorePacket(scoreboard, objective, LangUtils.getMessage(player, OtherEnum.SCOREBOARD_BEST_KILL_STREAK), 3));
-          scores.add(getScorePacket(scoreboard, objective, color("&8» &e" + killstreak + " "), 2));
-          scores.add(getScorePacket(scoreboard, objective, "  ", 1));
-          scores.add(getScorePacket(scoreboard, objective, LangUtils.getMessage(player, Main.teaming ? OtherEnum.SCOREBOARD_TEAMING_ALLOW : OtherEnum.SCOREBOARD_TEAMING_PROHIBIT), 0));
+        ClientboundSetDisplayObjectivePacket displayObjective = new ClientboundSetDisplayObjectivePacket(1, objective);
 
-          PlayerConnection connection = ((CraftPlayer) player).getHandle().playerConnection;
-          connection.sendPacket(removeObjective);
-          connection.sendPacket(createObjective);
-          connection.sendPacket(displayObjective);
-          for (PacketPlayOutScoreboardScore packets : scores) {
-              connection.sendPacket(packets);
-          }
-      }
-      catch(NullPointerException e) {
-
-      }
-  }
-
-  private PacketPlayOutScoreboardScore getScorePacket(Scoreboard scoreboard, ScoreboardObjective objective, String display, int scoreValue) {
-    ScoreboardScore score = new ScoreboardScore(scoreboard, objective, display);
-    score.setScore(scoreValue);
-    return new PacketPlayOutScoreboardScore(score);
-  }
-
-  private String color(String string) {
-    return ChatColor.translateAlternateColorCodes('&', string);
-  }
-  
-//  public static void mapChangeUpdater() {
-//
-//      Bukkit.getScheduler().runTaskTimer(Main.inst(), () -> {
-//          --sec;
-//          LocalTime localTime = LocalTime.ofSecondOfDay(sec);
-//          String time = localTime.toString();
-//          for(Player player : Bukkit.getOnlinePlayers()) {
-//              Bar.sendDefaultBar(player, time);
-//          }
-//          if(sec == 5) {
-//              Location spawn = Locations.getSpawnLocation(Locations.getMapNameByInt(i = i + 1 < 4 ? i + 1 : 1));
-//              if(!spawn.getChunk().isLoaded()) {
-//                  spawn.getChunk().load();
-//              }
-//              pvpAble = false;
-//              placeAble = false;
-//          }
-//          switch(sec) {
-//              case 600:
-//              case 300:
-//              case 180:
-//              case 60:
-//              case 30:
-//              case 10:
-//              case 5:
-//              case 4:
-//              case 3:
-//              case 2:
-//                  break;
-//              case 1:
-//                  sendCountdownMessage();
-//                  Main.worldData.removeBlocks();
-//                  break;
-//              case 0:
-//                  sec = 600;
-//                  i = i + 1 < 4 ? i + 1 : 1;
-////                  Locations.MapChange(i);
-//                  pvpAble = true;
-//                  placeAble = true;
-//                  break;
-//              default:
-//                  break;
-//          }
-//          }, 0L, 20L);
-//  }
-
-  public static void sendAllPlayer(MessageEnum node, int sec) {
-      for(Player player : Bukkit.getOnlinePlayers()) {
-          player.sendMessage(LangUtils.getMessage(player, node).replace("%time%", String.valueOf(sec)));
-      }
-  }
-  
-  public void ScoreboardUpdater() {
-    (new BukkitRunnable() {
-        public void run() {
-          for (Player player : Bukkit.getOnlinePlayers()) {
-            setScoreboard(player);
-          }
+        List<ClientboundSetScorePacket> scores = new ArrayList<>();
+        int voidCount = 0;
+        int fixedIndex = lines.size() - 1;
+        for (int i = 0; i < lines.size(); i++) {
+            if (lines.get(i).equals("")) {
+                voidCount++;
+                StringBuilder sb = new StringBuilder();
+                for (int j = 0; j < voidCount; j++) {
+                    sb.append(" ");
+                }
+                scores.add(getScorePacket(objective, sb.toString(), fixedIndex));
+            } else {
+                scores.add(getScorePacket(objective, lines.get(i), fixedIndex));
+            }
+            fixedIndex--;
         }
-      }).runTaskTimer(Main.getInstance(), 0L, 20L);
-  }
+
+        PacketUtils.sendPackets(player, removeObjective, createObjective, displayObjective);
+        for (ClientboundSetScorePacket packets : scores) {
+            PacketUtils.sendPackets(player, packets);
+        }
+    }
+
+    public static void sendBuildFFAScoreboard(BuildFFAPlayer buildFFAPlayer) {
+        int kills = buildFFAPlayer.getBuildFFAStats().getKills();
+        int killstreak = buildFFAPlayer.getBuildFFAStats().getBestKillStreaks();
+
+        Player player = buildFFAPlayer.getPlayer();
+
+        List<String> lines = new ArrayList<>();
+        lines.add("&aTeamCocoa.kr");
+        lines.add("");
+        lines.add(LangUtils.getMessage(player, OtherEnum.SCOREBOARD_KILLS));
+        lines.add("&8» &e" + kills);
+        lines.add(" ");
+        lines.add(LangUtils.getMessage(player, OtherEnum.SCOREBOARD_BEST_KILL_STREAK));
+        lines.add("&8» &e" + killstreak + " ");
+        lines.add("  ");
+        lines.add(LangUtils.getMessage(player, BuildFFA.teaming ? OtherEnum.SCOREBOARD_TEAMING_ALLOW : OtherEnum.SCOREBOARD_TEAMING_PROHIBIT));
+
+        setScoreboard(player, lines);
+    }
+
+    private static ClientboundSetScorePacket getScorePacket(Objective objective, String display, int scoreValue) {
+        return new ClientboundSetScorePacket(ServerScoreboard.Method.CHANGE, objective.getName(), StringUtils.color(display), scoreValue);
+    }
+
 }

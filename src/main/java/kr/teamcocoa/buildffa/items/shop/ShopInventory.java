@@ -2,27 +2,22 @@ package kr.teamcocoa.buildffa.items.shop;
 
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
-import kr.teamcocoa.buildffa.main.Main;
-import kr.teamcocoa.buildffa.utils.ItemManager;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
+import kr.teamcocoa.core.bukkit.utils.ItemUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ShopInventory {
 
     public static void onClickShopInventory(InventoryClickEvent e) {
-        if(!(e.getWhoClicked() instanceof Player)) {
-            return;
-        }
-
         Player player = (Player) e.getWhoClicked();
-
-        if (!e.getView().getTitle().equals(LangUtils.getMessage(player, InventoryEnum.EXTRA_ITEM))) {
-            return;
-        }
 
         if(e.getCurrentItem() == null) {
             return;
@@ -34,40 +29,36 @@ public class ShopInventory {
             return;
         }
 
-        BuyStatus status = null;
         e.setCancelled(true);
 
-        if(clickedItem.getItemMeta().getDisplayName().equals(SnowBall.getInstance().getName(player))) {
-            status = SnowBall.getInstance().purchase(Main.playerData.get(player));
-        }
+        BuyStatus status = null;
 
-        if(clickedItem.getItemMeta().getDisplayName().equals(Bow.getInstance().getName(player))) {
-            status = Bow.getInstance().purchase(Main.playerData.get(player));
+        ItemMeta clickedItemMeta = clickedItem.getItemMeta();
+
+        if(ComponentUtils.componentEquals(clickedItemMeta.displayName(), SnowBall.getInstance().getName(player))) {
+            status = SnowBall.getInstance().purchase(BuildFFA.playerData.get(player));
+        }
+        if(ComponentUtils.componentEquals(clickedItemMeta.displayName(), Bow.getInstance().getName(player))) {
+            status = Bow.getInstance().purchase(BuildFFA.playerData.get(player));
         }
 
         if(status != null) {
-            switch(status) {
-                case FAILED:
-                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.SHOP_CANNOT_BUY));
-                    break;
-                case SUCCESS:
-                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.SHOP_BOUGHT));
-                    break;
-                case ALREADY_BOUGHT:
-                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.SHOP_ALREADY_BOUGHT));
-                    break;
-            }
+            player.sendMessage(LangUtils.getMessage(player, switch(status) {
+                case SUCCESS -> MessageEnum.SHOP_BOUGHT;
+                case FAILED -> MessageEnum.SHOP_CANNOT_BUY;
+                case ALREADY_BOUGHT -> MessageEnum.SHOP_ALREADY_BOUGHT;
+            }));
         }
 
     }
 
     public static void openShopInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 3 * 9, LangUtils.getMessage(player, InventoryEnum.EXTRA_ITEM));
-        for (int i = 0; i < 27; i++) {
-            inventory.setItem(i, ItemManager.grayGlassPane);
+        Inventory inventory = Bukkit.createInventory(null, 1 * 9, Component.text(LangUtils.getMessage(player, InventoryEnum.EXTRA_ITEM)));
+        for (int i = 0; i < 9; i++) {
+            inventory.setItem(i, ItemUtils.getGUIBackGround());
         }
-        inventory.setItem(11, SnowBall.getInstance().getVoteItemStack(player));
-        inventory.setItem(15, Bow.getInstance().getVoteItemStack(player));
+        inventory.setItem(2, SnowBall.getInstance().getVoteItemStack(player));
+        inventory.setItem(6, Bow.getInstance().getVoteItemStack(player));
         player.openInventory(inventory);
     }
 }

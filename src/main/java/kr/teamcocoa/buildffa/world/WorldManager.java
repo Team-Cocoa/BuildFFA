@@ -6,10 +6,12 @@ import com.grinderwolf.swm.api.world.SlimeWorld;
 import com.grinderwolf.swm.api.world.properties.SlimeProperties;
 import com.grinderwolf.swm.api.world.properties.SlimePropertyMap;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.main.Main;
-import kr.teamcocoa.buildffa.utils.Bar;
+import kr.teamcocoa.buildffa.enums.OtherEnum;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import kr.teamcocoa.core.bukkit.utils.PacketUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -81,18 +83,18 @@ public class WorldManager {
             String t = currentMapName;
             currentMapName = temp;
             Location spawn = getSpawnByName(name);
-            Main.worldData.removeBlocks();
+            BuildFFA.worldData.removeBlocks();
             long deadTime = System.currentTimeMillis();
-            Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
+            Bukkit.getScheduler().runTaskLater(BuildFFA.getInstance(), () -> {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.teleport(spawn);
-                    BffaPlayer bffaPlayer = Main.playerData.get(player);
-                    bffaPlayer.setJoinInventory();
-                    bffaPlayer.setInGame(false);
-                    bffaPlayer.setLatestDeadTime(deadTime);
-                    bffaPlayer.setBowBought(false);
-                    bffaPlayer.setSnowBallBought(false);
-                    bffaPlayer.setLastHitPlayer(null);
+                    BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(player);
+                    buildFFAPlayer.setJoinInventory();
+                    buildFFAPlayer.setInGame(false);
+                    buildFFAPlayer.setLatestDeadTime(deadTime);
+                    buildFFAPlayer.setBowBought(false);
+                    buildFFAPlayer.setSnowBallBought(false);
+                    buildFFAPlayer.setLastHitPlayer(null);
                 }
                 placeAble = true;
             }, 0L);
@@ -100,45 +102,38 @@ public class WorldManager {
     }
 
     public void mapChangeUpdater() {
-
-        Bukkit.getScheduler().runTaskTimer(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskTimer(BuildFFA.getInstance(), () -> {
             --sec;
             LocalTime localTime = LocalTime.ofSecondOfDay(sec);
             String time = localTime.toString();
             MapVote mapVote = MapVote.getInstance();
             for(Player player : Bukkit.getOnlinePlayers()) {
-                Bar.sendDefaultBar(player, time);
+
+                PacketUtils.sendBar(
+                        player,
+                        StringUtils.color(
+                                "&8» " + LangUtils.getMessage(player, OtherEnum.BAR_MAP) + " : &e" + WorldManager.getInstance().getCurrentMap()
+                        + " &r&8» " + LangUtils.getMessage(player, OtherEnum.BAR_TIME_LEFT) + " : &e"
+                        + time));
             }
             if(sec == 5) {
                 pvpAble = false;
                 placeAble = false;
             }
             switch(sec) {
-                case 600:
-                case 300:
-                case 180:
-                case 60:
-                case 30:
+                case 600, 300, 180, 60, 30 -> {
                     sendCountdownMessage();
                     for(Player player : Bukkit.getOnlinePlayers()) {
                         player.sendMessage(mapVote.getVotingStatusMessage(player));
                     }
-                    break;
-                case 310:
-                case 70:
-                case 40:
-                case 20:
-                case 15:
-                case 14:
-                case 13:
-                case 12:
-                case 11:
-                    sendVoteEndMessage();
-                    break;
-                case 10:
+                }
+
+                case 310, 70, 40, 20, 15, 14, 13, 12, 11 -> sendVoteEndMessage();
+
+                case 10 -> {
                     mapVote.setVoteAble(false);
                     String map = mapVote.getMostVoted();
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> {
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(BuildFFA.getInstance(), () -> {
                         loadWorld(map);
                         cloneWorld(map);
                     }, 1L);
@@ -146,25 +141,22 @@ public class WorldManager {
                         player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_ENDED));
                         player.sendMessage(LangUtils.getMessage(player, MessageEnum.VOTE_MAP_SELECTED).replace("%map%", map));
                     }
-                case 5:
-                case 4:
-                case 3:
-                case 2:
+                }
+
+                case 5, 4, 3, 2 -> sendCountdownMessage();
+
+                case 1 -> {
                     sendCountdownMessage();
-                    break;
-                case 1:
-                    sendCountdownMessage();
-                    Main.worldData.removeBlocks();
-                    break;
-                case 0:
+                    BuildFFA.worldData.removeBlocks();
+                }
+
+                case 0 -> {
                     sec = 600;
                     pvpAble = true;
                     mapVote.setVoteAble(true);
                     mapVote.resetVotes();
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getInstance(), () -> mapChange(temp), 1L);
-                    break;
-                default:
-                    break;
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(BuildFFA.getInstance(), () -> mapChange(temp), 1L);
+                }
             }
         }, 0L, 20L);
     }
@@ -241,15 +233,10 @@ public class WorldManager {
     public double getDeathHeight() {
         String map = WorldManager.getInstance().getCurrentMap();
         //usually 0
-        switch(map.toLowerCase(Locale.ROOT)) {
-            case "cwbw":
-            case "spring":
-                return 0.0;
-            case "flatland":
-                return 85.0;
-            case "architecture":
-                return 64.0;
-        }
-        return 0.0;
+        return switch(map.toLowerCase(Locale.ROOT)) {
+            case "flatland" -> 85.0;
+            case "architecture" -> 64.0;
+            default -> 0.0;
+        };
     }
 }

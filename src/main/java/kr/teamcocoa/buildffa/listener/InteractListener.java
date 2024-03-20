@@ -3,8 +3,7 @@ package kr.teamcocoa.buildffa.listener;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.items.extra.RescuePlatform;
 import kr.teamcocoa.buildffa.items.shop.ShopInventory;
-import kr.teamcocoa.buildffa.kit.KitEdit;
-import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,10 +17,11 @@ public class InteractListener implements Listener {
     public void onInteract(PlayerInteractEvent e) {
         Player p = e.getPlayer();
         try {
-            if (e.getClickedBlock().getType() == Material.STONE_PLATE) {
+            if (e.getClickedBlock().getType() == Material.STONE_PRESSURE_PLATE) {
                 return;
             }
         }
+
         catch(Exception e2){
 
         }
@@ -31,7 +31,7 @@ public class InteractListener implements Listener {
         if (p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().getDisplayName() != null) {
             String displayName = p.getItemInHand().getItemMeta().getDisplayName();
             if (displayName.equals(LangUtils.getMessage(p, ItemEnum.INVENTORY_SORTING))) {
-                KitEdit.getInstance().openInventorySorting(Main.playerData.get(p));
+                KitEdit.getInstance().openInventorySorting(BuildFFA.playerData.get(p));
                 return;
             }
             if (displayName.equals(LangUtils.getMessage(p, ItemEnum.LEAVE_ITEM))) {

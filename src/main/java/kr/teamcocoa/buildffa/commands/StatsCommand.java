@@ -1,12 +1,11 @@
 package kr.teamcocoa.buildffa.commands;
 
 import kr.teamcocoa.buildffa.enums.MessageEnum;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.main.Main;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
-import kr.teamcocoa.buildffa.utils.NameFetcher;
-import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,7 +18,7 @@ import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Stats implements CommandExecutor, TabCompleter {
+public class StatsCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
@@ -29,10 +28,10 @@ public class Stats implements CommandExecutor, TabCompleter {
             int deaths = 0;
             String name;
             if (args.length == 0) {
-                BffaPlayer bffaPlayer = Main.playerData.get(player);
-                kills = bffaPlayer.getKills();
-                killStreak = bffaPlayer.getBestKillStreaks();
-                deaths = bffaPlayer.getDeaths();
+                BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(player);
+                kills = buildFFAPlayer.getKills();
+                killStreak = buildFFAPlayer.getBestKillStreaks();
+                deaths = buildFFAPlayer.getDeaths();
                 name = player.getName();
             }
             // /stats <nick> 을 입력했을때
@@ -49,15 +48,15 @@ public class Stats implements CommandExecutor, TabCompleter {
                         sendOfflineMessageStats(player, args[0]);
                         return true;
                     }
-                    BffaPlayer bffaPlayer = Main.playerData.get(target);
-                    if (bffaPlayer.isNicked()) {
-                        kills = bffaPlayer.getNickedBffaPlayer().getKills();
-                        killStreak = bffaPlayer.getNickedBffaPlayer().getBestKillStreaks();
-                        deaths = bffaPlayer.getNickedBffaPlayer().getDeaths();
+                    BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(target);
+                    if (buildFFAPlayer.isNicked()) {
+                        kills = buildFFAPlayer.getNickedBffaPlayer().getKills();
+                        killStreak = buildFFAPlayer.getNickedBffaPlayer().getBestKillStreaks();
+                        deaths = buildFFAPlayer.getNickedBffaPlayer().getDeaths();
                     } else {
-                        kills = bffaPlayer.getKills();
-                        killStreak = bffaPlayer.getBestKillStreaks();
-                        deaths = bffaPlayer.getDeaths();
+                        kills = buildFFAPlayer.getKills();
+                        killStreak = buildFFAPlayer.getBestKillStreaks();
+                        deaths = buildFFAPlayer.getDeaths();
                     }
                     name = target.getName();
                 }
@@ -71,7 +70,7 @@ public class Stats implements CommandExecutor, TabCompleter {
     }
 
     private void sendOfflineMessageStats(Player player, String name) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(BuildFFA.getInstance(), () -> {
             String request = NameFetcher.getUUID(name);
             try {
                 String name1 = request.split("\\|")[0].replace("\"", "");
@@ -83,10 +82,10 @@ public class Stats implements CommandExecutor, TabCompleter {
                 }
                 // 닉네임이 존재는 할때
                 // 서버에 접속한 적이 있을 때
-                if (Main.getInstance().stats.playerExists(uuid)) {
-                    int kills1 = Main.getInstance().stats.getKills(uuid);
-                    int deaths1 = Main.getInstance().stats.getDeaths(uuid);
-                    int killStreak1 = Main.getInstance().stats.getMaxKillStreak(uuid);
+                if (BuildFFA.getInstance().stats.playerExists(uuid)) {
+                    int kills1 = BuildFFA.getInstance().stats.getKills(uuid);
+                    int deaths1 = BuildFFA.getInstance().stats.getDeaths(uuid);
+                    int killStreak1 = BuildFFA.getInstance().stats.getMaxKillStreak(uuid);
                     String prestige1 = PrestigeManager.getInstance().getPrestigeName(kills1);
                     player.sendMessage(StringUtils.color(
                             MessageFormat.format(StringUtils.getListByString(

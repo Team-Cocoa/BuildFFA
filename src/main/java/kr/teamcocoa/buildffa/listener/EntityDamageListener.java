@@ -1,10 +1,9 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.kit.KitData;
-import kr.teamcocoa.buildffa.main.Main;
-import kr.teamcocoa.buildffa.utils.Title;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.world.WorldManager;
+import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -34,29 +33,29 @@ public class EntityDamageListener implements Listener {
                 Player damager = e.getDamager() instanceof Player
                         ? (Player) e.getDamager()
                         : (Player) ((Projectile) e.getDamager()).getShooter();
-                if (!Main.playerData.get(damager).isInGame()) {
+                if (!BuildFFA.playerData.get(damager).isInGame()) {
                     e.setCancelled(true);
                 }
                 else {
-                    Main.playerData.get(damagedPlayer).setLastHitPlayer(damager);
-                    Main.playerData.get(damagedPlayer).addDamage(damager, e.getFinalDamage());
+                    BuildFFA.playerData.get(damagedPlayer).setLastHitPlayer(damager);
+                    BuildFFA.playerData.get(damagedPlayer).addDamage(damager, e.getFinalDamage());
                     ItemStack itemStack = damager.getItemInHand();
                     if(itemStack != null && itemStack.getType() == Material.STICK) {
-                        BffaPlayer damagerBffaPlayer = Main.playerData.get(damager);
-                        int durability = damagerBffaPlayer.getKbStickDurability() - 1;
+                        BuildFFAPlayer damagerBuildFFAPlayer = BuildFFA.playerData.get(damager);
+                        int durability = damagerBuildFFAPlayer.getKbStickDurability() - 1;
                         if(durability == 0) {
                             damager.setItemInHand(new ItemStack(Material.AIR));
                             damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 100, 0);
                         }
-                        damagerBffaPlayer.setKbStickDurability(durability);
-                        Title.sendTitle(damager, "", "&c(" + durability + "/15)", 0, 10, 0);
+                        damagerBuildFFAPlayer.setKbStickDurability(durability);
+                        PacketUtils.sendTitle(damager, "", "&c(" + durability + "/15)", 0, 10, 0);
                     }
                 }
                 synchronized (damagedPlayer) {
                     if (damagedPlayer.getHealth() - e.getFinalDamage() <= 0) {
                         e.setCancelled(true);
-                        Main.getInstance().getServer().getPluginManager().callEvent(CraftEventFactory.callPlayerDeathEvent(((CraftPlayer) damagedPlayer).getHandle(), null, "", true));
-                        Main.playerData.get(damagedPlayer).death(false);
+                        BuildFFA.getInstance().getServer().getPluginManager().callEvent(CraftEventFactory.callPlayerDeathEvent(((CraftPlayer) damagedPlayer).getHandle(), null, "", true));
+                        BuildFFA.playerData.get(damagedPlayer).death(false);
                     }
                 }
             }
@@ -71,7 +70,7 @@ public class EntityDamageListener implements Listener {
                 return;
             }
 
-            if (!Main.playerData.get((Player) e.getEntity()).isInGame()) {
+            if (!BuildFFA.playerData.get((Player) e.getEntity()).isInGame()) {
                 e.setCancelled(true);
                 return;
             }

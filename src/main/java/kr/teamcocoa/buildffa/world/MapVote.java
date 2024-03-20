@@ -2,17 +2,26 @@ package kr.teamcocoa.buildffa.world;
 
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.utils.LangUtils;
-import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
+@Getter
 public class MapVote {
+
     private ArrayList<String> mapList = new ArrayList<>();
     private HashMap<String, Integer> voteList = new HashMap<>();
     private HashMap<Player, String> playerVoteList = new HashMap<>();
+
+    @Setter
     private boolean voteAble = true;
+
     private static MapVote instance = null;
 
     public static MapVote getInstance() {
@@ -23,7 +32,7 @@ public class MapVote {
         return instance;
     }
 
-    public MapVote() {
+    private MapVote() {
         mapList.add("CWBW");
         mapList.add("Spring");
         mapList.add("FlatLand");
@@ -32,10 +41,6 @@ public class MapVote {
         voteList.put("Spring", 0);
         voteList.put("FlatLand", 0);
         voteList.put("Architecture", 0);
-    }
-
-    public void setVoteAble(boolean voteAble) {
-        this.voteAble = voteAble;
     }
 
     public void addVote(Player player, String name) {
@@ -77,18 +82,6 @@ public class MapVote {
             return voteList.get(name);
         }
         return 0;
-    }
-
-    public ArrayList<String> getMapList() {
-        return mapList;
-    }
-
-    public boolean isVoteAble() {
-        return voteAble;
-    }
-
-    public void changeVoteAble() {
-        this.voteAble = !this.voteAble;
     }
 
     public void resetVotes() {

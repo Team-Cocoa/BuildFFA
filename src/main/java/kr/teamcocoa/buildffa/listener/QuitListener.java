@@ -1,8 +1,8 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.main.Main;
-import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.buildffa.world.MapVote;
 import kr.teamcocoa.nick.core.model.NickManager;
 import org.bukkit.Bukkit;
@@ -16,17 +16,17 @@ public class QuitListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         e.setQuitMessage(null);
         Player p = e.getPlayer();
-        BffaPlayer bffaPlayer = Main.playerData.get(p);
+        BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(p);
         MapVote mapVote = MapVote.getInstance();
         if (mapVote.getWherePlayerVoted(p) != null) {
             mapVote.removeVote(p, mapVote.getWherePlayerVoted(p));
         }
-        if (bffaPlayer.isInGame()) {
-            bffaPlayer.death(true);
+        if (buildFFAPlayer.isInGame()) {
+            buildFFAPlayer.death(true);
         }
-        Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), () -> {
-            Main.getInstance().stats.updatePlayer(bffaPlayer);
-            Main.playerData.remove(p);
+        Bukkit.getScheduler().runTaskAsynchronously(BuildFFA.getInstance(), () -> {
+            BuildFFA.getInstance().stats.updatePlayer(buildFFAPlayer);
+            BuildFFA.playerData.remove(p);
 
             String uuid = p.getUniqueId().toString();
             boolean nicked = NickManager.getInstance().isNicked(p.getUniqueId());
