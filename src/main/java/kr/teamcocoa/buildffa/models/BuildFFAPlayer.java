@@ -13,6 +13,8 @@ import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
+import kr.teamcocoa.kitmanager.frontend.kits.Kits;
+import kr.teamcocoa.kitmanager.frontend.main.KitManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -100,7 +102,7 @@ public class BuildFFAPlayer {
         player.closeInventory();
         player.getInventory().clear();
         player.setLevel(0);
-        // kit load
+        KitManager.getKitManagerAPI().loadPlayerKit(player, Kits.BUILDFFA);
         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100.0F, 0.0F);
 
         inGame = true;
