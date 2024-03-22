@@ -45,7 +45,7 @@ public class DeSpawnBlock {
         this.y = block.getY();
         this.z = block.getZ();
         this.world = block.getWorld();
-        this.giveAgain = false;
+        this.giveAgain = giveAgain;
         this.expire = false;
     }
 
