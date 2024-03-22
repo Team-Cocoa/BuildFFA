@@ -34,10 +34,14 @@ public class BuildFFAStats {
 
     public void addDeaths(int i) {
         this.deaths += i;
+        resetKillStreaks();
     }
 
     public void addKillStreaks(int i) {
         this.killStreaks += i;
+        if(killStreaks > bestKillStreaks) {
+            this.bestKillStreaks = killStreaks;
+        }
     }
 
     public void resetKillStreaks() {

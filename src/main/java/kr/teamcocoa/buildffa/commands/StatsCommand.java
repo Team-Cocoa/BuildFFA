@@ -1,118 +1,114 @@
 package kr.teamcocoa.buildffa.commands;
 
+import kr.teamcocoa.buildffa.databases.StatsDatabase;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
+import kr.teamcocoa.buildffa.models.BuildFFAStats;
+import kr.teamcocoa.buildffa.models.BuildFFAStatsManager;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import kr.teamcocoa.core.network.controllers.mojang.ApiMojangController;
 import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import java.text.MessageFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
-public class StatsCommand implements CommandExecutor, TabCompleter {
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            // /stats 를 입력했을때
-            int kills = 0;
-            int killStreak = 0;
-            int deaths = 0;
-            String name;
-            if (args.length == 0) {
-                BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(player);
-                kills = buildFFAPlayer.getKills();
-                killStreak = buildFFAPlayer.getBestKillStreaks();
-                deaths = buildFFAPlayer.getDeaths();
-                name = player.getName();
-            }
-            // /stats <nick> 을 입력했을때
-            else {
-                Player target = Bukkit.getPlayer(args[0]);
-                // 플레이어를 찾을 수 없을 때
-                if (target == null) {
-                    sendOfflineMessageStats(player, args[0]);
-                    return true;
-                }
-                // 플레이어가 있을 때
-                else {
-                    if (!args[0].toLowerCase(Locale.ROOT).equals(target.getName().toLowerCase(Locale.ROOT))) {
-                        sendOfflineMessageStats(player, args[0]);
-                        return true;
-                    }
-                    BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(target);
-                    if (buildFFAPlayer.isNicked()) {
-                        kills = buildFFAPlayer.getNickedBffaPlayer().getKills();
-                        killStreak = buildFFAPlayer.getNickedBffaPlayer().getBestKillStreaks();
-                        deaths = buildFFAPlayer.getNickedBffaPlayer().getDeaths();
-                    } else {
-                        kills = buildFFAPlayer.getKills();
-                        killStreak = buildFFAPlayer.getBestKillStreaks();
-                        deaths = buildFFAPlayer.getDeaths();
-                    }
-                    name = target.getName();
-                }
-            }
-            String prestige = PrestigeManager.getInstance().getPrestigeName(kills);
-            player.sendMessage(StringUtils.color(
-                    MessageFormat.format(StringUtils.getListByString(
-                            LangUtils.getMessage(player, MessageEnum.STATS_MESSAGE)), name, kills, deaths, killStreak, prestige)));
-        }
-        return true;
-    }
-
-    private void sendOfflineMessageStats(Player player, String name) {
-        Bukkit.getScheduler().runTaskAsynchronously(BuildFFA.getInstance(), () -> {
-            String request = NameFetcher.getUUID(name);
-            try {
-                String name1 = request.split("\\|")[0].replace("\"", "");
-                String uuid = request.split("\\|")[1];
-                // 닉네임이 존재 자체도 안할때
-                if (uuid == null) {
-                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.STATS_NOT_FOUND));
-                    return;
-                }
-                // 닉네임이 존재는 할때
-                // 서버에 접속한 적이 있을 때
-                if (BuildFFA.getInstance().stats.playerExists(uuid)) {
-                    int kills1 = BuildFFA.getInstance().stats.getKills(uuid);
-                    int deaths1 = BuildFFA.getInstance().stats.getDeaths(uuid);
-                    int killStreak1 = BuildFFA.getInstance().stats.getMaxKillStreak(uuid);
-                    String prestige1 = PrestigeManager.getInstance().getPrestigeName(kills1);
-                    player.sendMessage(StringUtils.color(
-                            MessageFormat.format(StringUtils.getListByString(
-                                    LangUtils.getMessage(player, MessageEnum.STATS_MESSAGE)), name1, kills1, deaths1, killStreak1, prestige1)));
-                }
-                // 서버에 접속한 적도 없을 때
-                else {
-                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.STATS_NOT_FOUND));
-                }
-            }
-            catch (NullPointerException e) {
-                player.sendMessage(LangUtils.getMessage(player, MessageEnum.STATS_NOT_FOUND));
-                return;
-            }
-        });
-    }
+public class StatsCommand implements CommandExecutor {
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        Bukkit.getLogger().info(s);
-        if(command.getName().equals("stats")) {
-            Bukkit.getLogger().info(s);
-            Bukkit.getLogger().info(Arrays.toString(strings));
-            List<String> nameList = new LinkedList<>();
-            StringUtil.copyPartialMatches(strings[0], Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()), nameList);
-            return nameList;
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
+        if(!(sender instanceof Player) && args.length == 0) {
+            return false;
         }
-        return null;
+
+        if(args.length >= 1) {
+            String playerName = args[0];
+
+            Player searchPlayer;
+
+            if((searchPlayer = Bukkit.getPlayer(playerName)) != null) {
+                BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(searchPlayer);
+                BuildFFAStats stats = buildFFAPlayer.getBuildFFAStats();
+                sendMessage(sender, searchPlayer.getName(), stats);
+                return true;
+            }
+
+            CompletableFuture<String> future = ApiMojangController.searchUUIDByName(playerName);
+            future.thenAcceptAsync(s -> {
+                UUID uuid = UUID.fromString(s);
+
+                BuildFFAStats cachedStats = BuildFFAStatsManager.getCache().readData(uuid);
+
+                if (cachedStats != null) {
+                    sendMessage(sender, playerName, cachedStats);
+                    return;
+                }
+
+                cachedStats = new BuildFFAStats(uuid);
+                boolean exist = StatsDatabase.loadStats(cachedStats);
+
+                if (exist) {
+                    BuildFFAStatsManager.getCache().createData(uuid, cachedStats);
+                    sendMessage(sender, playerName, cachedStats);
+                } else {
+                    if (sender instanceof Player player) {
+                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.STATS_NOT_FOUND));
+                    } else {
+                        sender.sendMessage(playerName + "not found.");
+                    }
+                }
+            });
+
+            return true;
+
+        }
+
+        Player player = ((Player) sender);
+        BuildFFAStats stats = BuildFFAStatsManager.getCache().readData(player.getUniqueId());
+        sendMessage(player, player.getName(), stats);
+
+        return true;
+
     }
+
+    private void sendMessage(CommandSender sender, String name, BuildFFAStats stats) {
+        if(sender instanceof Player player) {
+            String prestige = PrestigeManager.getInstance().getPrestigeName(stats.getKills());
+            player.sendMessage(MessageFormat.format(getListByString(
+                    LangUtils.getMessage(player, MessageEnum.STATS_MESSAGE)),
+                        name,
+                        stats.getKills(),
+                        stats.getDeaths(),
+                        stats.getBestKillStreaks(),
+                        prestige));
+        }
+        else {
+            String prestige = PrestigeManager.getInstance().getPrestigeName(stats.getKills());
+            sender.sendMessage(StringUtils.color(
+                    MessageFormat.format("name : {0} kills : {1} deaths : {2} bestKillStreaks : {3} prestige : {4}",
+                            name,
+                            stats.getKills(),
+                            stats.getDeaths(),
+                            stats.getBestKillStreaks(),
+                            prestige)));
+        }
+    }
+
+    private String getListByString(String string) {
+        string = string.replace("[", "").replace("]", "").trim();
+        StringBuilder sb = new StringBuilder();
+        for(String s : string.split(",")) {
+            sb.append(StringUtils.color(s) + "\n");
+        }
+        return sb.toString();
+    }
+
 }

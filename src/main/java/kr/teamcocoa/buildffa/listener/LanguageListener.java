@@ -1,6 +1,8 @@
 package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.language.bukkit.events.PlayerChangeLanguageEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -13,13 +15,16 @@ public class LanguageListener implements Listener {
     public void onLangChange(PlayerChangeLanguageEvent e) {
         try {
             Player player = e.getPlayer();
-            if(!BuildFFA.playerData.get(player).isInGame()) {
+            BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
+
+            if(!buildFFAPlayer.isInGame()) {
                 player.getInventory().clear();
-                Bukkit.getScheduler().runTaskLater(BuildFFA.getInstance(), () -> BuildFFA.playerData.get(player).setJoinInventory(), 5L);
+                Bukkit.getScheduler().runTaskLater(BuildFFA.getInstance(), () -> buildFFAPlayer.setJoinInventory(), 5L);
             }
         }
         catch(NullPointerException e1) {
 
         }
     }
+
 }

@@ -11,11 +11,11 @@ public class BuildFFAPlayerManager {
     @Getter
     private static Map<Player, BuildFFAPlayer> playerTable = new HashMap<>();
 
-    public static boolean addPlayer(Player player) {
+    public static boolean addPlayer(Player player, BuildFFAStats stats) {
         if(playerTable.containsKey(player)) {
             return false;
         }
-        BuildFFAPlayer buildFFAPlayer = new BuildFFAPlayer(player);
+        BuildFFAPlayer buildFFAPlayer = new BuildFFAPlayer(player, stats);
         playerTable.put(player, buildFFAPlayer);
         return true;
     }

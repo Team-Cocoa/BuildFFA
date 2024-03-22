@@ -136,13 +136,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.grinderwolf</groupId>
-            <artifactId>slimeworldmanager-api</artifactId>
-            <version>2.2.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/slimeworldmanager-api-2.2.1.jar</systemPath>
-        </dependency>
-        <dependency>
             <groupId>kr.teamcocoa</groupId>
             <artifactId>nick</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -179,6 +172,22 @@
             <version>1.0-SNAPSHOT</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/MySQL.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>kr.teamcocoa</groupId>
+            <artifactId>worldmanager</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/worldmanager-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.grinderwolf</groupId>
+            <artifactId>slimeworldmanager-api</artifactId>
+            <version>2.9.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/slimeworldmanager-plugin-2.9.0-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 

@@ -27,7 +27,7 @@ public class SnowBall extends AbstractShopItem {
 
     @Override
     public ItemStack getItemStack(Player player, int count) {
-        ItemStack itemStack = new ItemStack(Material.SNOW_BALL, count);
+        ItemStack itemStack = new ItemStack(Material.SNOWBALL, count);
         return itemStack;
     }
 

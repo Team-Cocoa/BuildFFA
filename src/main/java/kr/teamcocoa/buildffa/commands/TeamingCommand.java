@@ -1,6 +1,9 @@
 package kr.teamcocoa.buildffa.commands;
 
 import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.core.permission.Permission;
+import kr.teamcocoa.core.permission.PermissionValidator;
+import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -16,16 +19,17 @@ public class TeamingCommand implements CommandExecutor {
                 if (BuildFFA.teaming) {
                     BuildFFA.teaming = false;
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &7Teaming is &4&lPROHIBITED &7from now on!"));
+                        player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &7Teaming is &4&lPROHIBITED &7from now on!"));
                     }
                 } else {
                     BuildFFA.teaming = true;
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &7Teaming is &a&lALLOWED &7from now on!"));
+                        player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &7Teaming is &a&lALLOWED &7from now on!"));
                     }
                 }
-            } else {
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a[&dTeamCocoa&a] &7This command does not exist or is deactivated."));
+            }
+            else {
+                p.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &7This command does not exist or is deactivated."));
             }
         }
         return false;

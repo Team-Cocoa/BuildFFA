@@ -1,11 +1,14 @@
 package kr.teamcocoa.buildffa.listener;
 
+import kr.teamcocoa.buildffa.databases.StatsDatabase;
 import kr.teamcocoa.buildffa.main.BuildFFA;
-import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
+import kr.teamcocoa.buildffa.models.BuildFFAStats;
+import kr.teamcocoa.buildffa.models.BuildFFAStatsManager;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
-import kr.teamcocoa.nick.core.model.NickManager;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -23,50 +26,40 @@ public class JoinListener implements Listener {
 
     private static ThreadPoolExecutor executors = new ThreadPoolExecutor(1, 30, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(30));
 
-
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        BuildFFAPlayer buildFFAPlayer = new BuildFFAPlayer(player);
-        BuildFFA.playerData.put(player, buildFFAPlayer);
+        e.joinMessage(Component.empty());
         player.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(999999, 1));
         PacketUtils.sendTitle(player, "", StringUtils.color("&7Your data is being loaded..."), 20, 1000, 20);
-        e.setJoinMessage(null);
-        player.teleport(new Location(Bukkit.getWorld("BuildFFA_world"), 38.5, 201, 0.5, 0, 90));
+        player.teleport(new Location(Bukkit.getWorld("ArenaWorld"), 0.5, 5.0, 0.5));
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(BuildFFA.getInstance(), () -> {
-            buildFFAPlayer.loadStats();
-            String uuid = player.getUniqueId().toString();
-            boolean nicked = NickManager.getInstance().isNicked(player.getUniqueId());
-            for (PotionEffect effect : player.getActivePotionEffects()) {
-                player.removePotionEffect(effect.getType());
+        executors.execute(() -> {
+            BuildFFAStats buildFFAStats = BuildFFAStatsManager.getCache().readData(player.getUniqueId());
+            if(buildFFAStats == null) {
+                buildFFAStats = new BuildFFAStats(player.getUniqueId());
+                StatsDatabase.loadStats(buildFFAStats);
             }
-            String joinMessage = StringUtils.color("&a[&dBuildFFA&a] &e%name% joined the game!");
-            if (nicked) {
-                String nickedName = NickManager.getInstance().getNickPlayer(player.getUniqueId()).getFakeNick();
-                joinMessage = joinMessage.replace("%name%", nickedName);
-            } else {
-                joinMessage = joinMessage.replace("%name%", player.getName());
+            BuildFFAPlayerManager.addPlayer(player, buildFFAStats);
+
+            String joinMessage = StringUtils.color("&a[&dBuildFFA&a] &e" + player.getName() + " joined the game!");
+            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                onlinePlayer.sendMessage(joinMessage);
             }
 
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                p.sendMessage(joinMessage);
-            }
-            BuildFFA.getInstance().stats.createPlayer(uuid);
-            BuildFFA.getInstance().scoreboardManager.setScoreboard(player);
             PacketUtils.sendTitle(player, "", "", 0, 0, 0);
-            Bukkit.getScheduler().runTaskLater(BuildFFA.getInstance(), () -> {
-                Location spawn = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
-                player.teleport(spawn);
-                player.setLevel(0);
-                player.setHealth(1.0D);
-                player.setFoodLevel(20);
-                if (!BuildFFA.playerData.get(player).isBuild()) {
-                    BuildFFA.playerData.get(player).setInGame(false);
-                    BuildFFA.playerData.get(player).setJoinInventory();
+
+            Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> {
+                for (PotionEffect effect : player.getActivePotionEffects()) {
+                    player.removePotionEffect(effect.getType());
                 }
-            }, 1L);
-        }, 5L);
+                player.teleport(WorldManager.getInstance().getCurrentMap().getSpawn());
+                player.setLevel(0);
+                player.setHealth(20);
+                player.setFoodLevel(20);
+            });
+
+        });
 
     }
 }

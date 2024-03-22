@@ -1,11 +1,12 @@
 package kr.teamcocoa.buildffa.items.extra;
 
-import kr.teamcocoa.buildffa.world.DespawnBlock;
+import kr.teamcocoa.buildffa.world.DeSpawnBlock;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.WorldManager;
+import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Location;
@@ -31,9 +32,7 @@ public class RescuePlatform extends AbstractExtraItem implements UseAble {
     @Override
     public ItemStack getItemStack(Player player, int count) {
         ItemStack itemStack = new ItemStack(Material.BLAZE_ROD, count);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(LangUtils.getMessage(player, ItemEnum.RESCUE_PLATFORM));
-        itemStack.setItemMeta(itemMeta);
+        ItemUtils.name(itemStack, LangUtils.getMessage(player, ItemEnum.RESCUE_PLATFORM));
         return itemStack;
     }
 
@@ -47,7 +46,7 @@ public class RescuePlatform extends AbstractExtraItem implements UseAble {
 
         Player player = e.getPlayer();
 
-        if (WorldManager.getInstance().getDeathHeight() + 100 > player.getLocation().getY()) {
+        if (WorldManager.getInstance().getCurrentMap().getDeathHeight() + 50 > player.getLocation().getY()) {
             player.getInventory().setItem(player.getInventory().getHeldItemSlot(),
                     player.getItemInHand().getAmount() - 1 == 0 ? null : RescuePlatform.getInstance().getItemStack(player, player.getItemInHand().getAmount() - 1));
             Location location = player.getLocation().clone().add(0, -5, 0);
@@ -56,8 +55,8 @@ public class RescuePlatform extends AbstractExtraItem implements UseAble {
                     Location cloned = location.clone().add(i, 0, j);
                     Block block = cloned.getBlock();
                     block.setType(Material.SLIME_BLOCK);
-                    BuildFFA.worldData.addBlock(block);
-                    new DespawnBlock(block).runTaskTimerAsynchronously(BuildFFA.getInstance(), 0L, 10L);
+                    WorldManager.getInstance().getCurrentMap().addBlock(
+                            new DeSpawnBlock(null, block, false));
                 }
             }
             player.sendMessage(LangUtils.getMessage(player, MessageEnum.USED_PLATFORM));

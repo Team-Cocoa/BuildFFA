@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class StatsDatabase {
 
-    public static void loadStats(BuildFFAStats stats) {
+    public static boolean loadStats(BuildFFAStats stats) {
         MySQL mySQL = BuildFFADatabase.getMySQL();
 
         String sql = "SELECT uuid, deaths, kill_streaks, best_kill_streaks FROM stats WHERE uuid = ?";
@@ -24,14 +24,17 @@ public class StatsDatabase {
                 int bestKillStreaks = rs.getInt("best_kill_streaks");
 
                 stats.init(kills, deaths, killStreaks, bestKillStreaks);
+                return true;
             }
             else {
                 stats.init(0, 0, 0, 0);
+                return false;
             }
         }
         catch (SQLException e) {
             e.printStackTrace();
         }
+        return true;
     }
 
     public static void upsertStats(BuildFFAStats stats) {

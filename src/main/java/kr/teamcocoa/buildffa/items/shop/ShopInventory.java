@@ -3,6 +3,8 @@ package kr.teamcocoa.buildffa.items.shop;
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
@@ -35,11 +37,13 @@ public class ShopInventory {
 
         ItemMeta clickedItemMeta = clickedItem.getItemMeta();
 
+        BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
+
         if(ComponentUtils.componentEquals(clickedItemMeta.displayName(), SnowBall.getInstance().getName(player))) {
-            status = SnowBall.getInstance().purchase(BuildFFA.playerData.get(player));
+            status = SnowBall.getInstance().purchase(buildFFAPlayer);
         }
         if(ComponentUtils.componentEquals(clickedItemMeta.displayName(), Bow.getInstance().getName(player))) {
-            status = Bow.getInstance().purchase(BuildFFA.playerData.get(player));
+            status = Bow.getInstance().purchase(buildFFAPlayer);
         }
 
         if(status != null) {

@@ -2,7 +2,8 @@ package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.items.shop.ShopInventory;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.MapVoteInventory;
 import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
@@ -13,10 +14,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class InventoryClickListener implements Listener {
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
-        if (BuildFFA.playerData.get(player).isBuild()) {
+        BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
+
+        if(buildFFAPlayer.isBuild()) {
             return;
         }
 

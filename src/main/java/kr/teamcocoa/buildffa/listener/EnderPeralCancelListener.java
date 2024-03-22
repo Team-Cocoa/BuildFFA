@@ -1,6 +1,7 @@
 package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,15 +21,14 @@ public class EnderPeralCancelListener implements Listener {
 
         if(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if(player.getItemInHand().getType().equals(Material.ENDER_PEARL)) {
-                Location spawnLocation = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
+                Location spawnLocation = WorldManager.getInstance().getCurrentMap().getSpawn();
                 if(player.getLocation().getY() >= spawnLocation.getY()) {
                     e.setCancelled(true);
                     return;
                 }
-                BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(player);
+                BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
                 long now = System.currentTimeMillis();
                 buildFFAPlayer.setThrewPearlTime(now);
-                BuildFFA.playerData.put(player, buildFFAPlayer);
                 return;
             }
         }
@@ -37,16 +37,21 @@ public class EnderPeralCancelListener implements Listener {
 
     @EventHandler
     public void teleportEnderPearl(PlayerTeleportEvent e){
+
         if(e.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL){
             return;
         }
-        final Player player = e.getPlayer();
-        BuildFFAPlayer buildFFAPlayer = BuildFFA.playerData.get(player);
+
+        Player player = e.getPlayer();
+
+        BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
+
         long threwTime = buildFFAPlayer.getThrewPearlTime();
         long latestDeadTime = buildFFAPlayer.getLatestDeadTime();
+
         long now = System.currentTimeMillis();
         if(latestDeadTime < threwTime && threwTime < now){
-            Location spawnLocation = WorldManager.getInstance().getSpawnByName(WorldManager.getInstance().getCurrentMap());
+            Location spawnLocation = WorldManager.getInstance().getCurrentMap().getSpawn();
             if(e.getTo().getY() >= spawnLocation.getY() - 5){
                 e.setCancelled(true);
             }
