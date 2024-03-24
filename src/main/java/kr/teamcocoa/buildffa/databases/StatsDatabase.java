@@ -13,7 +13,7 @@ public class StatsDatabase {
     public static boolean loadStats(BuildFFAStats stats) {
         MySQL mySQL = BuildFFADatabase.getMySQL();
 
-        String sql = "SELECT uuid, deaths, kill_streaks, best_kill_streaks FROM stats WHERE uuid = ?";
+        String sql = "SELECT uuid, kills, deaths, kill_streaks, best_kill_streaks FROM stats WHERE uuid = ?";
 
         try(PreparedStatement preparedStatement = mySQL.getPreparedStatement(sql, stats.getUuid().toString());
             ResultSet rs = preparedStatement.executeQuery()) {
@@ -34,13 +34,13 @@ public class StatsDatabase {
         catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        throw new IllegalStateException();
     }
 
     public static void upsertStats(BuildFFAStats stats) {
         MySQL mySQL = BuildFFADatabase.getMySQL();
 
-        String sql = "INSERT INTO stats(uuid) VALUES(?) ON DUPLICATE kills = ?, deaths = ?, kill_streaks = ?, best_kill_streaks = ?";
+        String sql = "INSERT INTO stats(uuid) VALUES(?) ON DUPLICATE KEY UPDATE kills = ?, deaths = ?, kill_streaks = ?, best_kill_streaks = ?";
 
         PlaceHolder placeHolder = new PlaceHolder(5);
         placeHolder.addPlaceHolder(stats.getUuid().toString());

@@ -58,7 +58,7 @@ public class WorldManager {
                 0.5,
                 200,
                 0.5,
-                173,
+                185,
                 100);
         BuildFFAMap spring = new BuildFFAMap(
                 Maps.SPRING,
@@ -68,8 +68,8 @@ public class WorldManager {
                 0.5,
                 200,
                 0.5,
-                173,
-                100);
+                185,
+                30);
         BuildFFAMap CWBW = new BuildFFAMap(
                 Maps.CWBW,
                 "CWBW",
@@ -78,8 +78,8 @@ public class WorldManager {
                 0.5,
                 200,
                 0.5,
-                173,
-                100);
+                190,
+                50);
 
         maps.put(Maps.ARCHITECTURE, architecture);
         maps.put(Maps.FLATLAND, flatland);

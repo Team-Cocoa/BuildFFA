@@ -8,6 +8,7 @@ import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.items.extra.ExtraItemManager;
 import kr.teamcocoa.buildffa.items.shop.Bow;
 import kr.teamcocoa.buildffa.items.shop.SnowBall;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.prestige.Prestige;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
@@ -88,9 +89,13 @@ public class BuildFFAPlayer {
         ItemStack shopItem = new ItemStack(Material.CHEST);
         ItemUtils.name(shopItem, LangUtils.getMessage(this.player, ItemEnum.SHOP));
 
+        ItemStack leaveItem = new ItemStack(Material.SLIME_BALL);
+        ItemUtils.name(leaveItem, LangUtils.getMessage(player, ItemEnum.LEAVE_ITEM));
+
         this.player.getInventory().clear();
         this.player.getInventory().setArmorContents(null);
         this.player.getInventory().setItem(0, shopItem);
+        this.player.getInventory().setItem(8, leaveItem);
         if (this.player.hasPermission("teamcocoa.prime")) {
             ItemStack killEffectItem = new ItemStack(Material.GOLDEN_SWORD);
             ItemUtils.name(killEffectItem, "&cKillEffects");
@@ -119,7 +124,7 @@ public class BuildFFAPlayer {
         }
     }
 
-    public synchronized void kill(BuildFFAPlayer killed) {
+    public void kill(BuildFFAPlayer killed) {
         buildFFAStats.addKills(1);
 //        CoinPlayer coinPlayer = CoinSystem.getInstance().getPlayerManager().getPlayer(this.player.getUniqueId());
 //        coinPlayer.addCoins(50);
@@ -146,7 +151,7 @@ public class BuildFFAPlayer {
                 }
             }
 
-            if (killStreaks % 3 == 0) {
+            if (killStreaks != 0 && killStreaks % 3 == 0) {
                 if (!player.getInventory().contains(new ItemStack(Material.ENDER_PEARL, 2))) {
                     player.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
                 }
@@ -178,14 +183,12 @@ public class BuildFFAPlayer {
         }
     }
 
-    public synchronized void death(boolean quit) {
-        buildFFAStats.addDeaths(1);
+    public void death(boolean quit) {
         if (!quit) {
             Location spawn = WorldManager.getInstance().getCurrentMap().getSpawn();
 
             player.teleport(spawn);
             player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
-            setJoinInventory();
 
             if (player.equals(getLastHitPlayer())) {
                 return;
@@ -198,9 +201,10 @@ public class BuildFFAPlayer {
                             player.getName(), buildFFAStats.getKillStreaks(), getLastHitPlayer().getName()));
                 }
             }
-        }
 
-        reset();
+            Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> setJoinInventory());
+        }
+        buildFFAStats.addDeaths(1);
     }
 
     public void addDamage(Player hitter, double damage) {

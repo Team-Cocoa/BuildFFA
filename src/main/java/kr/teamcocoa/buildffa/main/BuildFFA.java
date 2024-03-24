@@ -12,9 +12,12 @@ import kr.teamcocoa.buildffa.commands.StatsCommand;
 import kr.teamcocoa.buildffa.commands.TeamingCommand;
 import kr.teamcocoa.buildffa.commands.VoteCommand;
 import kr.teamcocoa.buildffa.databases.BuildFFADatabase;
+import kr.teamcocoa.buildffa.databases.StatsDatabase;
 import kr.teamcocoa.buildffa.listener.*;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
+import kr.teamcocoa.buildffa.models.BuildFFAStats;
+import kr.teamcocoa.buildffa.models.BuildFFAStatsManager;
 import kr.teamcocoa.buildffa.utils.ScoreboardManager;
 import kr.teamcocoa.buildffa.world.MapChangeScheduler;
 import kr.teamcocoa.buildffa.world.MapVote;
@@ -24,6 +27,7 @@ import kr.teamcocoa.core.utils.StringUtils;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
@@ -97,8 +101,20 @@ public class BuildFFA implements PlatformEntrypoint {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             for (BuildFFAPlayer buildFFAPlayer : BuildFFAPlayerManager.getPlayerTable().values()) {
                 ScoreboardManager.sendBuildFFAScoreboard(buildFFAPlayer);
+//                Bukkit.getLogger().info(buildFFAPlayer.getPlayer().getName() + " | ingame : " + buildFFAPlayer.isInGame());
             }
         }, 0, 1, TimeUnit.SECONDS);
+
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            for (BuildFFAPlayer buildFFAPlayer : BuildFFAPlayerManager.getPlayerTable().values()) {
+                BuildFFAStats stats = buildFFAPlayer.getBuildFFAStats();
+                if(stats.isEdited()) {
+                    StatsDatabase.upsertStats(stats);
+                    stats.setEdited(false);
+                    Bukkit.getLogger().info("Auto saved " + buildFFAPlayer.getPlayer().getName() + " stats.");
+                }
+            }
+        }, 0, 5, TimeUnit.MINUTES);
 
         Bukkit.getScheduler().runTaskLater(instance, () -> {
             World world = Bukkit.getWorld("ArenaWorld");
@@ -109,6 +125,15 @@ public class BuildFFA implements PlatformEntrypoint {
             world.getBlockAt(0, 6, 1).setType(Material.BARRIER);
             world.getBlockAt(0, 6, -1).setType(Material.BARRIER);
         }, 10L);
+
+        Bukkit.getScheduler().runTaskLater(instance, () -> {
+            for (World world : Bukkit.getWorlds()) {
+                world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+                world.setGameRule(GameRule.LOG_ADMIN_COMMANDS, false);
+                world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+                world.setTime(0);
+            }
+        }, 20L);
 
     }
 
@@ -146,9 +171,20 @@ public class BuildFFA implements PlatformEntrypoint {
     public void onDisable() {
         Bukkit.getLogger().info(" _____________________________________________________________");
         Bukkit.getLogger().info("|                                                             |");
-        Bukkit.getLogger().info("| [BuildFFA] Plugin is stopping...                             |");
+        Bukkit.getLogger().info("| [BuildFFA] Plugin is stopping...                            |");
         Bukkit.getLogger().info("|                                                             |");
         Bukkit.getLogger().info(" _____________________________________________________________");
+
+        Executors.newSingleThreadExecutor().execute(() -> {
+            for (BuildFFAPlayer buildFFAPlayer : BuildFFAPlayerManager.getPlayerTable().values()) {
+                BuildFFAStats stats = buildFFAPlayer.getBuildFFAStats();
+                if(stats.isEdited()) {
+                    StatsDatabase.upsertStats(stats);
+                    stats.setEdited(false);
+                    Bukkit.getLogger().info("Auto saved " + buildFFAPlayer.getPlayer().getName() + " stats.");
+                }
+            }
+        });
     }
 
 }

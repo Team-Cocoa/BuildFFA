@@ -81,6 +81,13 @@ public class DeSpawnBlock {
 
     public void makeAir() {
         this.expire = true;
+        ClientboundBlockDestructionPacket packet = new ClientboundBlockDestructionPacket(
+                random,
+                new BlockPos(block.getX(), block.getY(), block.getZ()),
+                0);
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            PacketUtils.sendPackets(player, packet);
+        }
         Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> {
             new Location(world, x, y, z).getBlock().setType(Material.AIR);
         });

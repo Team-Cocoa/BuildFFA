@@ -50,7 +50,7 @@ public class MapChangeScheduler {
                 PacketUtils.sendBar(
                         player,
                         StringUtils.color(
-                                "&8» " + LangUtils.getMessage(player, OtherEnum.BAR_MAP) + " : &e" + WorldManager.getInstance().getCurrentMap()
+                                "&8» " + LangUtils.getMessage(player, OtherEnum.BAR_MAP) + " : &e" + WorldManager.getInstance().getCurrentMap().getMaps().getName()
                                         + " &r&8» " + LangUtils.getMessage(player, OtherEnum.BAR_TIME_LEFT) + " : &e"
                                         + time));
             }

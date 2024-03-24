@@ -2,9 +2,11 @@ package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.databases.StatsDatabase;
 import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.models.BuildFFAStats;
 import kr.teamcocoa.buildffa.models.BuildFFAStatsManager;
+import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
@@ -38,9 +40,21 @@ public class JoinListener implements Listener {
             BuildFFAStats buildFFAStats = BuildFFAStatsManager.getCache().readData(player.getUniqueId());
             if(buildFFAStats == null) {
                 buildFFAStats = new BuildFFAStats(player.getUniqueId());
-                StatsDatabase.loadStats(buildFFAStats);
+                try {
+                    StatsDatabase.loadStats(buildFFAStats);
+                }
+                catch (IllegalStateException e1) {
+                    player.kick(Component.text("An error has occurred while loading the stats. Contact to developer."));
+                    return;
+                }
+                BuildFFAStatsManager.getCache().createData(player.getUniqueId(), buildFFAStats);
             }
+
             BuildFFAPlayerManager.addPlayer(player, buildFFAStats);
+
+            BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
+
+            PrestigeManager.getInstance().loadPrestige(buildFFAPlayer);
 
             String joinMessage = StringUtils.color("&a[&dBuildFFA&a] &e" + player.getName() + " joined the game!");
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -57,6 +71,7 @@ public class JoinListener implements Listener {
                 player.setLevel(0);
                 player.setHealth(20);
                 player.setFoodLevel(20);
+                buildFFAPlayer.setJoinInventory();
             });
 
         });

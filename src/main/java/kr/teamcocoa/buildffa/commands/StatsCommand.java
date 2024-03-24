@@ -53,18 +53,24 @@ public class StatsCommand implements CommandExecutor {
                 }
 
                 cachedStats = new BuildFFAStats(uuid);
-                boolean exist = StatsDatabase.loadStats(cachedStats);
+                try {
+                    boolean exist = StatsDatabase.loadStats(cachedStats);
 
-                if (exist) {
-                    BuildFFAStatsManager.getCache().createData(uuid, cachedStats);
-                    sendMessage(sender, playerName, cachedStats);
-                } else {
-                    if (sender instanceof Player player) {
-                        player.sendMessage(LangUtils.getMessage(player, MessageEnum.STATS_NOT_FOUND));
+                    if (exist) {
+                        BuildFFAStatsManager.getCache().createData(uuid, cachedStats);
+                        sendMessage(sender, playerName, cachedStats);
                     } else {
-                        sender.sendMessage(playerName + "not found.");
+                        if (sender instanceof Player player) {
+                            player.sendMessage(LangUtils.getMessage(player, MessageEnum.STATS_NOT_FOUND));
+                        } else {
+                            sender.sendMessage(playerName + "not found.");
+                        }
                     }
                 }
+                catch (IllegalStateException e) {
+                    sender.sendMessage("An error has occurred while loading the stats. Contact to developer.");
+                }
+
             });
 
             return true;
@@ -82,13 +88,13 @@ public class StatsCommand implements CommandExecutor {
     private void sendMessage(CommandSender sender, String name, BuildFFAStats stats) {
         if(sender instanceof Player player) {
             String prestige = PrestigeManager.getInstance().getPrestigeName(stats.getKills());
-            player.sendMessage(MessageFormat.format(getListByString(
+            player.sendMessage(StringUtils.color(MessageFormat.format(getListByString(
                     LangUtils.getMessage(player, MessageEnum.STATS_MESSAGE)),
                         name,
                         stats.getKills(),
                         stats.getDeaths(),
                         stats.getBestKillStreaks(),
-                        prestige));
+                        prestige)));
         }
         else {
             String prestige = PrestigeManager.getInstance().getPrestigeName(stats.getKills());

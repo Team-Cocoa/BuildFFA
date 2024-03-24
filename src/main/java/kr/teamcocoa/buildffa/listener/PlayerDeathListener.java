@@ -12,21 +12,19 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player player = e.getPlayer();
+        e.setCancelled(true);
 
         BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
 
-        e.setCancelled(true);
-
         Player killer = buildFFAPlayer.getLastHitPlayer();
 
-        if(killer == null) {
-            return;
-        }
-        else {
+        if(killer != null) {
             BuildFFAPlayer killerBuildFFAPlayer = BuildFFAPlayerManager.getPlayer(killer);
             killerBuildFFAPlayer.kill(buildFFAPlayer);
         }
 
+        buildFFAPlayer.reset();
         buildFFAPlayer.death(false);
+
     }
 }

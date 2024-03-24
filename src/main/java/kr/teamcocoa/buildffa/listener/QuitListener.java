@@ -28,6 +28,10 @@ public class QuitListener implements Listener {
 
         BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
 
+        if(buildFFAPlayer == null) {
+            return;
+        }
+
         String quitMessage = StringUtils.color("&a[&dBuildFFA&a] &e" + player.getName() + " left the game!");
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             onlinePlayer.sendMessage(quitMessage);
@@ -47,6 +51,7 @@ public class QuitListener implements Listener {
 
         executors.execute(() -> {
             StatsDatabase.upsertStats(buildFFAPlayer.getBuildFFAStats());
+            buildFFAPlayer.getBuildFFAStats().setEdited(false);
         });
 
     }
