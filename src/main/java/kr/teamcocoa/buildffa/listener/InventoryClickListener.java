@@ -12,11 +12,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 
 public class InventoryClickListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
+        if(e.getClickedInventory().getType() == InventoryType.CRAFTING) {
+            e.setCancelled(true);
+            return;
+        }
+
         Player player = (Player) e.getWhoClicked();
         BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
 
