@@ -1,68 +1,54 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.main.Main;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.world.WorldManager;
+import kr.teamcocoa.buildffa.world.maps.BuildFFAMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class PlayerMoveListener implements Listener {
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-        try {
-            final Player p = e.getPlayer();
-            Location loc = p.getLocation();
-            if (WorldManager.getInstance().getCurrentMap() != null) {
-                if (loc.getY() <= WorldManager.getInstance().getDeathHeight() && Main.playerData.get(p).isDied() == false)
-                    if (!Main.playerData.get(p).isBuild()) {
-                        Main.playerData.get(p).setDied(true);
-                        Main.playerData.get(p).death(false);
-                        Bukkit.getScheduler().runTaskLater(Main.getInstance(), () -> {
-                            try {
-                                Main.playerData.get(p).setDied(false);
-                            } catch (Exception e1) {
+    public void onMove(PlayerMoveEvent e) {
+        Player player = e.getPlayer();
 
-                            }
-                        }, 10L);
-                    }
-                if (loc.getY() <= WorldManager.getInstance().getArenaHeight()) {
-                    if (!Main.playerData.get(p).isInGame() && !Main.playerData.get(p).isBuild()) {
-                        BffaPlayer bffaPlayer = Main.playerData.get(p);
-                        p.closeInventory();
-                        p.getInventory().clear();
-                        bffaPlayer.setInGame(true);
-                        bffaPlayer.setPlayerKillStreak(0);
-                        bffaPlayer.resetDamage(false);
-                        bffaPlayer.resetKBStickDurability();
-                        p.setHealth(20.0D);
-                        p.setLevel(0);
-                        ItemStack[] inventory = bffaPlayer.getInventory();
-                        ItemStack[] armor = Main.getInstance().kitData.getArmor();
-                        p.getInventory().setContents(inventory);
-                        p.getInventory().setArmorContents(armor);
-                        p.playSound(p.getLocation(), Sound.ORB_PICKUP, 100.0F, 0.0F);
-                        if(bffaPlayer.isBowBought()) {
-                            ItemStack itemStack = new ItemStack(Material.BOW);
-//                            itemStack.addEnchantment(Enchantment.ARROW_KNOCKBACK, 1);
-                            p.getInventory().addItem(itemStack, new ItemStack(Material.ARROW, 16));
-                        }
-                        if(bffaPlayer.isSnowBallBought()) {
-                            p.getInventory().addItem(new ItemStack(Material.SNOW_BALL, 16));
-                        }
-                    }
-                }
-            }
-        } catch (NullPointerException e1) {
+        Location location = player.getLocation();
 
+        BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
+
+        if(buildFFAPlayer == null) {
+            Bukkit.getLogger().info("bffaplayer is null in playermoveevent | " + player.getName());
+            return;
         }
+
+        BuildFFAMap currentMap = WorldManager.getInstance().getCurrentMap();
+
+        if(location.getY() < 0 || (!buildFFAPlayer.isBuild() &&
+                buildFFAPlayer.isInGame() &&
+                currentMap.getDeathHeight() > location.getY())) {
+            Player killer = buildFFAPlayer.getLastHitPlayer();
+
+            if(killer != null) {
+                BuildFFAPlayer killerBuildFFAPlayer = BuildFFAPlayerManager.getPlayer(killer);
+                killerBuildFFAPlayer.kill(buildFFAPlayer);
+            }
+
+            buildFFAPlayer.reset();
+            buildFFAPlayer.death(false);
+            return;
+            // ^ 이거 없애기 금지 이거 없애면 이 파트 실행되고 밑에 if 문도 실행됨
+        }
+
+        if(!buildFFAPlayer.isBuild() &&
+                !buildFFAPlayer.isInGame() &&
+                currentMap.getArenaHeight() > location.getY()) {
+            buildFFAPlayer.arenaJoin();
+        }
+
     }
 }

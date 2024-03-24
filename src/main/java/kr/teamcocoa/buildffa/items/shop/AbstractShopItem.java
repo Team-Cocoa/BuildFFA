@@ -2,8 +2,8 @@ package kr.teamcocoa.buildffa.items.shop;
 
 import ch.dkrieger.coinsystem.core.CoinSystem;
 import ch.dkrieger.coinsystem.core.player.CoinPlayer;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
-import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,7 +36,7 @@ public abstract class AbstractShopItem {
     public abstract ItemStack getVoteItemStack(Player player);
     public abstract String getName(Player player);
 
-    public boolean buyItem(BffaPlayer player) {
+    public boolean buyItem(BuildFFAPlayer player) {
         Player p = player.getPlayer();
         CoinPlayer coinPlayer = CoinSystem.getInstance().getPlayerManager().getPlayer(p.getUniqueId());
         long coins = coinPlayer.getCoins();

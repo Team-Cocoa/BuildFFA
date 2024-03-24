@@ -1,9 +1,9 @@
 package kr.teamcocoa.buildffa.items.shop;
 
 import kr.teamcocoa.buildffa.enums.OtherEnum;
-import kr.teamcocoa.buildffa.kit.BffaPlayer;
+import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.utils.LangUtils;
-import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -49,7 +49,7 @@ public class Bow extends AbstractShopItem {
         return StringUtils.color("&cBow");
     }
 
-    public BuyStatus purchase(BffaPlayer player) {
+    public BuyStatus purchase(BuildFFAPlayer player) {
         if(player.isBowBought()) {
             return BuyStatus.ALREADY_BOUGHT;
         }

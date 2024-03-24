@@ -1,16 +1,15 @@
 package kr.teamcocoa.buildffa.items.extra;
 
-import kr.teamcocoa.buildffa.utils.StringUtils;
+import kr.teamcocoa.core.utils.StringUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GoldenApple extends AbstractExtraItem {
     private static GoldenApple instance;
-
-    private GoldenApple() {
-
-    }
 
     public static GoldenApple getInstance() {
         if(instance == null) {
