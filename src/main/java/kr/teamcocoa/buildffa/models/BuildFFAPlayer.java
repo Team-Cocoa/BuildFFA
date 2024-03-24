@@ -252,7 +252,6 @@ public class BuildFFAPlayer {
 
         resetKBStickDurability();
         resetDamage();
-        buildFFAStats.resetKillStreaks();
 
         for (PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
