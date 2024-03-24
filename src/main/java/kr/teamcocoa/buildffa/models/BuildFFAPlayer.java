@@ -3,6 +3,7 @@ package kr.teamcocoa.buildffa.models;
 //import ch.dkrieger.coinsystem.core.CoinSystem;
 //import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 
+import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.items.extra.ExtraItemManager;
@@ -92,14 +93,21 @@ public class BuildFFAPlayer {
         ItemStack leaveItem = new ItemStack(Material.SLIME_BALL);
         ItemUtils.name(leaveItem, LangUtils.getMessage(player, ItemEnum.LEAVE_ITEM));
 
-        this.player.getInventory().clear();
-        this.player.getInventory().setArmorContents(null);
-        this.player.getInventory().setItem(0, shopItem);
-        this.player.getInventory().setItem(8, leaveItem);
-        if (this.player.hasPermission("teamcocoa.prime")) {
+        ItemStack voteItem = new ItemStack(Material.PAPER);
+        ItemUtils.name(voteItem, LangUtils.getMessage(player, InventoryEnum.VOTE));
+
+        player.getInventory().clear();
+        player.getInventory().setArmorContents(null);
+        player.getInventory().setItem(0, shopItem);
+        player.getInventory().setItem(8, leaveItem);
+        if (player.hasPermission("teamcocoa.prime")) {
             ItemStack killEffectItem = new ItemStack(Material.GOLDEN_SWORD);
             ItemUtils.name(killEffectItem, "&cKillEffects");
-            this.player.getInventory().setItem(4, killEffectItem);
+            player.getInventory().setItem(3, voteItem);
+            player.getInventory().setItem(5, killEffectItem);
+        }
+        else {
+            player.getInventory().setItem(4, voteItem);
         }
     }
 

@@ -1,5 +1,6 @@
 package kr.teamcocoa.buildffa.listener;
 
+import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.items.extra.RescuePlatform;
 import kr.teamcocoa.buildffa.items.shop.ShopInventory;
@@ -7,6 +8,7 @@ import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import kr.teamcocoa.buildffa.world.MapVoteInventory;
 import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -50,7 +52,11 @@ public class InteractListener implements Listener {
                 ShopInventory.openShopInventory(player);
                 return;
             }
-            if(displayName.equals(LangUtils.getMessage(player, ItemEnum.RESCUE_PLATFORM))) {
+            if (displayName.equals(LangUtils.getMessage(player, InventoryEnum.VOTE))) {
+                player.openInventory(MapVoteInventory.getInstance().getInventory(player));
+                return;
+            }
+            if (displayName.equals(LangUtils.getMessage(player, ItemEnum.RESCUE_PLATFORM))) {
                 RescuePlatform.getInstance().onClick(e);
                 return;
             }
