@@ -18,6 +18,10 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
+        if(e.getClickedInventory() == null) {
+            return;
+        }
+
         if(e.getClickedInventory().getType() == InventoryType.CRAFTING) {
             e.setCancelled(true);
             return;
