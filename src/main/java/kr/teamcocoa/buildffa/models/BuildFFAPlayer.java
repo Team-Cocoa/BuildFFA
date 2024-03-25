@@ -224,6 +224,7 @@ public class BuildFFAPlayer {
             Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> setJoinInventory());
         }
         buildFFAStats.addDeaths(1);
+        lastHitPlayer = null;
     }
 
     public void addDamage(Player hitter, double damage) {
@@ -256,7 +257,6 @@ public class BuildFFAPlayer {
         latestDeadTime = currentTime;
         bowBought = false;
         snowBallBought = false;
-        lastHitPlayer = null;
         shootAble = false;
 
         player.setHealth(20);
