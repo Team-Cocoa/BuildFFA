@@ -1,7 +1,9 @@
 package kr.teamcocoa.buildffa.prestige;
 
 import kr.teamcocoa.buildffa.enums.MessageEnum;
+import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.tabs.TabManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.language.languages.LanguageController;
@@ -105,6 +107,7 @@ public class PrestigeManager {
                                                     .split(",")),
                                     buildFFAPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(buildFFAPlayer))));
                 }
+                Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> TabManager.updateNameTags(buildFFAPlayer.getPlayer()));
             }
         }
         else {
@@ -122,6 +125,7 @@ public class PrestigeManager {
                                                     .split(",")),
                                     buildFFAPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(buildFFAPlayer))));
                 }
+                Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> TabManager.updateNameTags(buildFFAPlayer.getPlayer()));
             }
         }
     }
@@ -129,14 +133,22 @@ public class PrestigeManager {
     public String getPrestigeName(int kills) {
         Prestige prestige = getPrestige(kills);
         int grade = getPrestigeRank(prestige, kills);
-        return prestige.getName() + (prestige == Prestige.BEGINNER ? "" : " " + arabicToRome(grade));
+        return prestige.toBukkitColor() +
+                prestige.getName() +
+                (prestige == Prestige.BEGINNER
+                        ? ""
+                        : " " + arabicToRome(grade));
     }
 
     public String getPrestigeName(BuildFFAPlayer buildFFAPlayer) {
-        return buildFFAPlayer.getPrestige().getName() + (buildFFAPlayer.getPrestige() == Prestige.BEGINNER ? "" : " " + arabicToRome(buildFFAPlayer.getGrade()));
+        return buildFFAPlayer.getPrestige().toBukkitColor() +
+                buildFFAPlayer.getPrestige().getName() +
+                (buildFFAPlayer.getPrestige() == Prestige.BEGINNER
+                        ? ""
+                        : " " + arabicToRome(buildFFAPlayer.getGrade()));
     }
 
-    private String arabicToRome(int num) {
+    public String arabicToRome(int num) {
         return switch(num) {
             case 1 -> "I";
             case 2 -> "II";

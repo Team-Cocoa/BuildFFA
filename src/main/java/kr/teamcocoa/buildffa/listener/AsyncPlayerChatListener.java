@@ -18,7 +18,7 @@ import java.text.MessageFormat;
 
 public class AsyncPlayerChatListener implements Listener {
 
-    private String format = "§8[{0}§8] {1}{2} {3} §8> §f%2$s";
+    private String format = "§8[{0}§8] {1}{2}{3} §8> §f%2$s";
     /**
      * 0 : Prestige
      * 1 : Rank (Includes color code)
@@ -38,7 +38,7 @@ public class AsyncPlayerChatListener implements Listener {
         PermissionUser permissionUser = permissionManagement.user(player.getUniqueId());
         PermissionGroup permissionGroup = permissionManagement.highestPermissionGroup(permissionUser);
 
-        String prestige = StringUtils.color(PrestigeManager.getInstance().getPrestigeName(buildFFAPlayer));
+        String prestige = buildFFAPlayer.getPrestige().toBukkitColor() + StringUtils.color(PrestigeManager.getInstance().getPrestigeName(buildFFAPlayer));
 
         String display = StringUtils.color(permissionGroup.display());
         String suffix = StringUtils.color(permissionGroup.suffix());

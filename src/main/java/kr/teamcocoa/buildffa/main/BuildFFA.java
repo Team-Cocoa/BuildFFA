@@ -2,6 +2,7 @@ package kr.teamcocoa.buildffa.main;
 
 import dev.derklaro.aerogel.Inject;
 import dev.derklaro.aerogel.Singleton;
+import eu.cloudnetservice.driver.event.EventManager;
 import eu.cloudnetservice.driver.permission.PermissionManagement;
 import eu.cloudnetservice.ext.platforminject.api.PlatformEntrypoint;
 import eu.cloudnetservice.ext.platforminject.api.stereotype.Command;
@@ -18,6 +19,7 @@ import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.models.BuildFFAStats;
 import kr.teamcocoa.buildffa.models.BuildFFAStatsManager;
+import kr.teamcocoa.buildffa.tabs.TabListener;
 import kr.teamcocoa.buildffa.utils.ScoreboardManager;
 import kr.teamcocoa.buildffa.world.MapChangeScheduler;
 import kr.teamcocoa.buildffa.world.MapVote;
@@ -63,20 +65,26 @@ public class BuildFFA implements PlatformEntrypoint {
     @Getter
     private static PermissionManagement permissionManagement;
 
+    @Getter
+    private static EventManager eventManager;
+
     private PluginManager pluginManager;
+
     public static boolean teaming;
 
     public static final String PREFIX = StringUtils.color("&a[&dBuildFFA&a] ");
 
     @Inject
     private BuildFFA(
-        @NonNull JavaPlugin javaPlugin,
-        @NonNull PluginManager pluginManager,
-        @NonNull PermissionManagement permissionManagement
-    ) {
+            @NonNull JavaPlugin javaPlugin,
+            @NonNull PluginManager pluginManager,
+            @NonNull PermissionManagement permissionManagement,
+            @NonNull EventManager eventManager
+            ) {
         BuildFFA.instance = javaPlugin;
         BuildFFA.permissionManagement = permissionManagement;
         BuildFFA.teaming = false;
+        BuildFFA.eventManager = eventManager;
         this.pluginManager = pluginManager;
     }
 
@@ -158,6 +166,8 @@ public class BuildFFA implements PlatformEntrypoint {
         pluginManager.registerEvents(new NickListener(), instance);
         pluginManager.registerEvents(new PlayerBedEnterListener(), instance);
         pluginManager.registerEvents(new AsyncPlayerChatListener(), instance);
+
+        eventManager.registerListener(TabListener.class);
     }
 
     public void loadCommands() {
@@ -174,6 +184,8 @@ public class BuildFFA implements PlatformEntrypoint {
         Bukkit.getLogger().info("| [BuildFFA] Plugin is stopping...                            |");
         Bukkit.getLogger().info("|                                                             |");
         Bukkit.getLogger().info(" _____________________________________________________________");
+
+        eventManager.unregisterListener(TabListener.class);
 
         Executors.newSingleThreadExecutor().execute(() -> {
             for (BuildFFAPlayer buildFFAPlayer : BuildFFAPlayerManager.getPlayerTable().values()) {

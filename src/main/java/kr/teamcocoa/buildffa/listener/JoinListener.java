@@ -7,6 +7,7 @@ import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.models.BuildFFAStats;
 import kr.teamcocoa.buildffa.models.BuildFFAStatsManager;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;
+import kr.teamcocoa.buildffa.tabs.TabManager;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
@@ -72,6 +73,7 @@ public class JoinListener implements Listener {
                 player.setHealth(20);
                 player.setFoodLevel(20);
                 buildFFAPlayer.setJoinInventory();
+                TabManager.updateNameTags(player);
             });
 
         });

@@ -116,6 +116,7 @@ public class WorldManager {
                         BuildFFAPlayer buildFFAPlayer = queue.poll();
                         buildFFAPlayer.reset();
                         buildFFAPlayer.getPlayer().teleport(location);
+                        buildFFAPlayer.setJoinInventory();
                     }
                     catch (Exception e) {
                         e.printStackTrace();
