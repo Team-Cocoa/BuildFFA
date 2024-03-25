@@ -32,6 +32,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Getter
 @Setter
@@ -164,25 +165,35 @@ public class BuildFFAPlayer {
                     player.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
                 }
                 ExtraItemManager.getInstance().giveExtraItem(player);
-                List<ItemStack> list = Arrays.asList(player.getInventory().getContents());
-                if (isBowBought()) {
-                    int arrayIndex = -1;
-                    for (int i = 0; i < list.size(); i++) {
-                        if(list.get(i) == null) {
-                            continue;
-                        }
-                        if (list.get(i).getType() == Material.ARROW) {
-                            arrayIndex = i;
-                            break;
-                        }
+
+                Stream<ItemStack> inventoryStream = Arrays.stream(player.getInventory().getContents());
+
+                int blocks = inventoryStream
+                        .filter(itemStack -> itemStack != null && itemStack.getType() == Material.SANDSTONE)
+                        .mapToInt(ItemStack::getAmount)
+                        .sum();
+
+                if(blocks >= 64) {
+                    return;
+                }
+                else {
+                    player.getInventory().addItem(new ItemStack(Material.SANDSTONE, blocks + 15 > 64 ? 64 - blocks : 15));
+                }
+
+                if(isBowBought()) {
+                    int arrows = inventoryStream
+                            .filter(itemStack -> itemStack != null && itemStack.getType() == Material.ARROW)
+                            .mapToInt(ItemStack::getAmount)
+                            .sum();
+
+                    if(arrows >= 16) {
+                        return;
                     }
-                    if (arrayIndex == -1) {
-                        player.getInventory().addItem(new ItemStack(Material.ARROW, 5));
-                    } else {
-                        int amount = list.get(arrayIndex).getAmount();
-                        player.getInventory().addItem(new ItemStack(Material.ARROW, amount + 5 < 16 ? 5 : 5 - (amount + 5 - 16)));
+                    else {
+                        player.getInventory().addItem(new ItemStack(Material.ARROW, arrows + 5 > 16 ? 16 - arrows : 5));
                     }
                 }
+
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100.0F, 0.0F);
             }
         }
