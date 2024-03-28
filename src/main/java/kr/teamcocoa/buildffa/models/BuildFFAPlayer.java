@@ -1,8 +1,7 @@
 package kr.teamcocoa.buildffa.models;
 
-//import ch.dkrieger.coinsystem.core.CoinSystem;
-//import ch.dkrieger.coinsystem.core.player.CoinPlayer;
-
+import ch.dkrieger.coinsystem.core.CoinSystem;
+import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
@@ -15,6 +14,7 @@ import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
+import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.kitmanager.frontend.kits.Kits;
 import kr.teamcocoa.kitmanager.frontend.main.KitManager;
 import lombok.Getter;
@@ -135,9 +135,9 @@ public class BuildFFAPlayer {
 
     public void kill(BuildFFAPlayer killed) {
         buildFFAStats.addKills(1);
-//        CoinPlayer coinPlayer = CoinSystem.getInstance().getPlayerManager().getPlayer(this.player.getUniqueId());
-//        coinPlayer.addCoins(50);
-//        this.player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &6+50 coins!"));
+        CoinPlayer coinPlayer = CoinSystem.getInstance().getPlayerManager().getPlayer(player.getUniqueId());
+        coinPlayer.addCoins(50);
+        player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &6+50 coins!"));
         PrestigeManager.getInstance().updatePrestige(this);
         try {
             player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 2);

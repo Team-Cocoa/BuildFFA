@@ -3,11 +3,12 @@ package kr.teamcocoa.buildffa.items.shop;
 import kr.teamcocoa.buildffa.enums.OtherEnum;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.utils.LangUtils;
+import kr.teamcocoa.core.bukkit.utils.ItemUtils;
 import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+
 import java.text.MessageFormat;
 
 public class SnowBall extends AbstractShopItem {
@@ -27,17 +28,14 @@ public class SnowBall extends AbstractShopItem {
 
     @Override
     public ItemStack getItemStack(Player player, int count) {
-        ItemStack itemStack = new ItemStack(Material.SNOWBALL, count);
-        return itemStack;
+        return new ItemStack(Material.SNOWBALL, count);
     }
 
     @Override
     public ItemStack getVoteItemStack(Player player) {
         ItemStack itemStack = getItemStack(player, 1);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(getName(player));
-        itemMeta.setLore(getLore(MessageFormat.format(LangUtils.getMessage(player, OtherEnum.LORE_PRICE), price)));
-        itemStack.setItemMeta(itemMeta);
+        ItemUtils.name(itemStack, getName(player));
+        ItemUtils.lore(itemStack, getLore(MessageFormat.format(LangUtils.getMessage(player, OtherEnum.LORE_PRICE), price)));
         return itemStack;
     }
 
