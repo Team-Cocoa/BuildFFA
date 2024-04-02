@@ -1,7 +1,7 @@
 package kr.teamcocoa.buildffa.databases;
 
-import kr.teamcocoa.mysql.mysql.MySQL;
-import kr.teamcocoa.mysql.mysql.MySQLManager;
+import kr.teamcocoa.core.mysql.MySQL;
+import kr.teamcocoa.core.mysql.MySQLManager;
 import lombok.Getter;
 
 public class BuildFFADatabase {

@@ -1,8 +1,8 @@
 package kr.teamcocoa.buildffa.databases;
 
 import kr.teamcocoa.buildffa.models.BuildFFAStats;
-import kr.teamcocoa.mysql.mysql.MySQL;
-import kr.teamcocoa.mysql.mysql.PlaceHolder;
+import kr.teamcocoa.core.mysql.MySQL;
+import kr.teamcocoa.core.mysql.PlaceHolder;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
