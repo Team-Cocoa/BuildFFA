@@ -148,7 +148,7 @@
             <artifactId>coinsystem</artifactId>
             <version>3.2.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/DKCoins v3.2.0.jar</systemPath>
+            <systemPath>${project.basedir}/lib/CoinSystem.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -164,14 +164,6 @@
             <version>1.0-SNAPSHOT</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/TeamCocoa-Core.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>kr.teamcocoa</groupId>
-            <artifactId>mysql</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/MySQL.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -196,14 +188,6 @@
             <version>1.0-SNAPSHOT</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/KitManager.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>ch.dkrieger.coinsystem</groupId>
-            <artifactId>coinsystem</artifactId>
-            <version>3.2.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/CoinSystem.jar</systemPath>
         </dependency>
 
     </dependencies>
