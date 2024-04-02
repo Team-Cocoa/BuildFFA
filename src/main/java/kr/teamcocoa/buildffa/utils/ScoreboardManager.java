@@ -6,8 +6,6 @@ import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.numbers.NumberFormat;
-import net.minecraft.network.chat.numbers.NumberFormatTypes;
 import net.minecraft.network.protocol.game.ClientboundSetDisplayObjectivePacket;
 import net.minecraft.network.protocol.game.ClientboundSetObjectivePacket;
 import net.minecraft.network.protocol.game.ClientboundSetScorePacket;
@@ -31,9 +29,7 @@ public class ScoreboardManager implements Listener {
                 Component.Serializer.fromJson("{\n" +
                         "  \"text\": \"" + StringUtils.color("&dBuildFFA") + "\"\n" +
                         "}"),
-                ObjectiveCriteria.RenderType.INTEGER,
-                true,
-                );
+                ObjectiveCriteria.RenderType.INTEGER);
 
         ClientboundSetObjectivePacket removeObjective = new ClientboundSetObjectivePacket(objective, 1);
 
