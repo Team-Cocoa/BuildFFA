@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.world.maps;
 
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.world.DeSpawnBlock;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -66,7 +66,7 @@ public class BuildFFAMap {
         this.placeAble = true;
         this.blockScheduler =
                 Bukkit.getScheduler().runTaskTimerAsynchronously(
-                        BuildFFA.getInstance(),
+                        BuildFFABootstrap.getInstance(),
                         () -> {
                             for (DeSpawnBlock deSpawnBlock : blocks) {
                                 deSpawnBlock.tick();

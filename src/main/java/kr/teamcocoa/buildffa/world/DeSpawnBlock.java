@@ -1,6 +1,6 @@
 package kr.teamcocoa.buildffa.world;
 
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import lombok.Getter;
@@ -88,7 +88,7 @@ public class DeSpawnBlock {
         for(Player player : Bukkit.getOnlinePlayers()) {
             PacketUtils.sendPackets(player, packet);
         }
-        Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(BuildFFABootstrap.getInstance(), () -> {
             new Location(world, x, y, z).getBlock().setType(Material.AIR);
         });
     }

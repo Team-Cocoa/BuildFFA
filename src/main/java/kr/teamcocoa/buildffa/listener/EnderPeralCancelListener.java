@@ -1,6 +1,5 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import org.bukkit.Location;

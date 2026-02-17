@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import eu.cloudnetservice.driver.permission.PermissionGroup;
 import eu.cloudnetservice.driver.permission.PermissionManagement;
 import eu.cloudnetservice.driver.permission.PermissionUser;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.prestige.Prestige;
@@ -32,7 +32,7 @@ public class TabManager {
 
     public static void updateNameTags(Player player, Function<Player, PermissionGroup> playerIPermissionGroupFunction,
                                       Function<Player, PermissionGroup> allOtherPlayerPermissionGroupFunction) {
-        PermissionManagement permissionManagement = BuildFFA.getPermissionManagement();
+        PermissionManagement permissionManagement = BuildFFABootstrap.getPermissionManagement();
 
         Preconditions.checkNotNull(player);
 
@@ -143,7 +143,7 @@ public class TabManager {
                 if (!color.isEmpty()) {
                     ChatColor chatColor = ChatColor.getByChar(color.replaceAll("&", "").replaceAll("§", ""));
                     if (chatColor != null) {
-                        BuildFFA.getPermissionManagement().updateGroup(PermissionGroup.builder(permissionGroup).color(color).build());
+                        BuildFFABootstrap.getPermissionManagement().updateGroup(PermissionGroup.builder(permissionGroup).color(color).build());
                         method.invoke(team, chatColor);
                     }
                 }

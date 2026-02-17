@@ -1,12 +1,11 @@
 package kr.teamcocoa.buildffa.prestige;
 
+import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
-import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.tabs.TabManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.core.utils.StringUtils;
-import kr.teamcocoa.language.languages.LanguageController;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
@@ -107,7 +106,7 @@ public class PrestigeManager {
                                                     .split(",")),
                                     buildFFAPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(buildFFAPlayer))));
                 }
-                Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> TabManager.updateNameTags(buildFFAPlayer.getPlayer()));
+                Bukkit.getScheduler().runTask(BuildFFABootstrap.getInstance(), () -> TabManager.updateNameTags(buildFFAPlayer.getPlayer()));
             }
         }
         else {
@@ -125,7 +124,7 @@ public class PrestigeManager {
                                                     .split(",")),
                                     buildFFAPlayer.getPlayer().getName(), StringUtils.color(getPrestigeName(buildFFAPlayer))));
                 }
-                Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> TabManager.updateNameTags(buildFFAPlayer.getPlayer()));
+                Bukkit.getScheduler().runTask(BuildFFABootstrap.getInstance(), () -> TabManager.updateNameTags(buildFFAPlayer.getPlayer()));
             }
         }
     }

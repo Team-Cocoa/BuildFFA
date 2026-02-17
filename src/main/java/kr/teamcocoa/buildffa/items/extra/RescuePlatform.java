@@ -3,7 +3,6 @@ package kr.teamcocoa.buildffa.items.extra;
 import kr.teamcocoa.buildffa.world.DeSpawnBlock;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
-import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
@@ -15,7 +14,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RescuePlatform extends AbstractExtraItem implements UseAble {

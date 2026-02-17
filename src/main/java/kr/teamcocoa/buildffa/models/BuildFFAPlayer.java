@@ -2,13 +2,13 @@ package kr.teamcocoa.buildffa.models;
 
 import ch.dkrieger.coinsystem.core.CoinSystem;
 import ch.dkrieger.coinsystem.core.player.CoinPlayer;
+import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
 import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.items.extra.ExtraItemManager;
 import kr.teamcocoa.buildffa.items.shop.Bow;
 import kr.teamcocoa.buildffa.items.shop.SnowBall;
-import kr.teamcocoa.buildffa.main.BuildFFA;
 import kr.teamcocoa.buildffa.prestige.Prestige;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
@@ -31,7 +31,6 @@ import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Stream;
 
 @Getter
@@ -221,7 +220,7 @@ public class BuildFFAPlayer {
                 }
             }
 
-            Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> setJoinInventory());
+            Bukkit.getScheduler().runTask(BuildFFABootstrap.getInstance(), () -> setJoinInventory());
         }
         buildFFAStats.addDeaths(1);
         lastHitPlayer = null;

@@ -1,11 +1,8 @@
 package kr.teamcocoa.buildffa.commands;
 
-import kr.teamcocoa.buildffa.main.BuildFFA;
-import kr.teamcocoa.core.permission.Permission;
-import kr.teamcocoa.core.permission.PermissionValidator;
+import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,13 +13,13 @@ public class TeamingCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (p.hasPermission("teamcocoa.moderator")) {
-                if (BuildFFA.teaming) {
-                    BuildFFA.teaming = false;
+                if (BuildFFABootstrap.teaming) {
+                    BuildFFABootstrap.teaming = false;
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &7Teaming is &4&lPROHIBITED &7from now on!"));
                     }
                 } else {
-                    BuildFFA.teaming = true;
+                    BuildFFABootstrap.teaming = true;
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &7Teaming is &a&lALLOWED &7from now on!"));
                     }

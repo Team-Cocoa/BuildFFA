@@ -4,7 +4,7 @@ import eu.cloudnetservice.driver.permission.PermissionGroup;
 import eu.cloudnetservice.driver.permission.PermissionManagement;
 import eu.cloudnetservice.driver.permission.PermissionUser;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.core.utils.StringUtils;
@@ -33,7 +33,7 @@ public class AsyncPlayerChatListener implements Listener {
         String message = e.getMessage();
         BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
 
-        PermissionManagement permissionManagement = BuildFFA.getPermissionManagement();
+        PermissionManagement permissionManagement = BuildFFABootstrap.getPermissionManagement();
 
         PermissionUser permissionUser = permissionManagement.user(player.getUniqueId());
         PermissionGroup permissionGroup = permissionManagement.highestPermissionGroup(permissionUser);

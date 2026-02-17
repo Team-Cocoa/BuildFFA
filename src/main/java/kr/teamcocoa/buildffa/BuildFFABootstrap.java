@@ -1,4 +1,4 @@
-package kr.teamcocoa.buildffa.main;
+package kr.teamcocoa.buildffa;
 
 import dev.derklaro.aerogel.Inject;
 import dev.derklaro.aerogel.Singleton;
@@ -18,7 +18,6 @@ import kr.teamcocoa.buildffa.listener.*;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.models.BuildFFAStats;
-import kr.teamcocoa.buildffa.models.BuildFFAStatsManager;
 import kr.teamcocoa.buildffa.tabs.TabListener;
 import kr.teamcocoa.buildffa.utils.ScoreboardManager;
 import kr.teamcocoa.buildffa.world.MapChangeScheduler;
@@ -57,7 +56,7 @@ import java.util.concurrent.TimeUnit;
         },
         api = "1.13"
 )
-public class BuildFFA implements PlatformEntrypoint {
+public class BuildFFABootstrap implements PlatformEntrypoint {
 
     @Getter
     private static JavaPlugin instance;
@@ -75,16 +74,16 @@ public class BuildFFA implements PlatformEntrypoint {
     public static final String PREFIX = StringUtils.color("&a[&dBuildFFA&a] ");
 
     @Inject
-    private BuildFFA(
+    private BuildFFABootstrap(
             @NonNull JavaPlugin javaPlugin,
             @NonNull PluginManager pluginManager,
             @NonNull PermissionManagement permissionManagement,
             @NonNull EventManager eventManager
             ) {
-        BuildFFA.instance = javaPlugin;
-        BuildFFA.permissionManagement = permissionManagement;
-        BuildFFA.teaming = false;
-        BuildFFA.eventManager = eventManager;
+        BuildFFABootstrap.instance = javaPlugin;
+        BuildFFABootstrap.permissionManagement = permissionManagement;
+        BuildFFABootstrap.teaming = false;
+        BuildFFABootstrap.eventManager = eventManager;
         this.pluginManager = pluginManager;
     }
 

@@ -1,7 +1,7 @@
 package kr.teamcocoa.buildffa.listener;
 
 import kr.teamcocoa.buildffa.databases.StatsDatabase;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.models.BuildFFAStats;
@@ -64,7 +64,7 @@ public class JoinListener implements Listener {
 
             PacketUtils.sendTitle(player, "", "", 0, 0, 0);
 
-            Bukkit.getScheduler().runTask(BuildFFA.getInstance(), () -> {
+            Bukkit.getScheduler().runTask(BuildFFABootstrap.getInstance(), () -> {
                 for (PotionEffect effect : player.getActivePotionEffects()) {
                     player.removePotionEffect(effect.getType());
                 }

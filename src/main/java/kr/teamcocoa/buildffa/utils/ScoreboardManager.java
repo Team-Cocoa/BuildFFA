@@ -1,7 +1,7 @@
 package kr.teamcocoa.buildffa.utils;
 
 import kr.teamcocoa.buildffa.enums.OtherEnum;
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
@@ -75,7 +75,7 @@ public class ScoreboardManager implements Listener {
         lines.add(LangUtils.getMessage(player, OtherEnum.SCOREBOARD_BEST_KILL_STREAK));
         lines.add("&8» &e" + killstreak + " ");
         lines.add("  ");
-        lines.add(LangUtils.getMessage(player, BuildFFA.teaming ? OtherEnum.SCOREBOARD_TEAMING_ALLOW : OtherEnum.SCOREBOARD_TEAMING_PROHIBIT));
+        lines.add(LangUtils.getMessage(player, BuildFFABootstrap.teaming ? OtherEnum.SCOREBOARD_TEAMING_ALLOW : OtherEnum.SCOREBOARD_TEAMING_PROHIBIT));
 
         setScoreboard(player, lines);
     }

@@ -1,12 +1,10 @@
 package kr.teamcocoa.buildffa.world;
 
-import kr.teamcocoa.buildffa.main.BuildFFA;
+import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.world.maps.BuildFFAMap;
 import kr.teamcocoa.buildffa.world.maps.Maps;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -124,7 +122,7 @@ public class WorldManager {
                     }
                 }
             }
-        }).runTaskTimer(BuildFFA.getInstance(), 0L, 1L);
+        }).runTaskTimer(BuildFFABootstrap.getInstance(), 0L, 1L);
 
     }
 
