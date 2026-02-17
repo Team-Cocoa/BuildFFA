@@ -2,11 +2,11 @@ package kr.teamcocoa.buildffa.world;
 
 import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
-import kr.teamcocoa.core.bukkit.utils.PacketUtils;
+import kr.teamcocoa.core.bukkit.packetevents.api.PacketEvents;
+import kr.teamcocoa.core.bukkit.packetevents.api.util.Vector3i;
+import kr.teamcocoa.core.bukkit.packetevents.api.wrapper.play.server.WrapperPlayServerBlockBreakAnimation;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ public class DeSpawnBlock {
 
     private static SecureRandom secureRandom = new SecureRandom();
 
-    private int i;
+    private byte i; // 자료형이 byte인 이유는 packet 클래스 생성자가 byte를 받아서...
 
     private BuildFFAPlayer buildFFAPlayer;
 
@@ -34,6 +34,8 @@ public class DeSpawnBlock {
     @Setter
     private boolean expire;
 
+    private Vector3i packetBlockPosition;
+
     private World world;
 
     public DeSpawnBlock(BuildFFAPlayer buildFFAPlayer, Block block, boolean giveAgain){
@@ -47,6 +49,7 @@ public class DeSpawnBlock {
         this.world = block.getWorld();
         this.giveAgain = giveAgain;
         this.expire = false;
+        this.packetBlockPosition = new Vector3i(x, y, z);
     }
 
     public void tick() {
@@ -54,12 +57,9 @@ public class DeSpawnBlock {
             return;
         }
         if(i < 10) {
-            ClientboundBlockDestructionPacket packet = new ClientboundBlockDestructionPacket(
-                    random,
-                    new BlockPos(block.getX(), block.getY(), block.getZ()),
-                    i);
+            WrapperPlayServerBlockBreakAnimation packet = getNewPacket(i);
             for(Player player : Bukkit.getOnlinePlayers()) {
-                PacketUtils.sendPackets(player, packet);
+                PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
             }
             i++;
         }
@@ -70,7 +70,7 @@ public class DeSpawnBlock {
                 try {
                     Player player = buildFFAPlayer.getPlayer();
                     player.getInventory().addItem(new ItemStack(Material.SANDSTONE));
-                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 100.0F, 0.0F);
+                    player.playSound(player.getLocation(), Sound.ITEM_PICKUP, 100.0F, 0.0F);
                 }
                 catch(Exception e){
 
@@ -81,16 +81,18 @@ public class DeSpawnBlock {
 
     public void makeAir() {
         this.expire = true;
-        ClientboundBlockDestructionPacket packet = new ClientboundBlockDestructionPacket(
-                random,
-                new BlockPos(block.getX(), block.getY(), block.getZ()),
-                0);
+        WrapperPlayServerBlockBreakAnimation packet = getNewPacket((byte) 0);
         for(Player player : Bukkit.getOnlinePlayers()) {
-            PacketUtils.sendPackets(player, packet);
+            PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
         }
+        i++;
         Bukkit.getScheduler().runTask(BuildFFABootstrap.getInstance(), () -> {
             new Location(world, x, y, z).getBlock().setType(Material.AIR);
         });
+    }
+
+    private WrapperPlayServerBlockBreakAnimation getNewPacket(byte strength) {
+        return new WrapperPlayServerBlockBreakAnimation(random, packetBlockPosition, strength);
     }
 
 }
