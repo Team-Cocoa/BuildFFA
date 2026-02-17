@@ -46,7 +46,7 @@ import java.util.concurrent.TimeUnit;
         authors = "fixca",
         dependencies = {
                 @Dependency(name = "Language"),
-                @Dependency(name = "MySQL")
+                @Dependency(name = "TeamCocoa-Core")
         },
         pluginFileNames = "plugin.yml",
         commands = {

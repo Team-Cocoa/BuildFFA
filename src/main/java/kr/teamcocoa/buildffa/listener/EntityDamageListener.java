@@ -35,9 +35,10 @@ public class EntityDamageListener implements Listener {
                 BuildFFAPlayer damagedBFFAPlayer = BuildFFAPlayerManager.getPlayer(damagedPlayer);
                 BuildFFAPlayer damagerBFFAPlayer = BuildFFAPlayerManager.getPlayer(damager);
 
-                if (!damagerBFFAPlayer.isInGame()) {
+                if (!damagerBFFAPlayer.isInGame() || !damagedBFFAPlayer.isInGame()) {
                     e.setCancelled(true);
-                } else {
+                }
+                else {
                     damagedBFFAPlayer.setLastHitPlayer(damager);
                     damagedBFFAPlayer.addDamage(damager, e.getFinalDamage());
                     ItemStack itemStack = damager.getInventory().getItemInMainHand();
@@ -58,6 +59,11 @@ public class EntityDamageListener implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player player) {
+            if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
+                e.setCancelled(true);
+                return;
+            }
+
             if (!WorldManager.getInstance().getCurrentMap().isPvpAble()) {
                 e.setCancelled(true);
                 return;
@@ -66,11 +72,6 @@ public class EntityDamageListener implements Listener {
             BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
 
             if (!buildFFAPlayer.isInGame()) {
-                e.setCancelled(true);
-                return;
-            }
-
-            if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
                 e.setCancelled(true);
                 return;
             }

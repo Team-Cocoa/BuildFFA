@@ -29,7 +29,6 @@ public class PlayerMoveListener implements Listener {
         BuildFFAMap currentMap = WorldManager.getInstance().getCurrentMap();
 
         if(location.getY() < 0 || (!buildFFAPlayer.isBuild() &&
-                buildFFAPlayer.isInGame() &&
                 currentMap.getDeathHeight() > location.getY())) {
             Player killer = buildFFAPlayer.getLastHitPlayer();
 
