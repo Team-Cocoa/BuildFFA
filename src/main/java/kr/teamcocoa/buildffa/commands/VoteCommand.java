@@ -12,7 +12,8 @@ import org.bukkit.entity.Player;
 public class VoteCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if(commandSender instanceof Player player) {
+        if (commandSender instanceof Player) {
+            Player player = ((Player) commandSender);
             MapVoteInventory inventory = MapVoteInventory.getInstance();
             if(MapVote.getInstance().isVoteAble()) {
                 player.openInventory(inventory.getInventory(player));

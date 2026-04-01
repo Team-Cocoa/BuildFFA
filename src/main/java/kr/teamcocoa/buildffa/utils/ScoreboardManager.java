@@ -5,16 +5,12 @@ import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundSetDisplayObjectivePacket;
-import net.minecraft.network.protocol.game.ClientboundSetObjectivePacket;
-import net.minecraft.network.protocol.game.ClientboundSetScorePacket;
-import net.minecraft.server.ServerScoreboard;
-import net.minecraft.world.scores.Objective;
-import net.minecraft.world.scores.Scoreboard;
-import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +19,19 @@ import java.util.List;
 public class ScoreboardManager implements Listener {
 
     private static void setScoreboard(Player player, List<String> lines) {
+
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective("BuildFFASB", "dummy");
+
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName(StringUtils.color("&dBuildFFA"));
+
+
+
+
+
+
+
         Scoreboard scoreboard = new Scoreboard();
         Objective objective = scoreboard.addObjective("BuildFFASB",
                 ObjectiveCriteria.DUMMY,

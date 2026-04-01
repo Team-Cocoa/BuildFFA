@@ -6,7 +6,6 @@ import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.world.MapVote;
 import kr.teamcocoa.buildffa.world.maps.Maps;
 import kr.teamcocoa.core.utils.StringUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +23,7 @@ public class QuitListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        e.quitMessage(Component.empty());
+        e.setQuitMessage("");
 
         BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
 

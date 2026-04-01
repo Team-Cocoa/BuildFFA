@@ -11,6 +11,7 @@ import kr.teamcocoa.buildffa.tabs.TabManager;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import kr.teamcocoa.core.bukkit.utils.PacketUtils;
 import kr.teamcocoa.core.utils.StringUtils;
+import kr.teamcocoa.core.utils.ThreadUtils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,12 +28,13 @@ import java.util.concurrent.TimeUnit;
 
 public class JoinListener implements Listener {
 
-    private static ThreadPoolExecutor executors = new ThreadPoolExecutor(1, 30, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(30));
+    private static ThreadPoolExecutor executors =
+            ThreadUtils.getThreadPool(Bukkit.getMaxPlayers(), 1, TimeUnit.SECONDS, "bffa-dataload-pool");
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        e.joinMessage(Component.empty());
+        e.setJoinMessage("");
         player.addPotionEffect(PotionEffectType.INVISIBILITY.createEffect(999999, 1));
         PacketUtils.sendTitle(player, "", StringUtils.color("&7Your data is being loaded..."), 20, 1000, 20);
         player.teleport(new Location(Bukkit.getWorld("ArenaWorld"), 0.5, 5.0, 0.5));
@@ -45,7 +47,7 @@ public class JoinListener implements Listener {
                     StatsDatabase.loadStats(buildFFAStats);
                 }
                 catch (IllegalStateException e1) {
-                    player.kick(Component.text("An error has occurred while loading the stats. Contact to developer."));
+                    player.kickPlayer("An error has occurred while loading the stats. Contact to developer.");
                     return;
                 }
                 BuildFFAStatsManager.getCache().createData(player.getUniqueId(), buildFFAStats);

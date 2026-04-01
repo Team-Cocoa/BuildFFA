@@ -41,12 +41,12 @@ public class EntityDamageListener implements Listener {
                 else {
                     damagedBFFAPlayer.setLastHitPlayer(damager);
                     damagedBFFAPlayer.addDamage(damager, e.getFinalDamage());
-                    ItemStack itemStack = damager.getInventory().getItemInMainHand();
+                    ItemStack itemStack = damager.getInventory().getItemInHand();
                     if (itemStack != null && itemStack.getType() == Material.STICK) {
                         int durability = damagerBFFAPlayer.getKbStickDurability() - 1;
                         if (durability == 0) {
                             damager.setItemInHand(new ItemStack(Material.AIR));
-                            damager.playSound(damager.getLocation(), Sound.ENTITY_ITEM_BREAK, 100, 0);
+                            damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 100, 0);
                         }
                         damagerBFFAPlayer.setKbStickDurability(durability);
                         PacketUtils.sendTitle(damager, "", "&c(" + durability + "/15)", 0, 10, 0);
@@ -58,7 +58,8 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player player) {
+        if (e.getEntity() instanceof Player) {
+            Player player = ((Player) e.getEntity());
             if (e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
                 e.setCancelled(true);
                 return;

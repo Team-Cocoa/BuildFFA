@@ -20,8 +20,7 @@ public class GoldenApple extends AbstractExtraItem {
 
     @Override
     public ItemStack getItemStack(Player player, int count) {
-        ItemStack itemStack = new ItemStack(Material.GOLDEN_APPLE, count);
-        return itemStack;
+        return new ItemStack(Material.GOLDEN_APPLE, count);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package kr.teamcocoa.buildffa.items.shop;
 
-import ch.dkrieger.coinsystem.core.CoinSystem;
-import ch.dkrieger.coinsystem.core.player.CoinPlayer;
+//import ch.dkrieger.coinsystem.core.CoinSystem;
+//import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.entity.Player;

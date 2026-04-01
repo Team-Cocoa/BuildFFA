@@ -56,16 +56,28 @@ public class MapChangeScheduler {
             }
 
             switch (sec) {
-                case 600, 300, 180, 60, 30 -> {
+                case 600:
+                case 300:
+                case 180:
+                case 60:
+                case 30:
                     sendCountdownMessage();
-                    for (Player player : Bukkit.getOnlinePlayers()) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
                         player.sendMessage(mapVote.getVotingStatusMessage(player));
                     }
-                }
-
-                case 310, 70, 40, 20, 15, 14, 13, 12, 11 -> sendVoteEndMessage();
-
-                case 10 -> {
+                    break;
+                case 310:
+                case 70:
+                case 40:
+                case 20:
+                case 15:
+                case 14:
+                case 13:
+                case 12:
+                case 11:
+                    sendVoteEndMessage();
+                    break;
+                case 10:
                     mapVote.setVoteAble(false);
                     Maps maps = mapVote.getMostVoted();
                     for (Player player : Bukkit.getOnlinePlayers()) {
@@ -74,24 +86,31 @@ public class MapChangeScheduler {
                                 LangUtils.getMessage(player, MessageEnum.VOTE_MAP_SELECTED),
                                 maps.getName()));
                     }
-                }
+                    break;
 
-                case 5 -> {
+
+                case 5: {
                     sendCountdownMessage();
                     currentMap.mapSessionStop();
+                    break;
                 }
-                case 4, 3, 2 -> sendCountdownMessage();
+                case 4:
+                case 3:
+                case 2:
+                    sendCountdownMessage();
+                    break;
 
-                case 1 -> {
+                case 1:
                     sendCountdownMessage();
                     currentMap.removeAllBlocks();
-                }
+                    break;
 
-                case 0 -> {
+
+                case 0:
                     WorldManager.getInstance().mapChange(MapVote.getInstance().getMostVoted());
                     mapVote.resetVotes();
                     mapVote.setVoteAble(true);
-                }
+                    break;
             }
             sec--;
         }, 0, 1, TimeUnit.SECONDS);

@@ -16,12 +16,12 @@ public enum Maps {
     private String name;
 
     public static Maps getByName(String name) {
-        return switch (name.toLowerCase()) {
-            case "architecture" -> ARCHITECTURE;
-            case "flatland" -> FLATLAND;
-            case "spring" -> SPRING;
-            case "cwbw" -> CWBW;
-            default -> null;
-        };
+        switch (name.toLowerCase()) {
+            case "architecture": return ARCHITECTURE;
+            case "flatland": return FLATLAND;
+            case "spring": return SPRING;
+            case "cwbw": return CWBW;
+            default: return null;
+        }
     }
 }

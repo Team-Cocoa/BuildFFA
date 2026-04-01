@@ -12,7 +12,8 @@ import org.bukkit.entity.Player;
 public class BuildCommand implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player player) {
+        if (sender instanceof Player) {
+            Player player = ((Player) sender);
             if (player.hasPermission("teamcocoa.moderator")) {
                 BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
                 if (!buildFFAPlayer.isBuild()) {

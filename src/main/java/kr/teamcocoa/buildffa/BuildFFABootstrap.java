@@ -28,6 +28,7 @@ import kr.teamcocoa.core.utils.StringUtils;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -37,39 +38,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-@Singleton
-@PlatformPlugin(
-        platform = "bukkit",
-        name = "BuildFFA",
-        version = "1.0",
-        authors = "fixca",
-        dependencies = {
-                @Dependency(name = "Language"),
-                @Dependency(name = "TeamCocoa-Core")
-        },
-        pluginFileNames = "plugin.yml",
-        commands = {
-                @Command(name = "build"),
-                @Command(name = "stats"),
-                @Command(name = "teaming"),
-                @Command(name = "vote")
-        },
-        api = "1.13"
-)
-public class BuildFFABootstrap implements PlatformEntrypoint {
+public class BuildFFABootstrap extends JavaPlugin{
 
     @Getter
     private static JavaPlugin instance;
 
-    @Getter
-    private static PermissionManagement permissionManagement;
-
-    @Getter
-    private static EventManager eventManager;
-
     private PluginManager pluginManager;
 
-    public static boolean teaming;
+    public static boolean teaming = false;
 
     public static final String PREFIX = StringUtils.color("&a[&dBuildFFA&a] ");
 
@@ -135,9 +111,9 @@ public class BuildFFABootstrap implements PlatformEntrypoint {
 
         Bukkit.getScheduler().runTaskLater(instance, () -> {
             for (World world : Bukkit.getWorlds()) {
-                world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
-                world.setGameRule(GameRule.LOG_ADMIN_COMMANDS, false);
-                world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+                world.setGameRuleValue("announceAdvancements", "false");
+                world.setGameRuleValue("logAdminCommands", "false");
+                world.setGameRuleValue("doDaylightCycle", "false");
                 world.setTime(0);
             }
         }, 20L);

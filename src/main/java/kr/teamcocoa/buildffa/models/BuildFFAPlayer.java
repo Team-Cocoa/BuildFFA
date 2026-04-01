@@ -1,7 +1,5 @@
 package kr.teamcocoa.buildffa.models;
 
-import ch.dkrieger.coinsystem.core.CoinSystem;
-import ch.dkrieger.coinsystem.core.player.CoinPlayer;
 import kr.teamcocoa.buildffa.BuildFFABootstrap;
 import kr.teamcocoa.buildffa.enums.InventoryEnum;
 import kr.teamcocoa.buildffa.enums.ItemEnum;
@@ -14,7 +12,6 @@ import kr.teamcocoa.buildffa.prestige.PrestigeManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
-import kr.teamcocoa.core.utils.StringUtils;
 import kr.teamcocoa.kitmanager.frontend.kits.Kits;
 import kr.teamcocoa.kitmanager.frontend.main.KitManager;
 import lombok.Getter;
@@ -101,7 +98,7 @@ public class BuildFFAPlayer {
         player.getInventory().setItem(0, shopItem);
         player.getInventory().setItem(8, leaveItem);
         if (player.hasPermission("teamcocoa.prime")) {
-            ItemStack killEffectItem = new ItemStack(Material.GOLDEN_SWORD);
+            ItemStack killEffectItem = new ItemStack(Material.GOLD_SWORD);
             ItemUtils.name(killEffectItem, "&cKillEffects");
             player.getInventory().setItem(3, voteItem);
             player.getInventory().setItem(5, killEffectItem);
@@ -116,7 +113,7 @@ public class BuildFFAPlayer {
         player.getInventory().clear();
         player.setLevel(0);
         KitManager.getKitManagerAPI().loadPlayerKit(player, Kits.BUILDFFA);
-        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 100.0F, 0.0F);
+        player.playSound(player.getLocation(), Sound.ORB_PICKUP, 100.0F, 0.0F);
 
         inGame = true;
 
@@ -134,12 +131,12 @@ public class BuildFFAPlayer {
 
     public void kill(BuildFFAPlayer killed) {
         buildFFAStats.addKills(1);
-        CoinPlayer coinPlayer = CoinSystem.getInstance().getPlayerManager().getPlayer(player.getUniqueId());
-        coinPlayer.addCoins(50);
-        player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &6+50 coins!"));
+//        CoinPlayer coinPlayer = CoinSystem.getInstance().getPlayerManager().getPlayer(player.getUniqueId());
+//        coinPlayer.addCoins(50);
+//        player.sendMessage(StringUtils.color("&a[&dTeamCocoa&a] &6+50 coins!"));
         PrestigeManager.getInstance().updatePrestige(this);
         try {
-            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 2);
+            player.playSound(player.getLocation(), Sound.ORB_PICKUP, 1, 2);
             String health = (new DecimalFormat("0.00")).format(player.getHealth());
 
             killed.getPlayer().sendMessage(MessageFormat.format(
@@ -193,7 +190,7 @@ public class BuildFFAPlayer {
                     }
                 }
 
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100.0F, 0.0F);
+                player.playSound(player.getLocation(), Sound.LEVEL_UP, 100.0F, 0.0F);
             }
         }
         catch (Exception e) {
@@ -206,7 +203,7 @@ public class BuildFFAPlayer {
             Location spawn = WorldManager.getInstance().getCurrentMap().getSpawn();
 
             player.teleport(spawn);
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
+            player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0F, 1.0F);
 
             if (player.equals(getLastHitPlayer())) {
                 return;

@@ -9,9 +9,11 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class PlayerDeathListener implements Listener {
 
+    // 이건 수정 보류
+
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        Player player = e.getPlayer();
+        Player player = e.getEntity();
         e.setCancelled(true);
 
         BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);

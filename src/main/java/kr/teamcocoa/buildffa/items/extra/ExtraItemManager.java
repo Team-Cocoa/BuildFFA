@@ -8,11 +8,10 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.security.SecureRandom;
 import java.text.MessageFormat;
-import java.util.Random;
 
 public class ExtraItemManager {
 
-    private SecureRandom random;
+    private SecureRandom random = new SecureRandom();;
 
     private static ExtraItemManager instance;
 
@@ -23,10 +22,6 @@ public class ExtraItemManager {
         return instance;
     }
 
-    private ExtraItemManager() {
-        this.random = new SecureRandom();
-    }
-
     private int getRandomNumber() {
         return random.nextInt(4);
     }
@@ -34,21 +29,25 @@ public class ExtraItemManager {
     public void giveExtraItem(Player player) {
         int number = getRandomNumber();
         switch (number) {
-            case 0 -> {
+            case 0: {
                 player.getInventory().addItem(GoldenApple.getInstance().getItemStack(player, 1));
                 player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), GoldenApple.getInstance().getName(player)));
+                break;
             }
-            case 1 -> {
+            case 1: {
                 player.getInventory().addItem(RescuePlatform.getInstance().getItemStack(player, 1));
                 player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), RescuePlatform.getInstance().getName(player)));
+                break;
             }
-            case 2 -> {
+            case 2: {
                 player.addPotionEffect(PotionEffectType.SPEED.createEffect(300, 1));
                 player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), StringUtils.color("&cSwiftness for 15 seconds")));
+                break;
             }
-            case 3 -> {
+            case 3: {
                 player.addPotionEffect(PotionEffectType.INCREASE_DAMAGE.createEffect(100, 0));
                 player.sendMessage(MessageFormat.format(LangUtils.getMessage(player, MessageEnum.GIVE_EXTRA_ITEM), StringUtils.color("&cStrength for 3 seconds")));
+                break;
             }
         }
     }

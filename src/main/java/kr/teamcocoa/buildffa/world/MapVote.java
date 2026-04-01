@@ -12,7 +12,6 @@ import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -91,18 +90,17 @@ public class MapVote {
     public Maps getMostVoted() {
         SecureRandom random = new SecureRandom();
 
-        List<Maps> list = voteList.entrySet().stream()
+        Maps[] list = ((Maps[]) voteList.entrySet().stream()
                 .sorted(Map.Entry.<Maps, Integer>comparingByValue().reversed())
                 .filter(mapsIntegerEntry -> mapsIntegerEntry.getKey() != WorldManager.getInstance().getCurrentMap().getMaps())
-                .map(mapsIntegerEntry -> mapsIntegerEntry.getKey())
-                .toList();
+                .map(mapsIntegerEntry -> mapsIntegerEntry.getKey()).toArray());
 
-        if(voteList.get(list.get(0)) == voteList.get(list.get(1)) &&
-                voteList.get(list.get(1)) == voteList.get(list.get(2))) {
-            return list.get(random.nextInt(list.size() - 1));
+        if(voteList.get(list[0]) == voteList.get(list[1]) &&
+                voteList.get(list[1]) == voteList.get(list[2])) {
+            return list[random.nextInt(list.length - 1)];
         }
         else {
-            return list.get(0);
+            return list[0];
         }
 
     }

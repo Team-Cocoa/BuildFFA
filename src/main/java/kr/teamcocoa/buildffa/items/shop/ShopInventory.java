@@ -5,9 +5,7 @@ import kr.teamcocoa.buildffa.enums.MessageEnum;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
 import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.utils.LangUtils;
-import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
 import kr.teamcocoa.core.bukkit.utils.ItemUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -38,25 +36,34 @@ public class ShopInventory {
 
         BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
 
-        if(ComponentUtils.componentEquals(clickedItemMeta.displayName(), SnowBall.getInstance().getName(player))) {
+        if(clickedItemMeta.getDisplayName().equalsIgnoreCase(SnowBall.getInstance().getName(player))) {
             status = SnowBall.getInstance().purchase(buildFFAPlayer);
         }
-        if(ComponentUtils.componentEquals(clickedItemMeta.displayName(), Bow.getInstance().getName(player))) {
+        if(clickedItemMeta.getDisplayName().equalsIgnoreCase(Bow.getInstance().getName(player))) {
             status = Bow.getInstance().purchase(buildFFAPlayer);
         }
 
         if(status != null) {
-            player.sendMessage(LangUtils.getMessage(player, switch(status) {
-                case SUCCESS -> MessageEnum.SHOP_BOUGHT;
-                case FAILED -> MessageEnum.SHOP_CANNOT_BUY;
-                case ALREADY_BOUGHT -> MessageEnum.SHOP_ALREADY_BOUGHT;
-            }));
+            switch (status) {
+                case SUCCESS: {
+                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.SHOP_BOUGHT));
+                    break;
+                }
+                case FAILED: {
+                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.SHOP_CANNOT_BUY));
+                    break;
+                }
+                case ALREADY_BOUGHT: {
+                    player.sendMessage(LangUtils.getMessage(player, MessageEnum.SHOP_ALREADY_BOUGHT));
+                    break;
+                }
+            }
         }
 
     }
 
     public static void openShopInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, 1 * 9, Component.text(LangUtils.getMessage(player, InventoryEnum.EXTRA_ITEM)));
+        Inventory inventory = Bukkit.createInventory(null, 1 * 9, LangUtils.getMessage(player, InventoryEnum.EXTRA_ITEM));
         for (int i = 0; i < 9; i++) {
             inventory.setItem(i, ItemUtils.getGUIBackGround());
         }

@@ -60,7 +60,8 @@ public class StatsCommand implements CommandExecutor {
                         BuildFFAStatsManager.getCache().createData(uuid, cachedStats);
                         sendMessage(sender, playerName, cachedStats);
                     } else {
-                        if (sender instanceof Player player) {
+                        if (sender instanceof Player) {
+                            Player player = ((Player) sender);
                             player.sendMessage(LangUtils.getMessage(player, MessageEnum.STATS_NOT_FOUND));
                         } else {
                             sender.sendMessage(playerName + "not found.");
@@ -86,7 +87,8 @@ public class StatsCommand implements CommandExecutor {
     }
 
     private void sendMessage(CommandSender sender, String name, BuildFFAStats stats) {
-        if(sender instanceof Player player) {
+        if (sender instanceof Player) {
+            Player player = ((Player) sender);
             String prestige = PrestigeManager.getInstance().getPrestigeName(stats.getKills());
             player.sendMessage(StringUtils.color(MessageFormat.format(getListByString(
                     LangUtils.getMessage(player, MessageEnum.STATS_MESSAGE)),
