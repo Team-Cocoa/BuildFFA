@@ -1,8 +1,12 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.databases.StatsDatabase;
-import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
-import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.google.inject.Inject;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import kr.teamcocoa.buildffa.game.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.game.models.BuildFFAPlayerManager;
+import kr.teamcocoa.buildffa.network.stats.StatsController;
 import kr.teamcocoa.buildffa.world.MapVote;
 import kr.teamcocoa.buildffa.world.maps.Maps;
 import kr.teamcocoa.core.utils.StringUtils;
@@ -12,46 +16,58 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 public class QuitListener implements Listener {
 
-    private static ThreadPoolExecutor executors = new ThreadPoolExecutor(1, 30, 1, TimeUnit.SECONDS, new LinkedBlockingDeque<>(30));
+  private final BuildFFAPlayerManager buildFFAPlayerManager;
 
-    @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
-        Player player = e.getPlayer();
-        e.setQuitMessage("");
+  private final MapVote mapVote;
 
-        BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
+  private final StatsController statsController;
 
-        if(buildFFAPlayer == null) {
-            return;
-        }
+  @Inject
+  public QuitListener(
+      BuildFFAPlayerManager buildFFAPlayerManager,
+      MapVote mapVote,
+      StatsController statsController) {
+    this.buildFFAPlayerManager = buildFFAPlayerManager;
+    this.mapVote = mapVote;
+    this.statsController = statsController;
+  }
 
-        String quitMessage = StringUtils.color("&a[&dBuildFFA&a] &e" + player.getName() + " left the game!");
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            onlinePlayer.sendMessage(quitMessage);
-        }
+  // Unbounded queue so a burst of quits never rejects a stats save
+  private final ExecutorService executors =
+      Executors.newFixedThreadPool(
+          4, new ThreadFactoryBuilder().setNameFormat("bffa-datasave-pool-%d").build());
 
-        Maps votedMap = MapVote.getInstance().getWhatPlayerVoted(player);
+  @EventHandler
+  public void onQuit(PlayerQuitEvent e) {
+    Player player = e.getPlayer();
+    e.setQuitMessage("");
 
-        if(votedMap != null) {
-            MapVote.getInstance().removeVote(player, votedMap);
-        }
+    BuildFFAPlayer buildFFAPlayer = buildFFAPlayerManager.getPlayer(player);
 
-        if(buildFFAPlayer.isInGame()) {
-            buildFFAPlayer.death(true);
-        }
-
-        BuildFFAPlayerManager.removePlayer(player);
-
-        executors.execute(() -> {
-            StatsDatabase.upsertStats(buildFFAPlayer.getBuildFFAStats());
-            buildFFAPlayer.getBuildFFAStats().setEdited(false);
-        });
-
+    if (buildFFAPlayer == null) {
+      return;
     }
+
+    String quitMessage =
+        StringUtils.color("&a[&dBuildFFA&a] &e" + player.getName() + " left the game!");
+    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+      onlinePlayer.sendMessage(quitMessage);
+    }
+
+    Maps votedMap = mapVote.getWhatPlayerVoted(player);
+
+    if (votedMap != null) {
+      mapVote.removeVote(player, votedMap);
+    }
+
+    if (buildFFAPlayer.isInGame()) {
+      buildFFAPlayer.death(true);
+    }
+
+    buildFFAPlayerManager.removePlayer(player);
+
+    executors.execute(() -> statsController.upsertStats(buildFFAPlayer.getBuildFFAStats()));
+  }
 }

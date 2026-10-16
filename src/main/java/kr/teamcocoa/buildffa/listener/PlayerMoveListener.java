@@ -1,7 +1,8 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
-import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
+import com.google.inject.Inject;
+import kr.teamcocoa.buildffa.game.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.game.models.BuildFFAPlayerManager;
 import kr.teamcocoa.buildffa.world.WorldManager;
 import kr.teamcocoa.buildffa.world.maps.BuildFFAMap;
 import org.bukkit.Bukkit;
@@ -13,41 +14,51 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class PlayerMoveListener implements Listener {
 
-    @EventHandler
-    public void onMove(PlayerMoveEvent e) {
-        Player player = e.getPlayer();
+  private final BuildFFAPlayerManager buildFFAPlayerManager;
 
-        Location location = player.getLocation();
+  private final WorldManager worldManager;
 
-        BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
+  @Inject
+  public PlayerMoveListener(
+      BuildFFAPlayerManager buildFFAPlayerManager, WorldManager worldManager) {
+    this.buildFFAPlayerManager = buildFFAPlayerManager;
+    this.worldManager = worldManager;
+  }
 
-        if(buildFFAPlayer == null) {
-            Bukkit.getLogger().info("bffaplayer is null in playermoveevent | " + player.getName());
-            return;
-        }
+  @EventHandler
+  public void onMove(PlayerMoveEvent e) {
+    Player player = e.getPlayer();
 
-        BuildFFAMap currentMap = WorldManager.getInstance().getCurrentMap();
+    Location location = player.getLocation();
 
-        if(location.getY() < 0 || (!buildFFAPlayer.isBuild() &&
-                currentMap.getDeathHeight() > location.getY())) {
-            Player killer = buildFFAPlayer.getLastHitPlayer();
+    BuildFFAPlayer buildFFAPlayer = buildFFAPlayerManager.getPlayer(player);
 
-            if(killer != null) {
-                BuildFFAPlayer killerBuildFFAPlayer = BuildFFAPlayerManager.getPlayer(killer);
-                killerBuildFFAPlayer.kill(buildFFAPlayer);
-            }
-
-            buildFFAPlayer.reset();
-            buildFFAPlayer.death(false);
-            return;
-            // ^ 이거 없애기 금지 이거 없애면 이 파트 실행되고 밑에 if 문도 실행됨
-        }
-
-        if(!buildFFAPlayer.isBuild() &&
-                !buildFFAPlayer.isInGame() &&
-                currentMap.getArenaHeight() > location.getY()) {
-            buildFFAPlayer.arenaJoin();
-        }
-
+    if (buildFFAPlayer == null) {
+      Bukkit.getLogger().info("bffaplayer is null in playermoveevent | " + player.getName());
+      return;
     }
+
+    BuildFFAMap currentMap = worldManager.getCurrentMap();
+
+    if (location.getY() < 0
+        || (!buildFFAPlayer.isBuild() && currentMap.getDeathHeight() > location.getY())) {
+      Player killer = buildFFAPlayer.getLastHitPlayer();
+
+      if (killer != null) {
+        BuildFFAPlayer killerBuildFFAPlayer = buildFFAPlayerManager.getPlayer(killer);
+        killerBuildFFAPlayer.kill(buildFFAPlayer);
+      }
+
+      buildFFAPlayer.reset();
+      buildFFAPlayer.death(false);
+      return;
+      // ^ 이거 없애기 금지 이거 없애면 이 파트 실행되고 밑에 if 문도 실행됨
+    }
+
+    if (!buildFFAPlayer.isBuild()
+        && !buildFFAPlayer.isInGame()
+        && currentMap.getArenaHeight() > location.getY()) {
+      buildFFAPlayer.arenaJoin();
+    }
+  }
 }

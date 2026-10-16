@@ -1,13 +1,12 @@
 package kr.teamcocoa.buildffa.listener;
 
-import kr.teamcocoa.buildffa.enums.InventoryEnum;
-import kr.teamcocoa.buildffa.items.shop.ShopInventory;
-import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
-import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
-import kr.teamcocoa.buildffa.utils.LangUtils;
+import com.google.inject.Inject;
+import kr.teamcocoa.buildffa.game.items.shop.ShopInventory;
+import kr.teamcocoa.buildffa.game.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.game.models.BuildFFAPlayerManager;
+import kr.teamcocoa.buildffa.translation.InventoryEnum;
+import kr.teamcocoa.buildffa.translation.LangUtils;
 import kr.teamcocoa.buildffa.world.MapVoteInventory;
-import kr.teamcocoa.core.bukkit.utils.ComponentUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,35 +15,51 @@ import org.bukkit.event.inventory.InventoryType;
 
 public class InventoryClickListener implements Listener {
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
-        if(e.getClickedInventory() == null) {
-            return;
-        }
+  private final BuildFFAPlayerManager buildFFAPlayerManager;
 
-        if(e.getClickedInventory().getType() == InventoryType.CRAFTING) {
-            e.setCancelled(true);
-            return;
-        }
+  private final ShopInventory shopInventory;
 
-        Player player = (Player) e.getWhoClicked();
-        BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
+  private final MapVoteInventory mapVoteInventory;
 
-        if(buildFFAPlayer.isBuild()) {
-            return;
-        }
+  @Inject
+  public InventoryClickListener(
+      BuildFFAPlayerManager buildFFAPlayerManager,
+      ShopInventory shopInventory,
+      MapVoteInventory mapVoteInventory) {
+    this.buildFFAPlayerManager = buildFFAPlayerManager;
+    this.shopInventory = shopInventory;
+    this.mapVoteInventory = mapVoteInventory;
+  }
 
-        Component title = e.getView().title();
-
-        if(ComponentUtils.componentEquals(title, LangUtils.getMessage(player, InventoryEnum.VOTE))) {
-            e.setCancelled(true);
-            MapVoteInventory.getInstance().onClickInventory(e);
-        }
-
-        if(ComponentUtils.componentEquals(title, LangUtils.getMessage(player, InventoryEnum.EXTRA_ITEM))) {
-            e.setCancelled(true);
-            ShopInventory.onClickShopInventory(e);
-        }
-
+  @EventHandler
+  public void onInventoryClick(InventoryClickEvent e) {
+    if (e.getClickedInventory() == null) {
+      return;
     }
+
+    if (e.getClickedInventory().getType() == InventoryType.CRAFTING) {
+      e.setCancelled(true);
+      return;
+    }
+
+    Player player = (Player) e.getWhoClicked();
+    BuildFFAPlayer buildFFAPlayer = buildFFAPlayerManager.getPlayer(player);
+
+    if (buildFFAPlayer.isBuild()) {
+      return;
+    }
+
+    String title = e.getView().getTitle();
+
+    if (title.equals(LangUtils.getMessage(player, InventoryEnum.VOTE))) {
+      e.setCancelled(true);
+      mapVoteInventory.onClickInventory(e);
+    }
+
+    if (title.equals(LangUtils.getMessage(player, InventoryEnum.EXTRA_ITEM))) {
+      e.setCancelled(true);
+      // TODO(economy): Re-enable buying once the coin system is implemented.
+      // shopInventory.onClickShopInventory(e);
+    }
+  }
 }

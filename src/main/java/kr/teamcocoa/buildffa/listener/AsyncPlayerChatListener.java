@@ -1,12 +1,10 @@
 package kr.teamcocoa.buildffa.listener;
 
-import eu.cloudnetservice.driver.permission.PermissionGroup;
-import eu.cloudnetservice.driver.permission.PermissionManagement;
-import eu.cloudnetservice.driver.permission.PermissionUser;
-import kr.teamcocoa.buildffa.models.BuildFFAPlayer;
-import kr.teamcocoa.buildffa.BuildFFABootstrap;
-import kr.teamcocoa.buildffa.models.BuildFFAPlayerManager;
-import kr.teamcocoa.buildffa.prestige.PrestigeManager;
+import com.google.inject.Inject;
+import java.text.MessageFormat;
+import kr.teamcocoa.buildffa.game.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.game.models.BuildFFAPlayerManager;
+import kr.teamcocoa.buildffa.game.prestige.PrestigeManager;
 import kr.teamcocoa.core.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,40 +12,36 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.text.MessageFormat;
-
 public class AsyncPlayerChatListener implements Listener {
 
-    private String format = "§8[{0}§8] {1}{2}{3} §8> §f%2$s";
-    /**
-     * 0 : Prestige
-     * 1 : Rank (Includes color code)
-     * 2 : Name
-     * 3 : Suffix (Includes color code)
-     */
+  private final BuildFFAPlayerManager buildFFAPlayerManager;
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onChat(AsyncPlayerChatEvent e) {
-//        Bukkit.getLogger().info(e.getFormat());
-        Player player = e.getPlayer();
-        String message = e.getMessage();
-        BuildFFAPlayer buildFFAPlayer = BuildFFAPlayerManager.getPlayer(player);
+  private final PrestigeManager prestigeManager;
 
-        PermissionManagement permissionManagement = BuildFFABootstrap.getPermissionManagement();
+  @Inject
+  public AsyncPlayerChatListener(
+      BuildFFAPlayerManager buildFFAPlayerManager, PrestigeManager prestigeManager) {
+    this.buildFFAPlayerManager = buildFFAPlayerManager;
+    this.prestigeManager = prestigeManager;
+  }
 
-        PermissionUser permissionUser = permissionManagement.user(player.getUniqueId());
-        PermissionGroup permissionGroup = permissionManagement.highestPermissionGroup(permissionUser);
+  private String format = "§8[{0}§8] §7{1} §8> §f%2$s";
 
-        String prestige = buildFFAPlayer.getPrestige().toBukkitColor() + StringUtils.color(PrestigeManager.getInstance().getPrestigeName(buildFFAPlayer));
+  /** 0 : Prestige 1 : Name */
+  @EventHandler(priority = EventPriority.HIGHEST)
+  public void onChat(AsyncPlayerChatEvent e) {
+    Player player = e.getPlayer();
+    String message = e.getMessage();
+    BuildFFAPlayer buildFFAPlayer = buildFFAPlayerManager.getPlayer(player);
 
-        String display = StringUtils.color(permissionGroup.display());
-        String suffix = StringUtils.color(permissionGroup.suffix());
+    String prestige =
+        buildFFAPlayer.getPrestige().toBukkitColor()
+            + StringUtils.color(prestigeManager.getPrestigeName(buildFFAPlayer));
 
-        if (player.hasPermission("teamcocoa.premium")) {
-            message = (StringUtils.color(message));
-        }
-        e.setFormat(
-                MessageFormat.format(format, prestige, display, player.getName(), suffix));
-        e.setMessage(message);
+    if (player.hasPermission("teamcocoa.premium")) {
+      message = (StringUtils.color(message));
     }
+    e.setFormat(MessageFormat.format(format, prestige, player.getName()));
+    e.setMessage(message);
+  }
 }

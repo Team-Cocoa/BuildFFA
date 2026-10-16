@@ -2,7 +2,7 @@ name: BuildFFA
 version: 1.0
 main: kr.teamcocoa.buildffa.BuildFFABootstrap
 author: fixca
-depend: [TeamCocoa-Core, Language]
+depend: [TeamCocoa-Core, Language, KitManager]
 commands:
   build:
   stats:

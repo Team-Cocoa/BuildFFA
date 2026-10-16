@@ -1,95 +1,96 @@
 package kr.teamcocoa.buildffa.world.maps;
 
-import kr.teamcocoa.buildffa.BuildFFABootstrap;
+import java.util.concurrent.LinkedBlockingQueue;
+import kr.teamcocoa.buildffa.task.DeSpawnBlockTask;
 import kr.teamcocoa.buildffa.world.DeSpawnBlock;
+import lombok.AccessLevel;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.concurrent.LinkedBlockingQueue;
 
 @Getter
 public class BuildFFAMap {
 
-    private Maps maps;
+  @Getter(AccessLevel.NONE)
+  private final Plugin plugin;
 
-    private String slimeWorldName;
+  private Maps maps;
 
-    private boolean pvpAble;
+  private String slimeWorldName;
 
-    private boolean placeAble;
+  private boolean pvpAble;
 
-    private double spawnX;
+  private boolean placeAble;
 
-    private double spawnY;
+  private double spawnX;
 
-    private double spawnZ;
+  private double spawnY;
 
-    private int arenaHeight;
+  private double spawnZ;
 
-    private int deathHeight;
+  private int arenaHeight;
 
-    private LinkedBlockingQueue<DeSpawnBlock> blocks = new LinkedBlockingQueue<>();
+  private int deathHeight;
 
-    private BukkitTask blockScheduler;
+  private LinkedBlockingQueue<DeSpawnBlock> blocks = new LinkedBlockingQueue<>();
 
-    public BuildFFAMap(Maps maps, String slimeWorldName, boolean pvpAble, boolean placeAble, double spawnX, double spawnY, double spawnZ, int arenaHeight, int deathHeight) {
-        this.maps = maps;
-        this.slimeWorldName = slimeWorldName;
-        this.pvpAble = pvpAble;
-        this.placeAble = placeAble;
-        this.spawnX = spawnX;
-        this.spawnY = spawnY;
-        this.spawnZ = spawnZ;
-        this.arenaHeight = arenaHeight;
-        this.deathHeight = deathHeight;
+  private BukkitTask blockScheduler;
+
+  public BuildFFAMap(
+      Plugin plugin,
+      Maps maps,
+      String slimeWorldName,
+      boolean pvpAble,
+      boolean placeAble,
+      double spawnX,
+      double spawnY,
+      double spawnZ,
+      int arenaHeight,
+      int deathHeight) {
+    this.plugin = plugin;
+    this.maps = maps;
+    this.slimeWorldName = slimeWorldName;
+    this.pvpAble = pvpAble;
+    this.placeAble = placeAble;
+    this.spawnX = spawnX;
+    this.spawnY = spawnY;
+    this.spawnZ = spawnZ;
+    this.arenaHeight = arenaHeight;
+    this.deathHeight = deathHeight;
+  }
+
+  public void removeAllBlocks() {
+    for (DeSpawnBlock deSpawnBlock : blocks) {
+      deSpawnBlock.makeAir();
     }
+    blocks.clear();
+  }
 
-    public void removeAllBlocks() {
-        for (DeSpawnBlock deSpawnBlock : blocks) {
-            deSpawnBlock.makeAir();
-        }
-        blocks.clear();
-    }
+  public void addBlock(DeSpawnBlock block) {
+    blocks.add(block);
+  }
 
-    public void addBlock(DeSpawnBlock block) {
-        blocks.add(block);
-    }
+  public void removeBlock(DeSpawnBlock block) {
+    blocks.remove(block);
+  }
 
-    public void removeBlock(DeSpawnBlock block) {
-        blocks.remove(block);
-    }
+  public void mapSessionStart() {
+    this.pvpAble = true;
+    this.placeAble = true;
+    this.blockScheduler =
+        Bukkit.getScheduler()
+            .runTaskTimerAsynchronously(plugin, new DeSpawnBlockTask(this), 1L, 10L);
+  }
 
-    public void mapSessionStart() {
-        this.pvpAble = true;
-        this.placeAble = true;
-        this.blockScheduler =
-                Bukkit.getScheduler().runTaskTimerAsynchronously(
-                        BuildFFABootstrap.getInstance(),
-                        () -> {
-                            for (DeSpawnBlock deSpawnBlock : blocks) {
-                                deSpawnBlock.tick();
-                                if (deSpawnBlock.isExpire()) {
-                                    removeBlock(deSpawnBlock);
-                                }
-                            }
-                        },
-                        1L, 10L);
-    }
+  public void mapSessionStop() {
+    this.pvpAble = false;
+    this.placeAble = false;
+    blockScheduler.cancel();
+  }
 
-    public void mapSessionStop() {
-        this.pvpAble = false;
-        this.placeAble = false;
-        blockScheduler.cancel();
-    }
-
-    public Location getSpawn() {
-        return new Location(
-                Bukkit.getWorld(slimeWorldName),
-                spawnX,
-                spawnY,
-                spawnZ);
-    }
-
+  public Location getSpawn() {
+    return new Location(Bukkit.getWorld(slimeWorldName), spawnX, spawnY, spawnZ);
+  }
 }

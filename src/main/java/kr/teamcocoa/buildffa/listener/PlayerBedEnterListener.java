@@ -5,8 +5,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 
 public class PlayerBedEnterListener implements Listener {
-    @EventHandler
-    public void onBed(PlayerBedEnterEvent e) {
-        e.setCancelled(true);
-    }
+  @EventHandler
+  public void onBed(PlayerBedEnterEvent e) {
+    e.setCancelled(true);
+  }
 }

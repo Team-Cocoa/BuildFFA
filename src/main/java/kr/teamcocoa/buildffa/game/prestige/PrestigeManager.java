@@ -1,0 +1,192 @@
+package kr.teamcocoa.buildffa.game.prestige;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import java.text.MessageFormat;
+import kr.teamcocoa.buildffa.game.models.BuildFFAPlayer;
+import kr.teamcocoa.buildffa.game.tabs.TabManager;
+import kr.teamcocoa.buildffa.translation.LangUtils;
+import kr.teamcocoa.buildffa.translation.MessageEnum;
+import kr.teamcocoa.core.utils.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
+@Singleton
+public class PrestigeManager {
+
+  private final Plugin plugin;
+
+  // TabManager depends on PrestigeManager, so a Provider breaks the cycle
+  private final Provider<TabManager> tabManagerProvider;
+
+  @Inject
+  public PrestigeManager(Plugin plugin, Provider<TabManager> tabManagerProvider) {
+    this.plugin = plugin;
+    this.tabManagerProvider = tabManagerProvider;
+  }
+
+  public Prestige getPrestige(int kills) {
+    if (kills <= Prestige.BEGINNER.getMaximumKills()) {
+      return Prestige.BEGINNER;
+    }
+    if (Prestige.BRONZE.getMinimumKills() <= kills && kills <= Prestige.BRONZE.getMaximumKills()) {
+      return Prestige.BRONZE;
+    }
+    if (Prestige.SILVER.getMinimumKills() <= kills && kills <= Prestige.SILVER.getMaximumKills()) {
+      return Prestige.SILVER;
+    }
+    if (Prestige.GOLD.getMinimumKills() <= kills && kills <= Prestige.GOLD.getMaximumKills()) {
+      return Prestige.GOLD;
+    }
+    if (Prestige.PLATINUM.getMinimumKills() <= kills
+        && kills <= Prestige.PLATINUM.getMaximumKills()) {
+      return Prestige.PLATINUM;
+    }
+    if (Prestige.DIAMOND.getMinimumKills() <= kills
+        && kills <= Prestige.DIAMOND.getMaximumKills()) {
+      return Prestige.DIAMOND;
+    }
+    if (Prestige.MASTER.getMinimumKills() <= kills && kills <= Prestige.MASTER.getMaximumKills()) {
+      return Prestige.MASTER;
+    }
+    if (Prestige.GRAND_MASTER.getMinimumKills() <= kills
+        && kills <= Prestige.GRAND_MASTER.getMaximumKills()) {
+      return Prestige.GRAND_MASTER;
+    }
+    if (Prestige.LEGEND.getMinimumKills() <= kills && kills <= Prestige.LEGEND.getMaximumKills()) {
+      return Prestige.LEGEND;
+    }
+    if (Prestige.CHALLENGER.getMinimumKills() <= kills
+        && kills <= Prestige.CHALLENGER.getMaximumKills()) {
+      return Prestige.CHALLENGER;
+    }
+    return Prestige.BEGINNER;
+  }
+
+  public int getPrestigeRank(Prestige prestige, int kills) {
+    if (prestige == Prestige.BEGINNER) {
+      return 0;
+    }
+    int minimum = prestige.getMinimumKills();
+    int distance = ((prestige.getMaximumKills() + 1) - prestige.getMinimumKills()) / 5;
+    for (int i = 0; i < 5; i++) {
+      if (minimum + (distance * i) <= kills && kills <= (minimum + (distance * (i + 1))) - 1) {
+        return i + 1;
+      }
+    }
+    return 0;
+  }
+
+  public void loadPrestige(BuildFFAPlayer buildFFAPlayer) {
+    Prestige prestige = getPrestige(buildFFAPlayer.getBuildFFAStats().getKills());
+    int grade = getPrestigeRank(prestige, buildFFAPlayer.getBuildFFAStats().getKills());
+    buildFFAPlayer.setPrestige(prestige);
+    buildFFAPlayer.setGrade(grade);
+  }
+
+  public void updatePrestige(BuildFFAPlayer buildFFAPlayer) {
+    Prestige prestige = buildFFAPlayer.getPrestige();
+    int grade = buildFFAPlayer.getGrade();
+
+    int minimum = prestige.getMinimumKills();
+    int distance = ((prestige.getMaximumKills() + 1) - prestige.getMinimumKills()) / 5;
+
+    int kills = buildFFAPlayer.getBuildFFAStats().getKills();
+    Bukkit.getLogger()
+        .info(
+            (minimum + (distance * (grade - 1)))
+                + " <= "
+                + kills
+                + " <= "
+                + ((minimum + (distance * grade)) - 1));
+    if (prestige == Prestige.BEGINNER) {
+      if (0 <= kills && kills <= 99) {
+        return;
+      } else {
+        loadPrestige(buildFFAPlayer);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+          player.sendMessage(
+              MessageFormat.format(
+                  String.join(
+                      ",",
+                      LangUtils.getMessage(player, MessageEnum.PRESTIGE_PROMOTE_MESSAGE)
+                          .replace("[", "")
+                          .replace("]", "")
+                          .split(",")),
+                  buildFFAPlayer.getPlayer().getName(),
+                  StringUtils.color(getPrestigeName(buildFFAPlayer))));
+        }
+        Bukkit.getScheduler()
+            .runTask(
+                plugin, () -> tabManagerProvider.get().updateNameTags(buildFFAPlayer.getPlayer()));
+      }
+    } else {
+      if (minimum + (distance * (grade - 1)) <= kills
+          && kills <= (minimum + (distance * grade)) - 1) {
+        return;
+      } else {
+        loadPrestige(buildFFAPlayer);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+          player.sendMessage(
+              MessageFormat.format(
+                  String.join(
+                      ",",
+                      LangUtils.getMessage(player, MessageEnum.PRESTIGE_PROMOTE_MESSAGE)
+                          .replace("[", "")
+                          .replace("]", "")
+                          .split(",")),
+                  buildFFAPlayer.getPlayer().getName(),
+                  StringUtils.color(getPrestigeName(buildFFAPlayer))));
+        }
+        Bukkit.getScheduler()
+            .runTask(
+                plugin, () -> tabManagerProvider.get().updateNameTags(buildFFAPlayer.getPlayer()));
+      }
+    }
+  }
+
+  public String getPrestigeName(int kills) {
+    Prestige prestige = getPrestige(kills);
+    int grade = getPrestigeRank(prestige, kills);
+    return prestige.toBukkitColor()
+        + prestige.getName()
+        + (prestige == Prestige.BEGINNER ? "" : " " + arabicToRome(grade));
+  }
+
+  public String getPrestigeName(BuildFFAPlayer buildFFAPlayer) {
+    return buildFFAPlayer.getPrestige().toBukkitColor()
+        + buildFFAPlayer.getPrestige().getName()
+        + (buildFFAPlayer.getPrestige() == Prestige.BEGINNER
+            ? ""
+            : " " + arabicToRome(buildFFAPlayer.getGrade()));
+  }
+
+  public String arabicToRome(int num) {
+    switch (num) {
+      case 1:
+        return "I";
+      case 2:
+        return "II";
+      case 3:
+        return "III";
+      case 4:
+        return "IV";
+      case 5:
+        return "V";
+      case 6:
+        return "VI";
+      case 7:
+        return "VII";
+      case 8:
+        return "VIII";
+      case 9:
+        return "IX";
+      case 10:
+        return "X";
+      default:
+        return "";
+    }
+  }
+}
